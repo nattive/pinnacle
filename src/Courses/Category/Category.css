@@ -1,0 +1,8 @@
+    .category-list {
+        list-style-type: none;
+        display: flex;
+    }
+    
+    .category-list li {
+        padding: 10px;
+    }
