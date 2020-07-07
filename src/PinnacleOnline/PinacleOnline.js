@@ -1,5 +1,4 @@
 import React from "react";
-import Header from "../Layout/Header";
 import Footer from "../Layout/Footer";
 import HeadSection from "./HeadSection";
 import "./style.css";
@@ -12,11 +11,11 @@ import { Router, Switch, useRouteMatch, Route } from "react-router-dom";
 import ViewCourse from "../Courses/ViewCourse";
 import PlayModules from "../Courses/PlayModules";
 import { connect } from "react-redux";
+import HeadBar from "../Courses/HeadBar";
 
 function ELearning() {
   return (
     <>
-      <Header />
       <HeadSection />
       {/* <FeaturedCourses />
       <OurPrograms />
@@ -29,6 +28,7 @@ function PinacleOnline() {
   let { path, url } = useRouteMatch();
   return (
     <>
+    <HeadBar />
       <Switch>
         <Route exact path={`${path}`}>
           <ELearning />

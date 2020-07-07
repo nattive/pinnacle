@@ -92,6 +92,7 @@ function Courses(props) {
   let history = useHistory();
   return (
     <>
+      {console.log(path)}
       <Switch>
         <Route exact path={`${path}`}>
           <CourseComponent />
@@ -99,7 +100,7 @@ function Courses(props) {
         <Route path={`${path}/course-id/:id`}>
           <ViewCourse />
         </Route>
-        <Route path={`${path}/play/:course`}>
+        <Route path={`${path}/play`}>
           <PlayModules />
         </Route>
       </Switch>

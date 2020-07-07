@@ -3,17 +3,26 @@ import { BaseUrl } from "../Patials/BaseUrl"
 import {
     FETCH_COURSES,
     ERR_FETCH_COURSES,
+    NULL_ERR_MAIN_CATEGORIES,
     FETCH_PO_COURSES,
     FETCH_COTF_COURSES,
+    LOADING_SHOW_COURSE,
+    END_LOADING_SHOW_COURSE,
     ENROLLED_COURSES,
+    ERR_MAIN_CATEGORIES,
     FETCH_FREE_COURSES,
     ERR_PLAY_COURSE,
+    MAIN_CATEGORIES,
     PLAY_COURSE,
     SAVE_PLAYING_MODULES,
     NULL_ERR_PLAY_COURSE,
     COURSE_IS_ENROLLED,
     ERR_COURSE_IS_ENROLLED,
     CHECK_COURSE_PROGRESS,
+    START_COURSE_REVIEW,
+    SHOW_COURSE,
+    ERR_SHOW_COURSE,
+    END_COURSE_REVIEW,
 } from '../Actions/types'
 
 export const fetchCourses = (number) => dispatch => {
@@ -184,15 +193,45 @@ export const checkCourseProgress = (user, course, module) => dispatch => {
             type: ERR_COURSE_IS_ENROLLED,
             payload: err.message
         }))
+}
+
+export const showCourse = (course) => dispatch => {
+
+    // dispatch({
+    //     type: NULL_ERR_PLAY_COURSE
+    // })
+    dispatch({
+        type: LOADING_SHOW_COURSE
+    })
+    Axios.get(`${BaseUrl}api/courses/` + course)
+        .then(response => {
+            console.log(response);
+            dispatch({
+                type: LOADING_SHOW_COURSE
+            })
+            dispatch({
+                type: SHOW_COURSE,
+                payload: response.data
+            })
+        })
+        .catch(err => {
+            dispatch({
+                type: END_LOADING_SHOW_COURSE
+            })
+            dispatch({
+                type: ERR_SHOW_COURSE,
+                payload: err.message
+            })
+        })
 
 
 }
 
 export const fetchMainCategory = () => dispatch => {
 
-    // dispatch({
-    //     type: NULL_ERR_PLAY_COURSE
-    // })
+    dispatch({
+        type: NULL_ERR_MAIN_CATEGORIES
+    })
     Axios.get(`${BaseUrl}api/courses/main_controller/all`)
         .then(response => {
             console.log(response);
@@ -202,9 +241,7 @@ export const fetchMainCategory = () => dispatch => {
             })
         })
         .catch(err => dispatch({
-            type: ERR_COURSE_IS_ENROLLED,
+            type: ERR_MAIN_CATEGORIES,
             payload: err.message
         }))
-
-
 }

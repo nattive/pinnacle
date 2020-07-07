@@ -23,15 +23,11 @@ export default function ViewCourseClass(props) {
     let { path, url } = useRouteMatch(); 
   return (
     <>
-      <div className='container' >
-        <main className='row'>
-          <PlayCourse
+      <PlayCourse
             courseId={props.course}
             history={history}
-            url={url}
+            path={path}
           />
-        </main>
-      </div>
     </>
   );
 }

@@ -1,15 +1,23 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { makeStyles } from "@material-ui/core/styles";
+import { makeStyles, withStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 import Typography from "@material-ui/core/Typography";
 import Box from "@material-ui/core/Box";
-import { Paper, List, ListItem, Avatar } from "@material-ui/core";
+import {
+  Paper,
+  List,
+  ListItem,
+  Avatar,
+  TextField,
+  Button,
+} from "@material-ui/core";
 import { useSelector } from "react-redux";
 import { BaseUrl } from "../Patials/BaseUrl";
 import PlayCircleFilledIcon from "@material-ui/icons/PlayCircleFilled";
+import { Rating } from "@material-ui/lab";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -31,6 +39,15 @@ function TabPanel(props) {
     </div>
   );
 }
+
+const StyledRating = withStyles({
+  iconFilled: {
+    color: "#ff6d75",
+  },
+  iconHover: {
+    color: "#ff3d47",
+  },
+})(Rating);
 
 TabPanel.propTypes = {
   children: PropTypes.node,
@@ -56,6 +73,7 @@ const useStyles = makeStyles((theme) => ({
 export default function SideTab() {
   const classes = useStyles();
   const [value, setValue] = React.useState("one");
+  const [rating, newRating] = React.useState(0);
   const playing = useSelector((state) => state.course.playCourse);
 
   const handleChange = (event, newValue) => {
@@ -76,7 +94,7 @@ export default function SideTab() {
             wrapped
             {...a11yProps("one")}
           />
-          <Tab value="two" label="Comments" {...a11yProps("two")} />
+          <Tab value="two" label="Reviews" {...a11yProps("two")} />
         </Tabs>
       </Paper>
       <TabPanel value={value} index="one">
@@ -87,15 +105,37 @@ export default function SideTab() {
               key={item.id}
               // onClick={() => this.handlePlay(item.id, item.title)}
             >
-              <PlayCircleFilledIcon className='mr-2' />
-              <Typography style={{fontSize: '12px'}}>
-                {item.title}
-              </Typography>
+              <PlayCircleFilledIcon className="mr-2" />
+              <Typography style={{ fontSize: "12px" }}>{item.title}</Typography>
             </ListItem>
           ))}
       </TabPanel>
-      <TabPanel value={value} index="two">
-        Item Two
+      <TabPanel value={value} index="two" className="w-100">
+        <Typography component="legend">Rate this course</Typography>
+        <Rating
+        size="large"
+          name="simple-controlled"
+          value={rating}
+          onChange={(event, newRating) => {
+            console.log(newRating);
+            newRating(newRating);
+          }}
+        />
+        <Typography component="legend" className="p-2">
+          Write a review
+        </Typography>
+        <TextField
+          id="outlined-multiline-static"
+          label="Multiline"
+          multiline
+          rows={4}
+          defaultValue="Default Value"
+          variant="outlined"
+          className="m-2"
+        />
+        <Button variant="contained" color="primary" className="m-2">
+          Submit Review
+        </Button>
       </TabPanel>
     </div>
   );

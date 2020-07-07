@@ -12,6 +12,12 @@ import {
   Divider,
   ListItemIcon,
   CircularProgress,
+  ExpansionPanel,
+  ExpansionPanelSummary,
+  ExpansionPanelDetails,
+  List,
+  Box,
+  LinearProgress,
 } from "@material-ui/core";
 import image from "../Assets/img/blog/single_blog_1.png";
 import TutorCard from "./TutorCard";
@@ -26,11 +32,21 @@ import ListItemText from "@material-ui/core/ListItemText";
 import PlayCircleFilledIcon from "@material-ui/icons/PlayCircleFilled";
 import TextureIcon from "@material-ui/icons/Texture";
 import VideoPlayer from "../VideoPlayer/VideoPlayer";
-import { enrollCourse, isCourseEnrolled } from "../Actions/courseAction";
+import {
+  enrollCourse,
+  isCourseEnrolled,
+  playCourse,
+  showCourse,
+} from "../Actions/courseAction";
 import { verifyUserTokenAction } from "../Actions/verifyUserTokenAction";
 import { connect } from "react-redux";
 import HeadBar from "./HeadBar";
 import Footer from "../Layout/Footer";
+import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
+import ShowRating from "../General Components/ShowRating";
+import Comments from "./Cmments/Comments";
+import PostReview from "./Review/PostReview";
+
 var PHPUnserialize = require("php-unserialize");
 
 var parse = require("html-react-parser");
@@ -39,8 +55,9 @@ class PlayCourse extends Component {
   constructor() {
     super();
     this.state = {
-      course: {},
+      showedCourse: {},
       loading: true,
+      courseId: null,
       enrollLoading: true,
     };
     this.unserialize = this.unserialize.bind(this);
@@ -51,18 +68,53 @@ class PlayCourse extends Component {
     // alert(id)
   }
 
-  async componentDidMount() {
+  // componentWillUpdate() {
+  //   this.props.isCourseEnrolled(this.props.user.user.id, course.data.id);
+  // }
+  componentDidMount() {
     this.state.loading = true;
-    var course = await getCourseById(this.props.courseId);
     this.state.loading = false;
-    this.state.enrollLoading = false;
-    this.props.isCourseEnrolled(this.props.user.user.id, course.data.id);
+
+    this.props.showCourse(this.props.courseId);
+   
     /**
      * Get the course, course id was received from props
      */
-    this.setState({ course: course.data });
+    console.log(this.props.showCourse);
+
     // this.props.enrollCourse(5);
     this.props.verifyUserTokenAction();
+  }
+
+  componentWillReceiveProps(newProps) {
+    if (newProps.courseId) {
+      this.setState({
+        courseId: newProps.courseId,
+        user: newProps.user.user,
+      });
+    }
+    if (newProps.showedCourse) {
+      this.setState({
+        showedCourse: newProps.showedCourse,
+      });
+    }
+    console.log(newProps);
+  }
+
+  handlePlay(course, courseTitle) {
+    const { path, history, user, playCourse } = this.props;
+    if (
+      user !== undefined &&
+      playCourse !== undefined &&
+      history !== undefined
+    ) {
+      playCourse(user.user.id, course);
+      // console.log(path);
+
+      history.push("/e-learning/courses/play");
+    } else {
+      console.log(this.props);
+    }
   }
 
   async handleClick(id) {
@@ -76,6 +128,9 @@ class PlayCourse extends Component {
   }
 
   render() {
+     this.state.user !== undefined &&
+       this.props.isCourseEnrolled(this.state.user.id, this.state.courseId);
+
     const videoJsOptions = {
       autoplay: true,
       controls: true,
@@ -86,17 +141,18 @@ class PlayCourse extends Component {
         },
       ],
     };
+    const { showedCourse } = this.state;
     return (
       <>
-        <HeadBar />
-        <div className="container-fluid">
-          <CourseHeadTitle course={this.state.course} />
+        {/* <HeadBar /> */}
+        <div className="container-fluid ">
+          <CourseHeadTitle course={showedCourse} />
         </div>
         <div className="container">
           <div className="row">
-            <div className="col-sm-12 col-md-9">
-              <div className="pr-2">
-                {this.state.loading ? (
+            <div className="col-sm-12 col-md-7">
+              <div className="pr-2" style={{ background: "#fff" }}>
+                {!showedCourse ? (
                   <div>
                     <Skeleton variant="rect" width="100%" height={500} />
                     <ReactPlaceholder
@@ -111,13 +167,13 @@ class PlayCourse extends Component {
                   <>
                     <div className="p-3 mb-4">
                       <p>your Progress</p>
-                      {this.state.course.introVideo ? (
-                        <VideoPlayer course={this.state.course} />
-                      ) : this.state.course.videoPath ? (
-                        <VideoPlayer course={this.state.course} />
+                      {showedCourse.introVideo ? (
+                        <VideoPlayer course={showedCourse} />
+                      ) : showedCourse.videoPath ? (
+                        <VideoPlayer course={showedCourse} />
                       ) : (
                         <img
-                          src={BaseUrl + this.state.course.banner}
+                          src={BaseUrl + showedCourse.banner}
                           alt=""
                           width="100%"
                           height={500}
@@ -129,7 +185,7 @@ class PlayCourse extends Component {
                       variant="h5"
                       style={{ color: "#000066", padding: "5px" }}
                     >
-                      {this.state.course.title}
+                      {showedCourse.title}
                     </Typography>
                     <div className="d-flex" style={{ marginTop: "20px" }}>
                       <TextureIcon
@@ -143,16 +199,16 @@ class PlayCourse extends Component {
                       </Typography>
                     </div>
                     <Divider />
-                    {this.state.objective ? (
+                    {showedCourse.objective ? (
                       <Alert severity="info">
                         <AlertTitle> Objective </AlertTitle>
-                        <p> {this.state.course.objective} </p>
+                        <p> {showedCourse.objective} </p>
                       </Alert>
                     ) : null}
                     <CssBaseline />
                     <Divider />
                     <div className="mt-4 mb-4">
-                      <p> {parse(this.state.course.description)} </p>
+                      <p> {parse(showedCourse.description || "")} </p>
                     </div>
                     <div className="d-flex" style={{ marginTop: "20px" }}>
                       <TextureIcon
@@ -166,49 +222,93 @@ class PlayCourse extends Component {
                       </Typography>
                     </div>
                     <Divider />
-                    {this.state.course.course_materials.length < 0
+                    {showedCourse.modules && showedCourse.modules.length < 0
                       ? null
-                      : this.state.course.course_materials.map(
-                          (item, index) => (
-                            <ListItem
-                              key={index}
-                              button
-                              className="o-4"
-                              onClick={this.playModule(item.id)}
+                      : showedCourse.modules &&
+                        showedCourse.modules.map((item, index) => (
+                          <ExpansionPanel key={index}>
+                            <ExpansionPanelSummary
+                              expandIcon={<ExpandMoreIcon />}
+                              aria-controls="panel1a-content"
+                              id="panel1a-header"
                             >
-                              <ListItemIcon>
-                                <PlayCircleFilledIcon />
-                              </ListItemIcon>
-                              <p
-                                style={{
-                                  lineHeight: "14px",
-                                  fontSize: "14px",
-                                  padding: "10px",
-                                }}
-                              >
-                                {item.title}
-                              </p>
-                            </ListItem>
-                          )
-                        )}
+                              <Typography className>{item.title}</Typography>
+                            </ExpansionPanelSummary>
+                            <ExpansionPanelDetails>
+                              <List>
+                                {item.course_materials &&
+                                  item.course_materials.map((module) => (
+                                    <ListItem
+                                      button
+                                      className="p-1"
+                                      onClick={this.playModule(module.id)}
+                                    >
+                                      <ListItemIcon>
+                                        <PlayCircleFilledIcon />
+                                      </ListItemIcon>
+                                      <p
+                                        style={{
+                                          lineHeight: "14px",
+                                          fontSize: "14px",
+                                          padding: "10px",
+                                        }}
+                                      >
+                                        {module.title}
+                                      </p>
+                                    </ListItem>
+                                  ))}
+                              </List>
+                            </ExpansionPanelDetails>
+                          </ExpansionPanel>
+                        ))}
+                    <div className="d-flex" style={{ marginTop: "2%" }}>
+                      <TextureIcon
+                        style={{ color: "#000066", padding: "5px" }}
+                      />
+                      <Typography
+                        variant="h6"
+                        style={{ color: "#000066", padding: "5px" }}
+                      >
+                        Course Reviews
+                      </Typography>
+                      <LinearProgress variant="determinate" value={20} />
+                    </div>
+                    <Divider />
                   </>
                 )}
               </div>
+
               <div className="col-12">
                 <Button
                   size="large"
                   variant="contained"
                   color="primary"
                   className="m-4"
-                  onClick={() => this.handleClick(this.state.course.id)}
+                  onClick={() => this.handleClick(showedCourse.id)}
                 >
                   {/* <CircularProgress /> */}
                   {this.props.isEnrolled === true ? "unfollow" : "follow"}
                 </Button>
+                {this.props.isEnrolled && (
+                  <Button
+                    size="large"
+                    variant="contained"
+                    color="primary"
+                    className="m-4"
+                    onClick={() =>
+                      this.handlePlay(showedCourse.id, showedCourse.title)
+                    }
+                  >
+                    Start Course
+                  </Button>
+                )}
               </div>
             </div>
-            <div className="col-sm-12 col-md-3">
-              <TutorCard tutor={this.state.course.tutor} />
+            <div className="col-sm-12 col-md-5">
+              <TutorCard tutor={showedCourse.tutor} />
+              {showedCourse.id && <Comments course_id={showedCourse.id} />}
+
+              <PostReview course={showedCourse} />
             </div>
           </div>
         </div>
@@ -221,10 +321,13 @@ class PlayCourse extends Component {
 const mapStateToProps = (state) => ({
   user: state.auth.user,
   isEnrolled: state.course.isEnrolled,
+  showedCourse: state.course.showCourse.data,
 });
 
 export default connect(mapStateToProps, {
   enrollCourse,
   verifyUserTokenAction,
   isCourseEnrolled,
+  playCourse,
+  showCourse,
 })(PlayCourse);

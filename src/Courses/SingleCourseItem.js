@@ -13,10 +13,12 @@ import ShowRating from "../General Components/ShowRating";
 
 const useStyles = makeStyles({
   root: {
-    maxWidth: 345,
+    maxWidth: 245,
+    margin: 5,
+    border: "1px solid  rgba(180, 180, 180, 0.075)",
   },
   media: {
-    height: 140,
+    height: 120,
   },
 });
 
@@ -36,19 +38,34 @@ export default function SingleCourseItem(props) {
             <Typography gutterBottom variant="h5" component="h2">
               {props.course.title}
             </Typography>
-            <Typography variant="body2" color="textSecondary" component="p">
-              {props.course.description.substring(0, 200)}
+            <Typography gutterBottom variant="caption" component="small">
+              300 Modules
+            </Typography>
+            <br />
+            <Typography
+              gutterBottom
+              variant="caption"
+              component="small"
+              className="ml-1"
+            >
+              {props.course.sub_category.name}
+            </Typography>
+              <br />
+            <Typography
+              gutterBottom
+              variant="caption"
+              component="small"
+              className="ml-1"
+            >
+              by: {props.course.tutor.name}
             </Typography>
           </CardContent>
+          <ShowRating course={props.course} />
         </CardActionArea>
-        <ShowRating course={props.course} />
         <CardActions>
-          <Button size="small" color="primary">
-            Share
-          </Button>
-          <Button size="small" color="primary">
-            Follow
-          </Button>
+          <Typography variant="overline" className="text-danger pull-right">
+            {props.course.isFree ? "Free" : props.course.price}
+          </Typography>
         </CardActions>{" "}
       </Link>
     </Card>

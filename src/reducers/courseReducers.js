@@ -5,15 +5,24 @@ import {
     ENROLLED_COURSES,
     FETCH_FREE_COURSES,
     PLAY_COURSE,
+    NULL_ERR_MAIN_CATEGORIES,
+    MAIN_CATEGORIES,
+    ERR_MAIN_CATEGORIES,
     NULL_ERR_PLAY_COURSE,
     ERR_PLAY_COURSE,
     SAVE_PLAYING_MODULES,
     COURSE_IS_ENROLLED,
+    START_COURSE_REVIEW,
+    END_COURSE_REVIEW,
     CHECK_COURSE_PROGRESS,
-    ERR_COURSE_IS_ENROLLED
+    ERR_COURSE_IS_ENROLLED,
+    SHOW_COURSE
 } from "../Actions/types";
 
 const initialState = {
+    showCourse: {},
+    mainCategories: {},
+    mainCategoriesFetchError: null,
     PO_courses: {},
     playCourse: {},
     FREE_courses: {},
@@ -78,6 +87,22 @@ export default function(state = initialState, action) {
         case CHECK_COURSE_PROGRESS:
             return {...state,
                 courseProgress: action.payload
+            }
+        case NULL_ERR_MAIN_CATEGORIES:
+            return {...state,
+                mainCategoriesFetchError: null
+            }
+        case MAIN_CATEGORIES:
+            return {...state,
+                mainCategories: action.payload
+            }
+        case ERR_MAIN_CATEGORIES:
+            return {...state,
+                mainCategoriesFetchError: action.payload
+            }
+        case SHOW_COURSE:
+            return {...state,
+                showCourse: action.payload
             }
 
         default:

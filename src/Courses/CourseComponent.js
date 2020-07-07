@@ -15,6 +15,7 @@ import ViewCourse from "./ViewCourse";
 import PlayModules from "./PlayModules";
 import Breadcrumb from "../Layout/Breadcrumb";
 import CategoryList from "./Category/CategoryList";
+import TitleHeader from "./TitleHeader";
 class CourseComponent extends Component {
   componentWillMount() {
     this.props.verifyUserTokenAction();
@@ -22,9 +23,6 @@ class CourseComponent extends Component {
     this.props.fetchCOTFCourses(5);
     this.props.fetchFREECourses(5);
   }
-
-  // componentDidMount() {
-  // }
 
   // componentDidMount(newProp) {
   //   if (this.props.user.user) return <Redirect to="/" />;
@@ -34,10 +32,19 @@ class CourseComponent extends Component {
     return (
       <>
         {/* {this.props.user.length === 0 && (<Redirect to='/lol' />)} */}
-        <HeadBar props={this.props.user} />
+        {/* <HeadBar /> */}
         <CategoryList />
+        <TitleHeader
+          title={
+            this.props.account_type === "isPO"
+              ? "Pinnacle Ulearn"
+              : this.props.account_type === "isCareer"
+              ? "Career of The Future"
+              : "Learn With Pinnacle"
+          }
+        />
         <div className="container">
-          <ListCourses />
+          <ListCourses  />
         </div>
         <Footer />
       </>
@@ -47,6 +54,7 @@ class CourseComponent extends Component {
 
 const mapStateToProps = (state) => ({
   user: state.auth.user,
+  account_type: state.auth.account_type,
 });
 
 export default connect(mapStateToProps, {

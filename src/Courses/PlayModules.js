@@ -97,8 +97,6 @@ export default function PlayModules() {
 
   return (
     <div className="container-fluid bg-light">
-      {console.log(playing)}
-      <HeadBar />
       <div className="mt-2">
         {error === "" ? (
           playing.id !== undefined ? (

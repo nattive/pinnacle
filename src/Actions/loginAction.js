@@ -89,6 +89,14 @@ export const logout = () => dispatch => {
         .then(data => {
             localStorage.remove('user_as_token')
             localStorage.remove('PO_user_token')
+            dispatch({
+                type: GET_USER_FROM_RESPONSE,
+                payload: {}
+            })
+            dispatch({
+                type: ACCOUNT_TYPE,
+                payload: ''
+            })
         })
         .catch(err => {
             // const err
