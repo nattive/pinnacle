@@ -23,20 +23,27 @@ import {
     SHOW_COURSE,
     ERR_SHOW_COURSE,
     END_COURSE_REVIEW,
+    NULL_ERR_FETCH_COURSES,
 } from '../Actions/types'
 
 export const fetchCourses = (number) => dispatch => {
     console.log(number);
-
+    dispatch({
+        type: NULL_ERR_FETCH_COURSES
+    })
     Axios.get(`${BaseUrl}api/courses/get/${number}`)
         .then(response => dispatch({
             type: FETCH_COURSES,
             payload: response.data
         }))
-        .catch(err => dispatch({
-            type: ERR_FETCH_COURSES,
-            payload: err
-        }))
+        .catch(err => {
+            console.log(err.message);
+
+            dispatch({
+                type: ERR_FETCH_COURSES,
+                payload: err.response ? err.response.message : err.message ? err.message : 'error occurred'
+            })
+        })
 
 
 }
@@ -51,7 +58,8 @@ export const fetchPOCourses = (number) => dispatch => {
         }))
         .catch(err => dispatch({
             type: ERR_FETCH_COURSES,
-            payload: err
+            payload: err.response ? err.response.message : 'error occurred'
+
         }))
 
 
@@ -67,13 +75,17 @@ export const fetchCOTFCourses = (number) => dispatch => {
         }))
         .catch(err => dispatch({
             type: ERR_FETCH_COURSES,
-            payload: err
+            payload: err.response.message
         }))
 
 
 }
 
 export const fetchFREECourses = (number) => dispatch => {
+
+    dispatch({
+        type: NULL_ERR_FETCH_COURSES
+    })
     Axios.get(`${BaseUrl}api/courses/get/FREE/${number}`)
         .then(response => dispatch({
             type: FETCH_FREE_COURSES,
@@ -81,7 +93,8 @@ export const fetchFREECourses = (number) => dispatch => {
         }))
         .catch(err => dispatch({
             type: ERR_FETCH_COURSES,
-            payload: err
+            payload: err.response ? err.response.message : 'error occurred'
+
         }))
 }
 
@@ -114,7 +127,8 @@ export const enrollCourse = (user, course) => dispatch => {
         })
         .catch(err => dispatch({
             type: ERR_FETCH_COURSES,
-            payload: err
+            payload: err.response ? err.response.message : 'error occurred'
+
         }))
 
 

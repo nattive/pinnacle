@@ -1,7 +1,7 @@
 import React from "react";
 import logo from "./logo.svg";
 import "./App.css";
-import Index from "./Home/Index";
+import Index from "./Pages/Home/Index";
 import "./Assets/css/bootstrap.min.css";
 import "./Assets/css/magnific-popup.css";
 import "./Assets/css/font-awesome.min.css";
@@ -15,15 +15,20 @@ import "./Assets/css/slicknav.css";
 import "./Assets/css/style.css";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import { Routes } from "./Patials/Routes";
-import About from "./About/About";
-import PinacleOnline from "./PinnacleOnline/PinacleOnline";
-import {Provider} from 'react-redux'
+import About from "./Pages/About/About";
+// import PinacleOnline from "./Pages/PinnacleOnline/PinacleOnline";
+import { Provider } from "react-redux";
 import store from "./Patials/store";
-import Courses from "./Courses/Courses";
-import Blog from "./Blog/Blog";
+// import Courses from "./Courses/Courses";
+import Blog from "./Pages/Blog/Blog";
+import SignInForm from "./Pages/User/SignInForm";
+import SignUp from "./Pages/User/SignUp";
+import Elearning from "./Pages/Elearning";
+import Auth from "./Pages/User/Auth";
+
 function App() {
   return (
-    <Provider store={store} className='super_container'>
+    <Provider store={store} className="super_container">
       <Router>
         <Switch>
           <Route exact path="/">
@@ -35,11 +40,17 @@ function App() {
           <Route path="/blog">
             <Blog />
           </Route>
-          <Route path="/e-learning">
-            <PinacleOnline />
+          <Route path="/auth/signin">
+            <Auth />
           </Route>
-           <Route path="*">
-           <p>404</p>
+          <Route path="/auth/signup">
+            <SignUp />
+          </Route>
+          <Route path="/learn">
+            <Elearning />
+          </Route>
+          <Route path="*">
+            <p> 404 </p>
           </Route>
         </Switch>
       </Router>

@@ -72,14 +72,14 @@ export default function Header(props) {
 
                           <ul className='submenu'>
                             <li>
-                              <Link to="/e-learning">Pinnacle Online</Link>
+                              <Link to="/learn">Pinnacle Online</Link>
                             </li>
                             <li>
                               <a href="#"> Careers of the Future </a>
                             </li>
                             <li>
                               <a href="#">
-                                Pinnacle Personalised Coaching and Trainings
+                                Pinnacle Personalized Coaching and Trainings
                               </a>
                             </li>
                             <li>

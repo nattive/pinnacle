@@ -33,6 +33,7 @@ export const CHECK_COURSE_PROGRESS = 'CHECK_COURSE_PROGRESS'
 export const ACCOUNT_TYPE = 'ACCOUNT_TYPE'
 export const TOGGLE_LOGIN_FORM = 'TOGGLE_LOGIN_FORM'
 export const NULL_AUTH_ERRORS = 'NULL_AUTH_ERRORS'
+export const NULL_ERR_FETCH_COURSES = 'NULL_ERR_FETCH_COURSES'
     /**
      * main Category
      */

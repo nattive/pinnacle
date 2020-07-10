@@ -16,11 +16,14 @@ import {
     END_COURSE_REVIEW,
     CHECK_COURSE_PROGRESS,
     ERR_COURSE_IS_ENROLLED,
-    SHOW_COURSE
+    ERR_FETCH_COURSES,
+    SHOW_COURSE,
+    NULL_ERR_FETCH_COURSES
 } from "../Actions/types";
 
 const initialState = {
     showCourse: {},
+    fetchCourseError: null,
     mainCategories: {},
     mainCategoriesFetchError: null,
     PO_courses: {},
@@ -103,6 +106,14 @@ export default function(state = initialState, action) {
         case SHOW_COURSE:
             return {...state,
                 showCourse: action.payload
+            }
+        case ERR_FETCH_COURSES:
+            return {...state,
+                fetchCourseError: action.payload
+            }
+        case NULL_ERR_FETCH_COURSES:
+            return {...state,
+                fetchCourseError: null
             }
 
         default:
