@@ -27,7 +27,7 @@ export default function SingleCourseItem(props) {
   let { path, url } = useRouteMatch();
   return (
     <Card className={classes.root}>
-      <Link to={`${path}/course-id/${props.course.id}`}>
+      <Link to={`/learn/course/${props.course.slug}`}>
         <CardActionArea>
           <CardMedia
             className={classes.media}

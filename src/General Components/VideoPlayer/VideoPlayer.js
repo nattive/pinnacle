@@ -4,7 +4,7 @@ import YouTube from "react-youtube";
 
 import { Player, BigPlayButton } from "video-react";
 import "video-react/dist/video-react.css";
-import { BaseUrl } from "../Patials/BaseUrl";
+import { BaseUrl } from "../../Patials/BaseUrl";
 import { IconButton } from "@material-ui/core";
 import ReplayIcon from "@material-ui/icons/Replay";
 import ControlBar from "video-react/lib/components/control-bar/ControlBar";

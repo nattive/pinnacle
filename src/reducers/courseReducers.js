@@ -18,11 +18,13 @@ import {
     ERR_COURSE_IS_ENROLLED,
     ERR_FETCH_COURSES,
     SHOW_COURSE,
+    PLAY_MODULES,
     NULL_ERR_FETCH_COURSES
 } from "../Actions/types";
 
 const initialState = {
     showCourse: {},
+    moduleToPlay: {},
     fetchCourseError: null,
     mainCategories: {},
     mainCategoriesFetchError: null,
@@ -74,6 +76,11 @@ export default function(state = initialState, action) {
         case SAVE_PLAYING_MODULES:
             return {...state,
                 playModuleQueue: action.payload
+            }
+        case PLAY_MODULES:
+            return {
+                ...state,
+                moduleToPlay: action.payload
             }
         case NULL_ERR_PLAY_COURSE:
             return {...state,

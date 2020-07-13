@@ -14,17 +14,16 @@ import "./Assets/css/animate.css";
 import "./Assets/css/slicknav.css";
 import "./Assets/css/style.css";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-import { Routes } from "./Patials/Routes";
 import About from "./Pages/About/About";
 // import PinacleOnline from "./Pages/PinnacleOnline/PinacleOnline";
 import { Provider } from "react-redux";
 import store from "./Patials/store";
 // import Courses from "./Courses/Courses";
 import Blog from "./Pages/Blog/Blog";
-import SignInForm from "./Pages/User/SignInForm";
 import SignUp from "./Pages/User/SignUp";
-import Elearning from "./Pages/Elearning";
 import Auth from "./Pages/User/Auth";
+import Routes from "./Pages/LearnRoutes/Routes";
+// import { Routes as ElearningRoutes } from "./Pages/LearnRoutes";
 
 function App() {
   return (
@@ -47,7 +46,7 @@ function App() {
             <SignUp />
           </Route>
           <Route path="/learn">
-            <Elearning />
+            <Routes />
           </Route>
           <Route path="*">
             <p> 404 </p>

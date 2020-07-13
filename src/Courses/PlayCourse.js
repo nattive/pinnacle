@@ -31,7 +31,7 @@ import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
 import PlayCircleFilledIcon from "@material-ui/icons/PlayCircleFilled";
 import TextureIcon from "@material-ui/icons/Texture";
-import VideoPlayer from "../VideoPlayer/VideoPlayer";
+import VideoPlayer from "../General Components/VideoPlayer/VideoPlayer";
 import {
   enrollCourse,
   isCourseEnrolled,
@@ -50,7 +50,6 @@ import PostReview from "./Review/PostReview";
 var PHPUnserialize = require("php-unserialize");
 
 var parse = require("html-react-parser");
-
 
 class PlayCourse extends Component {
   constructor() {
@@ -77,11 +76,11 @@ class PlayCourse extends Component {
     this.state.loading = false;
 
     this.props.showCourse(this.props.courseId);
-   
+    // this.props.isCourseEnrolled(this.props.user.id, this.props.courseId);
     /**
      * Get the course, course id was received from props
      */
-    console.log(this.props.showCourse);
+    console.log(this.props);
 
     // this.props.enrollCourse(5);
     this.props.verifyUserTokenAction();
@@ -91,36 +90,37 @@ class PlayCourse extends Component {
     if (newProps.courseId) {
       this.setState({
         courseId: newProps.courseId,
-        user: newProps.user.user,
+        user: newProps.user,
       });
+      this.props.isCourseEnrolled(newProps.user, newProps.courseId);
     }
     if (newProps.showedCourse) {
       this.setState({
         showedCourse: newProps.showedCourse,
       });
+      this.props.isCourseEnrolled(newProps.user.id, newProps.showedCourse.id);
     }
-    console.log(newProps);
   }
 
   handlePlay(course, courseTitle) {
-    const { path, history, user, playCourse } = this.props;
+    const { url, history, user, playCourse } = this.props;
     if (
       user !== undefined &&
       playCourse !== undefined &&
       history !== undefined
     ) {
-      playCourse(user.user.id, course);
+      playCourse(user.id, course);
       // console.log(path);
-
-      history.push("/e-learning/courses/play");
+      // alert('ok')
+      history.push(`${url}/1`);
     } else {
       console.log(this.props);
     }
   }
 
   async handleClick(id) {
-    await this.props.enrollCourse(this.props.user.user.id, id);
-    await this.props.isCourseEnrolled(this.props.user.user.id, id);
+    await this.props.enrollCourse(this.props.user.id, id);
+    await this.props.isCourseEnrolled(this.props.user.id, id);
     // this.props.history.push(this.props.url + "/enroll/" + id);
     // course-id/:id/enroll/:course
   }
@@ -129,8 +129,8 @@ class PlayCourse extends Component {
   }
 
   render() {
-     this.state.user !== undefined &&
-       this.props.isCourseEnrolled(this.state.user.id, this.state.courseId);
+    this.state.user &&
+      this.props.isCourseEnrolled(this.state.user.id, this.state.courseId);
 
     const videoJsOptions = {
       autoplay: true,
@@ -167,7 +167,7 @@ class PlayCourse extends Component {
                 ) : (
                   <>
                     <div className="p-3 mb-4">
-                      <p>your Progress</p>
+                      {/* <p>your Progress</p> */}
                       {showedCourse.introVideo ? (
                         <VideoPlayer course={showedCourse} />
                       ) : showedCourse.videoPath ? (
@@ -280,32 +280,38 @@ class PlayCourse extends Component {
               </div>
 
               <div className="col-12">
-                <Button
-                  size="large"
-                  variant="contained"
-                  color="primary"
-                  className="m-4"
-                  onClick={() => this.handleClick(showedCourse.id)}
-                >
-                  {/* <CircularProgress /> */}
-                  {this.props.isEnrolled === true ? "unfollow" : "follow"}
-                </Button>
-                {this.props.isEnrolled && (
-                  <Button
-                    size="large"
-                    variant="contained"
-                    color="primary"
-                    className="m-4"
-                    onClick={() =>
-                      this.handlePlay(showedCourse.id, showedCourse.title)
-                    }
-                  >
-                    Start Course
-                  </Button>
+                {this.props.user.id ? (
+                  <>
+                    <Button
+                      size="large"
+                      variant="contained"
+                      color="primary"
+                      className="m-4"
+                      onClick={() => this.handleClick(showedCourse.id)}
+                    >
+                      {/* <CircularProgress /> */}
+                      {this.props.isEnrolled === true ? "unfollow" : "follow"}
+                    </Button>
+                    {this.props.isEnrolled && (
+                      <Button
+                        size="large"
+                        variant="contained"
+                        color="primary"
+                        className="m-4"
+                        onClick={() =>
+                          this.handlePlay(showedCourse.id, showedCourse.title)
+                        }
+                      >
+                        Start Course
+                      </Button>
+                    )}
+                  </>
+                ) : (
+                  <p className="alert alert-warning mt-4">Sign in to follow this course</p>
                 )}
               </div>
             </div>
-            <div className="col-sm-12 col-md-5">
+            <div className="col-sm-12 col-md-4">
               <TutorCard tutor={showedCourse.tutor} />
               {showedCourse.id && <Comments course_id={showedCourse.id} />}
 

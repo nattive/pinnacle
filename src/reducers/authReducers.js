@@ -17,6 +17,7 @@ const initialState = {
     token: '',
     error: '',
     AuthError: null,
+    loginError: null,
     errors: {},
     account_type: '',
     showLogin: true,
@@ -42,7 +43,7 @@ export default function(state = initialState, action) {
         case ERR_LOGIN_USER:
             return {
                 ...state,
-                AuthError: action.payload
+                loginError: action.payload
             }
         case VERIFY_USER:
             return {
@@ -69,6 +70,7 @@ export default function(state = initialState, action) {
             return {
                 ...state,
                 AuthError: null,
+                loginError: null,
             }
         case ACCOUNT_TYPE:
             return {

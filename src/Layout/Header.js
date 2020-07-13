@@ -2,8 +2,10 @@ import React from "react";
 import logo from "../Assets/img/Pinnacle/logoWhite.png";
 import stickyLogo from "../Assets/img/Pinnacle/drafts.png";
 import { Link } from "react-router-dom";
-import './Header.css'
+import "./Header.css";
+import { useSelector } from "react-redux";
 export default function Header(props) {
+  const user = useSelector((state) => state.auth.user);
   return (
     <>
       <header class="header">
@@ -26,12 +28,20 @@ export default function Header(props) {
                     </ul>
                     <div class="top_bar_login ml-auto">
                       <ul>
-                        <li>
-                          <a href="#">Register</a>
-                        </li>
-                        <li>
-                          <a href="#">Login</a>
-                        </li>
+                        {!user.id ? (
+                          <>
+                            <li>
+                              <Link to="/auth/signin">Login</Link>
+                            </li>
+                            <li>
+                              <Link to="/auth/signup">Register</Link>
+                            </li>
+                          </>
+                        ) : (
+                          <li>
+                            <Link to="/learn/dashboard">Dashboard</Link>
+                          </li>
+                        )}
                       </ul>
                     </div>
                   </div>
@@ -65,12 +75,12 @@ export default function Header(props) {
                         <Link to="/about">About Us</Link>
                       </li>
                       <li>
-                        <li className='hasSubMenu'>
+                        <li className="hasSubMenu">
                           <a href="#">
                             Our Products <i className="ti-angle-down"> </i>
                           </a>
 
-                          <ul className='submenu'>
+                          <ul className="submenu">
                             <li>
                               <Link to="/learn">Pinnacle Online</Link>
                             </li>

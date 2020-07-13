@@ -41,7 +41,7 @@ class ListCourses extends Component {
             </div>
           ) : this.state.ready ? (
             this.state.course.map((item, key) => (
-              <div key={key} className="col-xs-6 col-md-4">
+              <div key={key} className="col-xs-6 col-md-3">
                 <SingleCourseItem course={item} />
               </div>
             ))
@@ -62,7 +62,7 @@ class ListCourses extends Component {
             </div>
           ) : this.state.ready ? (
             this.state.course.map((item, key) => (
-              <div key={key} className="col-xs-6 col-md-4">
+              <div key={key} className="col-xs-6 col-md-3" >
                 <SingleCourseItem course={item} />
               </div>
             ))

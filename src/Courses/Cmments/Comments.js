@@ -8,11 +8,11 @@ class Comments extends Component {
   constructor() {
     super();
     this.getComments = this.getComments.bind(this);
+    this.state = {
+      reviews: {},
+      isFetching: true,
+    };
   }
-  state = {
-    reviews: {},
-    isFetching: true,
-  };
 
   async fetchData(url) {
     const response = await fetch(url);

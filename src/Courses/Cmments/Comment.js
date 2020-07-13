@@ -21,6 +21,7 @@ import { deleteReview } from "../../Actions/ReviewAction";
 const useStyles = makeStyles((theme) => ({
   root: {
     width: "100%",
+    marginTop: '2%',
     backgroundColor: theme.palette.background.paper,
   },
   fonts: {
@@ -50,10 +51,12 @@ function Comment(props) {
   return (
     <List className={classes.root}>
       <Typography variant="h5">Review(s)</Typography>
+      <Typography variant="caption">{props.comments ? null : 'No review yet'}</Typography>
       {props.comments
-        ? props.comments.data.map((item) => (
-            <React.Fragment key={item.id}>
-              <ListItem j>
+        ? props.comments.data &&
+          props.comments.data.map((item, key) => (
+            <React.Fragment key={key}>
+              <ListItem>
                 <ListItemText
                   primary={
                     <Typography className={classes.fonts}>
@@ -74,11 +77,13 @@ function Comment(props) {
                     </>
                   }
                 />
-                {item.user_id === props.user.user.id ? (
+                {item.user_id === props.user.id ? (
                   <ListItemSecondaryAction>
                     <Button
                       variant="text"
-                      onClick={() =>handleDeleteReview(item.id, item.course_id)}
+                      onClick={() =>
+                        handleDeleteReview(item.id, item.course_id)
+                      }
                     >
                       delete
                     </Button>
@@ -101,4 +106,4 @@ const mapStateToProps = (state) => ({
   isDeletingReview: state.reviews.isDeletingReview,
 });
 
-export default connect(mapStateToProps, {deleteReview})(Comment);
+export default connect(mapStateToProps, { deleteReview })(Comment);

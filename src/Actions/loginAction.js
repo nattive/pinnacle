@@ -25,14 +25,13 @@ export const login = credentials => dispatch => {
 
     Axios.post(`${BaseUrl}api/login`, credentials)
         .then(data => {
-            var token = jwt.sign({...data.data }, 'gk0ra6IcLrAmexlr4tZip9bmRXvRoXtDNNsEQnF1HIT0dI4tNaVbyg6ZhFvffqga');
+            // var token = jwt.sign({...data.data }, 'gk0ra6IcLrAmexlr4tZip9bmRXvRoXtDNNsEQnF1HIT0dI4tNaVbyg6ZhFvffqga');
             const { user } = data.data;
             // console.log();
-            localStorage.setItem('access_token', user.access_token)
+            localStorage.removeItem('P_access_token')
+            localStorage.setItem('P_access_token', data.data.access_token)
             switch (user.account_type) {
                 case 'isPO':
-                    localStorage.removeItem('user_as_token')
-                    localStorage.setItem('user_as_token', token)
                     dispatch({
                         type: GET_USER_FROM_RESPONSE,
                         payload: user
@@ -42,10 +41,6 @@ export const login = credentials => dispatch => {
                         payload: 'isPO'
                     })
                     break;
-                case 'isCareer':
-                    localStorage.removeItem('user_as_token')
-                    localStorage.setItem('user_as_token', token)
-                    localStorage.setItem('access_token', data.data.access_token)
                     dispatch({
                         type: GET_USER_FROM_RESPONSE,
                         payload: data.data.user
@@ -63,8 +58,8 @@ export const login = credentials => dispatch => {
         .catch(err => {
             // const err
             dispatch({
-                type: ASYNC_ERRORS,
-                payload: err
+                type: ERR_LOGIN_USER,
+                payload: err.response.data.error || err.message
             })
             dispatch({
                 type: AUTH_LOADING_STATE,
@@ -118,4 +113,28 @@ export const toggleForm = (value) => dispatch => {
         payload: value
     })
 
+}
+
+export const getUser = () => dispatch => {
+    const token_to_verify = localStorage.getItem('P_access_token')
+
+    if (token_to_verify) {
+
+        Axios.get(`${BaseUrl}api/user`, { headers: { Authorization: `Bearer ${token_to_verify}` } })
+            .then(res => {
+                dispatch({
+                    type: GET_USER_FROM_RESPONSE,
+                    payload: res.data
+                })
+                dispatch({
+                    type: res.data.account_type,
+                    payload: 'isPO'
+                })
+                console.log(res)
+            })
+            .catch(err => console.log(err))
+    } else {
+        console.log('no in');
+
+    }
 }

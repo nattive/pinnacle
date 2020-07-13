@@ -19,7 +19,7 @@ import { verifyUserTokenAction } from "../../Actions/verifyUserTokenAction";
 import { Alert } from "@material-ui/lab";
 import { login } from "../../Actions/loginAction";
 import { toggleForm } from "../../Actions/loginAction";
-class SignUpForm extends Component {
+class SignInForm extends Component {
   constructor() {
     super();
     this.state = {
@@ -40,34 +40,30 @@ class SignUpForm extends Component {
     console.log(e);
   }
 
-  componentWillMount() {
-    this.props.verifyUserTokenAction();
+  componentWillReceiveProps(newProps) {
+    const { path, history } = this.props;
+
+    this.setState({ error: newProps.loginError });
+   
+    if (newProps.errors) {
+      switch (newProps.auth.errors.message) {
+        case "Request failed with status code 422":
+          this.setState({ error: "Email Already exist" });
+          break;
+
+        default:
+          break;
+      }
+    } else {
+      this.setState({ error: "", hasError: {} });
+      if (newProps.user) {
+        if (newProps.user.id !== undefined) {
+          this.props.history.push("/learn/dashboard");
+        }
+      }
+      console.log(newProps);
+    }
   }
-
-  // componentWillReceiveProps(newProps) {
-  //   const { path, history } = this.props;
-
-  //   if (newProps.errors) {
-  //     switch (newProps.auth.errors.message) {
-  //       case "Request failed with status code 422":
-  //         this.setState({ error: "Email Already exist" });
-  //         break;
-
-  //       default:
-  //         break;
-  //     }
-  //   } else {
-  //     this.setState({ error: "", hasError: {} });
-  //     if (newProps.user) {
-  //       if (newProps.user.access_token === undefined) {
-  //         this.setState({ error: "Registration failed" });
-  //       } else {
-  //         this.props.history.push(this.props.path + "/courses");
-  //       }
-  //     }
-  //     console.log(newProps);
-  //   }
-  // }
 
   handleChange(event) {
     this.setState({ account_type: event.target.value });
@@ -114,8 +110,9 @@ class SignUpForm extends Component {
                                                             <Alert severity="error">{this.props.error}</Alert>
                                                           ) : null} */}
           <h3 className="h4 text-black mb-4"> Sign Up </h3>
-          {this.state.error && (<p className="alert alert-danger">{this.state.error}</p>)}
-          
+          {this.props.loginError && (
+            <p className="alert alert-danger mb-4">{this.props.loginError}</p>
+          )}
           {formField.map((item, key) => (
             <div className="form-group" key={key}>
               <TextField
@@ -136,7 +133,7 @@ class SignUpForm extends Component {
             className="mt-4 p-1 w-100"
             onClick={this.handleSubmit}
           >
-            {this.props.loading ? <CircularProgress color="#fff" /> : "Sign In"}
+            {this.props.loading ? <CircularProgress size={20} color="#fff" /> : "Sign In"}
           </Button>
           <Typography variant="subtitle1" className-="mt-4">
             You dont have an account?
@@ -155,9 +152,10 @@ class SignUpForm extends Component {
 const mapStateToProps = (state) => ({
   user: state.auth.user,
   error: state.auth.error,
+  loginError: state.auth.loginError,
   loading: state.loading.authLoadingState,
 });
-SignUpForm.propTypes = {
+SignInForm.propTypes = {
   verifyUserTokenAction: PropTypes.func.isRequired,
   loading: PropTypes.bool,
   user: PropTypes.object,
@@ -167,4 +165,4 @@ export default connect(mapStateToProps, {
   verifyUserTokenAction,
   login,
   toggleForm,
-})(SignUpForm);
+})(SignInForm);

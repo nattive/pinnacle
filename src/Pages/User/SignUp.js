@@ -12,9 +12,9 @@ export default function SignUp(props) {
   return (
     <div>
       {!showLogin ? (
-        <SignUpForm props={props} history={history} path={path} />
+        <SignUpForm props={props} history={history} path={path} url={url} />
       ) : (
-        <SignInForm props={props} history={history} path={path} />
+        <SignInForm props={props} history={history} path={path} url={url} />
       )}
     </div>
   );

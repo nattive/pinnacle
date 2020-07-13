@@ -24,6 +24,7 @@ import {
     ERR_SHOW_COURSE,
     END_COURSE_REVIEW,
     NULL_ERR_FETCH_COURSES,
+    PLAY_MODULES,
 } from '../Actions/types'
 
 export const fetchCourses = (number) => dispatch => {
@@ -167,6 +168,8 @@ export const isCourseEnrolled = (user, course) => dispatch => {
     // dispatch({
     //     type: NULL_ERR_PLAY_COURSE
     // })
+    console.log(user + ' ' + course);
+
     Axios.post(`${BaseUrl}api/courses/check_enrolled`, {
             user_id: user,
             course_id: course,
@@ -241,6 +244,45 @@ export const showCourse = (course) => dispatch => {
 
 }
 
+export const showNodule = (courseId) => dispatch => {
+
+    // dispatch({
+    //     type: NULL_ERR_PLAY_COURSE
+    // })
+    dispatch({
+        type: LOADING_SHOW_COURSE
+    })
+    const token_to_verify = localStorage.getItem('P_access_token')
+
+    if (token_to_verify) {
+
+        Axios.get(`${BaseUrl}api/courses/material/show/` + courseId, { headers: { Authorization: `Bearer ${token_to_verify}` } })
+            .then(response => {
+                console.log(response);
+                dispatch({
+                    type: LOADING_SHOW_COURSE
+                })
+                dispatch({
+                    type: PLAY_MODULES,
+                    payload: response.data
+                })
+            })
+            .catch(err => {
+                dispatch({
+                    type: END_LOADING_SHOW_COURSE
+                })
+                dispatch({
+                    type: ERR_SHOW_COURSE,
+                    payload: err.message
+                })
+            })
+
+
+    } else {
+        console.log('not signed in');
+
+    }
+}
 export const fetchMainCategory = () => dispatch => {
 
     dispatch({
