@@ -7,7 +7,7 @@ import {
 import { PlayEnrolledCourse } from "./PlayEnrolledCourse";
 import HeadBar from "../../Courses/HeadBar";
 import Footer from "../../Layout/Footer";
-import { Question } from "./Question";
+import  Question  from "./Question";
 
 export default function Routes({ match }) {
   let { path, url } = useRouteMatch();

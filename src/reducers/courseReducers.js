@@ -39,6 +39,7 @@ const initialState = {
     isEnrolledError: '',
     isEnrolled: false,
     courseProgress: 0,
+    moduleLength: 0,
     items: {},
     item: {},
 }
@@ -75,9 +76,13 @@ export default function(state = initialState, action) {
             }
         case SAVE_PLAYING_MODULES:
             return {...state,
-                playModuleQueue: action.payload
+                playModuleQueue: action.payload,
+                moduleLength: action.payload.length
             }
         case PLAY_MODULES:
+            /**
+             * Present playing module
+             */
             return {
                 ...state,
                 moduleToPlay: action.payload

@@ -10,6 +10,7 @@ import Typography from "@material-ui/core/Typography";
 import { BaseUrl } from "../Patials/BaseUrl";
 import { Link, useRouteMatch } from "react-router-dom";
 import ShowRating from "../General Components/ShowRating";
+import { CardHeader } from "@material-ui/core";
 
 const useStyles = makeStyles({
   root: {
@@ -35,22 +36,13 @@ export default function SingleCourseItem(props) {
             title={props.course.title}
           />
           <CardContent>
-            <Typography gutterBottom variant="h5" component="h2">
-              {props.course.title}
+            <Typography  variant="h6" >{props.course.title}</Typography>
+            <Typography gutterBottom variant="body2" component="p">
+              {`category: ${props.course.sub_category.name}`}
             </Typography>
             <Typography gutterBottom variant="caption" component="small">
               300 Modules
             </Typography>
-            <br />
-            <Typography
-              gutterBottom
-              variant="caption"
-              component="small"
-              className="ml-1"
-            >
-              {props.course.sub_category.name}
-            </Typography>
-              <br />
             <Typography
               gutterBottom
               variant="caption"
@@ -59,14 +51,13 @@ export default function SingleCourseItem(props) {
             >
               by: {props.course.tutor.name}
             </Typography>
+
+            <Typography variant="overline" className="text-danger pull-right">
+              {props.course.isFree ? "Free" : props.course.price}
+            </Typography>
+            <ShowRating course={props.course} />
           </CardContent>
-          <ShowRating course={props.course} />
         </CardActionArea>
-        <CardActions>
-          <Typography variant="overline" className="text-danger pull-right">
-            {props.course.isFree ? "Free" : props.course.price}
-          </Typography>
-        </CardActions>{" "}
       </Link>
     </Card>
   );
