@@ -64,7 +64,7 @@ class SignUpForm extends Component {
         if (newProps.user.id === undefined) {
           this.setState({ error: "Registration failed" });
         } else {
-          history.push(this.props.path + "/courses");
+          history.push("/learn/dashboard");
         }
       }
       console.log(newProps);

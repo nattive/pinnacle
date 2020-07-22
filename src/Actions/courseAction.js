@@ -25,6 +25,8 @@ import {
     END_COURSE_REVIEW,
     NULL_ERR_FETCH_COURSES,
     PLAY_MODULES,
+    GET_RECOMMENDED_COURSES,
+    ERR_GET_RECOMMENDED_COURSES
 } from '../Actions/types'
 
 export const fetchCourses = (number) => dispatch => {
@@ -99,9 +101,11 @@ export const fetchFREECourses = (number) => dispatch => {
         }))
 }
 
-export const getEnrolledCourse = (user) => dispatch => {
-    Axios.post(`${BaseUrl}api/courses/get_enrolled_course`, {
-            user_id: user
+export const getEnrolledCourse = () => dispatch => {
+    const token = localStorage.getItem('P_access_token')
+
+    Axios.get(`${BaseUrl}api/courses/get_enrolled_course`, {
+            headers: { Authorization: `Bearer ${token}` },
         })
         .then(response => dispatch({
             type: ENROLLED_COURSES,
@@ -126,11 +130,14 @@ export const enrollCourse = (user, course) => dispatch => {
                 payload: response.data
             })
         })
-        .catch(err => dispatch({
-            type: ERR_FETCH_COURSES,
-            payload: err.response ? err.response.message : 'error occurred'
+        .catch(err => {
+            alert('You cant error into this course')
+            dispatch({
+                type: ERR_FETCH_COURSES,
+                payload: err.response ? err.response.message : 'error occurred'
 
-        }))
+            })
+        })
 
 
 }
@@ -283,6 +290,7 @@ export const showNodule = (courseId) => dispatch => {
 
     }
 }
+
 export const fetchMainCategory = () => dispatch => {
 
     dispatch({
@@ -298,6 +306,25 @@ export const fetchMainCategory = () => dispatch => {
         })
         .catch(err => dispatch({
             type: ERR_MAIN_CATEGORIES,
+            payload: err.message
+        }))
+}
+
+export const getRecommendedByUser = (user) => dispatch => {
+
+    dispatch({
+        type: NULL_ERR_MAIN_CATEGORIES
+    })
+    Axios.get(`${BaseUrl}api/courses/recommendations/user/${user}`)
+        .then(response => {
+            console.log(response);
+            dispatch({
+                type: GET_RECOMMENDED_COURSES,
+                payload: response.data
+            })
+        })
+        .catch(err => dispatch({
+            type: ERR_GET_RECOMMENDED_COURSES,
             payload: err.message
         }))
 }

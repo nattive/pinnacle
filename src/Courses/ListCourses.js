@@ -22,58 +22,33 @@ class ListCourses extends Component {
     };
   }
   async componentDidMount() {
-    var course = await getCourses(10);
+    var course = await getCourses(12);
     this.setState({ course: course.data, ready: true });
   }
 
   render() {
     return (
       <Container>
-        <div className="row mt-4">
-          <CourseRow />
-        </div>
-        <h3 className="pt-2 pb-2">Top Courses</h3>
-        <Divider />
-        <div className="row mt-4">
+        <h3 className="pt-2 pb-2"> Top Courses </h3> <Divider />
+        <div className="row mt-4 no-gutters">
           {this.state.course.length < 0 ? (
             <div className="mx-auto">
               <CircularProgress />
             </div>
           ) : this.state.ready ? (
             this.state.course.map((item, key) => (
-              <div key={key} className="col-xs-6 col-md-3">
-                <SingleCourseItem course={item} />
+              <div key={key} className="col-xs-3 col-md-2">
+                <SingleCourseItem course={item} />{" "}
               </div>
             ))
           ) : (
             <>
               <div className="mx-auto text-center mt-4">
                 <CircularProgress />
-              </div>
+              </div>{" "}
             </>
-          )}
-        </div>
-        <h3 className="pt-2 pb-2">Recommended For You</h3>
-        <Divider />
-        <div className="row mt-4">
-          {this.state.course.length < 0 ? (
-            <div className="mx-auto">
-              <CircularProgress />
-            </div>
-          ) : this.state.ready ? (
-            this.state.course.map((item, key) => (
-              <div key={key} className="col-xs-6 col-md-3" >
-                <SingleCourseItem course={item} />
-              </div>
-            ))
-          ) : (
-            <>
-              <div className="mx-auto text-center mt-4">
-                <CircularProgress />
-              </div>
-            </>
-          )}
-        </div>
+          )}{" "}
+        </div>{" "}
       </Container>
     );
   }

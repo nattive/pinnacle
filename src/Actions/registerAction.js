@@ -25,9 +25,11 @@ export const register = credentials => dispatch => {
 
     Axios.post(`${BaseUrl}api/register`, credentials)
         .then(data => {
-            var token = jwt.sign({...data.data }, 'gk0ra6IcLrAmexlr4tZip9bmRXvRoXtDNNsEQnF1HIT0dI4tNaVbyg6ZhFvffqga');
             const { user } = data.data;
-            // console.log();
+            dispatch({
+                type: AUTH_LOADING_STATE,
+                payload: false
+            })
             localStorage.removeItem('P_access_token')
             localStorage.setItem('P_access_token', data.data.access_token)
             switch (user.account_type) {

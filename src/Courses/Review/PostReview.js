@@ -80,7 +80,7 @@ class PostReview extends Component {
 
   render() {
     return (
-      <Card className="m-2 p-2">
+      <Card elevation={0} className="m-2 p-2">
         <CardHeader
           avatar={
             <Avatar aria-label="review" color='primary'>

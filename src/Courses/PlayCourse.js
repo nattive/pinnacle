@@ -59,13 +59,15 @@ class PlayCourse extends Component {
       loading: true,
       courseId: null,
       enrollLoading: true,
+      showAll: false,
+      readMoreText: "Read More",
     };
     this.unserialize = this.unserialize.bind(this);
     this.handleClick = this.handleClick.bind(this);
-    this.playModule = this.playModule.bind(this);
+    this.toggleReadMore = this.toggleReadMore.bind(this);
   }
-  playModule(id) {
-    // alert(id)
+  toggleReadMore() {
+    this.setState({ showAll: true });
   }
 
   // componentWillUpdate() {
@@ -146,9 +148,9 @@ class PlayCourse extends Component {
     return (
       <>
         {/* <HeadBar /> */}
-        <div className="container-fluid ">
+        {/* <div className="container-fluid ">
           <CourseHeadTitle course={showedCourse} />
-        </div>
+        </div> */}
         <div className="container">
           <div className="row">
             <div className="col-sm-12 col-md-7">
@@ -188,80 +190,36 @@ class PlayCourse extends Component {
                     >
                       {showedCourse.title}
                     </Typography>
-                    <div className="d-flex" style={{ marginTop: "20px" }}>
-                      <TextureIcon
-                        style={{ color: "#000066", padding: "5px" }}
-                      />
-                      <Typography
-                        variant="h6"
-                        style={{ color: "#000066", padding: "5px" }}
-                      >
-                        Course Description
-                      </Typography>
-                    </div>
+
                     <Divider />
                     {showedCourse.objective ? (
                       <Alert severity="info">
                         <AlertTitle> Objective </AlertTitle>
-                        <p> {showedCourse.objective} </p>
+                        <p style={{ textAlign: "justify" }}>
+                          {" "}
+                          {showedCourse.objective}{" "}
+                        </p>
                       </Alert>
                     ) : null}
                     <CssBaseline />
                     <Divider />
                     <div className="mt-4 mb-4">
-                      <p> {parse(showedCourse.description || "")} </p>
+                      <p>
+                        {showedCourse.description &&
+                          parse(
+                            this.state.showAll
+                              ? showedCourse.description
+                              : showedCourse.description.substring(0, 800) +
+                                  "..."
+                          )}{" "}
+                        {this.state.showAll && (
+                          <Button onClick={this.toggleReadMore} variant="text">
+                            {this.state.readMoreText}
+                          </Button>
+                        )}
+                      </p>
                     </div>
-                    <div className="d-flex" style={{ marginTop: "20px" }}>
-                      <TextureIcon
-                        style={{ color: "#000066", padding: "5px" }}
-                      />
-                      <Typography
-                        variant="h6"
-                        style={{ color: "#000066", padding: "5px" }}
-                      >
-                        Course Modules
-                      </Typography>
-                    </div>
-                    <Divider />
-                    {showedCourse.modules && showedCourse.modules.length < 0
-                      ? null
-                      : showedCourse.modules &&
-                        showedCourse.modules.map((item, index) => (
-                          <ExpansionPanel key={index}>
-                            <ExpansionPanelSummary
-                              expandIcon={<ExpandMoreIcon />}
-                              aria-controls="panel1a-content"
-                              id="panel1a-header"
-                            >
-                              <Typography className>{item.title}</Typography>
-                            </ExpansionPanelSummary>
-                            <ExpansionPanelDetails>
-                              <List>
-                                {item.course_materials &&
-                                  item.course_materials.map((module) => (
-                                    <ListItem
-                                      button
-                                      className="p-1"
-                                      onClick={this.playModule(module.id)}
-                                    >
-                                      <ListItemIcon>
-                                        <PlayCircleFilledIcon />
-                                      </ListItemIcon>
-                                      <p
-                                        style={{
-                                          lineHeight: "14px",
-                                          fontSize: "14px",
-                                          padding: "10px",
-                                        }}
-                                      >
-                                        {module.title}
-                                      </p>
-                                    </ListItem>
-                                  ))}
-                              </List>
-                            </ExpansionPanelDetails>
-                          </ExpansionPanel>
-                        ))}
+
                     <div className="d-flex" style={{ marginTop: "2%" }}>
                       <TextureIcon
                         style={{ color: "#000066", padding: "5px" }}
@@ -307,15 +265,66 @@ class PlayCourse extends Component {
                     )}
                   </>
                 ) : (
-                  <p className="alert alert-warning mt-4">Sign in to follow this course</p>
+                  <p className="alert alert-warning mt-4">
+                    Sign in to follow this course
+                  </p>
                 )}
               </div>
             </div>
-            <div className="col-sm-12 col-md-4">
+            <div className="col-sm-12 col-md-5">
               <TutorCard tutor={showedCourse.tutor} />
               {showedCourse.id && <Comments course_id={showedCourse.id} />}
 
               <PostReview course={showedCourse} />
+              <div className="d-flex" style={{ marginTop: "20px" }}>
+                <TextureIcon style={{ color: "#000066", padding: "5px" }} />
+                <Typography
+                  variant="h6"
+                  style={{ color: "#000066", padding: "5px" }}
+                >
+                  Course Modules
+                </Typography>
+              </div>
+              <Divider />
+              {showedCourse.modules && showedCourse.modules.length < 0
+                ? null
+                : showedCourse.modules &&
+                  showedCourse.modules.map((item, index) => (
+                    <ExpansionPanel key={index}>
+                      <ExpansionPanelSummary
+                        expandIcon={<ExpandMoreIcon />}
+                        aria-controls="panel1a-content"
+                        id="panel1a-header"
+                      >
+                        <Typography className>{item.title}</Typography>
+                      </ExpansionPanelSummary>
+                      <ExpansionPanelDetails>
+                        <List>
+                          {item.course_materials &&
+                            item.course_materials.map((module) => (
+                              <ListItem
+                                button
+                                className="p-1"
+                                // onClick={this.playModule(module.id)}
+                              >
+                                <ListItemIcon>
+                                  <PlayCircleFilledIcon />
+                                </ListItemIcon>
+                                <p
+                                  style={{
+                                    lineHeight: "14px",
+                                    fontSize: "14px",
+                                    padding: "10px",
+                                  }}
+                                >
+                                  {module.title}
+                                </p>
+                              </ListItem>
+                            ))}
+                        </List>
+                      </ExpansionPanelDetails>
+                    </ExpansionPanel>
+                  ))}
             </div>
           </div>
         </div>

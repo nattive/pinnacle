@@ -13,14 +13,17 @@ import { Divider } from "@material-ui/core";
 import UlearnIntro from "../Components/UlearnIntro";
 import Services from "../../Home/Services";
 import OtherCoursesServices from "../Components/OtherCoursesServices";
-import Slider from "../Components/Slider";
+// import Slider from "../Components/Slider";
+import Slider from "../../Home/Slider";
+import NavBarHeader from "../../Home/NavBarHeader";
+import Banner from "./Banner";
 export default function LandingPage() {
   let { path, url } = useRouteMatch();
   return (
     <>
       <div>
-      <HeadSection />
-       <Slider />
+        <NavBarHeader />
+        <Banner />
         <div className="colorlib-search">
           <div className="container">
             <div className="row">

@@ -2042,7 +2042,7 @@ h3 {
 /* line 1, ../../Arafath/CL/CL October/216. Consulting/HTML/scss/_slider.scss */
 
 .slider_bg_1 {
-    background-image: url(../img/banner/banner.png);
+    background-image: url(../img/banner/banner3.jpg);
 }
 
 
@@ -2060,7 +2060,7 @@ h3 {
 /* line 8, ../../Arafath/CL/CL October/216. Consulting/HTML/scss/_slider.scss */
 
 .slider_area .single_slider {
-    height: 750px;
+    height: 500px;
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center center;
@@ -5081,7 +5081,7 @@ h3 {
 /* line 1, ../../Arafath/CL/CL October/216. Consulting/HTML/scss/_service.scss */
 
 .service_area {
-    padding-top: 100px;
+    padding-top: 40px;
     padding-bottom: 70px;
 }
 
@@ -5097,7 +5097,7 @@ h3 {
 
 .service_area .single_service {
     padding: 30px;
-    border: 1px solid #E8E8E8;
+    /* border: 1px solid #E8E8E8; */
     -webkit-transition: 0.3s;
     -moz-transition: 0.3s;
     -o-transition: 0.3s;

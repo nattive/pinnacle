@@ -17,6 +17,7 @@ import {
   getEnrolledCourse,
   enrollCourse,
 } from "../../Actions/courseAction";
+import { useEffect } from "react";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -54,11 +55,20 @@ function a11yProps(index) {
 const useStyles = makeStyles((theme) => ({
   root: {
     backgroundColor: theme.palette.background.paper,
-    width: 1000,
+    width: "100%",
   },
 }));
-
 function CourseRow(props) {
+  useEffect(() => {
+    props.getEnrolledCourse();
+  }, [])
+  useEffect(() => {
+    props.user && props.user.account_type === "isPO"
+      ? props.fetchPOCourses(6)
+      : props.user.account_type === "isCareer"
+      ? props.fetchCOTFCourses(6)
+      : props.fetchFREECourses(6);
+  }, [props.user]);
   const classes = useStyles();
   const theme = useTheme();
   const [value, setValue] = React.useState(0);
@@ -82,9 +92,9 @@ function CourseRow(props) {
             indicatorColor="primary"
             textColor="primary"
             variant="fullWidth"
-            aria-label="full width tabs example"
+            className="w-100"
           >
-            <Tab label="Courses To get you Started" {...a11yProps(0)} />
+            <Tab label="Courses you are following" {...a11yProps(0)} />
             <Tab label="Top Rated Courses" {...a11yProps(1)} />
             <Tab label="Courses You might like" {...a11yProps(2)} />
           </Tabs>
@@ -95,26 +105,56 @@ function CourseRow(props) {
           >
             <TabPanel value={value} index={0} dir={theme.direction}>
               <div className="row">
-                {props.PO_courses !== undefined &&
-                props.PO_courses.length !== 0 ? (
-                  props.PO_courses.map((item, key) => (
-                    <SingleCourseItem key={key} course={item} className='col-md-3 m-1' />
+                {props.ENROLLED_courses.length > 0 ? (
+                  props.ENROLLED_courses.map((item, key) => (
+                    <div key={key} className="col-xs-4 col-md-2">
+                      <SingleCourseItem course={item} />{" "}
+                    </div>
                   ))
                 ) : (
-                  <>
-                    <div className="mx-auto text-center mt-4">
-                      {/* <CircularProgress /> */}
-                      <p>No Courses Here...</p>
-                    </div>
-                  </>
+                  <p>You are not following any course</p>
                 )}
               </div>
             </TabPanel>
             <TabPanel value={value} index={1} dir={theme.direction}>
-              Item Two
+              <div className="row">
+                {props.user.account_type === "isPO" ? (
+                  props.PO_courses !== undefined &&
+                  props.PO_courses.length !== 0 ? (
+                    props.PO_courses.map((item, key) => (
+                      <div key={key} className="col-xs-4 col-md-2">
+                        <SingleCourseItem course={item} />{" "}
+                      </div>
+                    ))
+                  ) : (
+                    <>
+                      <div className="mx-auto text-center mt-4">
+                        {/* <CircularProgress /> */}
+                        <p>No Courses Here...</p>
+                      </div>
+                    </>
+                  )
+                ) : props.user.account_type === "isCareer" ? (
+                  props.COTF_courses !== undefined &&
+                  props.COTF_courses.length !== 0 ? (
+                    props.COTF_courses.map((item, key) => (
+                      <div key={key} className="col-xs-4 col-md-2">
+                        <SingleCourseItem course={item} />{" "}
+                      </div>
+                    ))
+                  ) : (
+                    <>
+                      <div className="mx-auto text-center mt-4">
+                        {/* <CircularProgress /> */}
+                        <p>No Courses Here...</p>
+                      </div>
+                    </>
+                  )
+                ) : null}
+              </div>
             </TabPanel>
             <TabPanel value={value} index={2} dir={theme.direction}>
-              Item Three
+              <p>No Courses Here...</p>
             </TabPanel>
           </SwipeableViews>
         </>
@@ -124,7 +164,7 @@ function CourseRow(props) {
 }
 
 const mapStateToProps = (state) => ({
-  user: state.auth.user.user,
+  user: state.auth.user,
   PO_courses: state.course.PO_courses.data,
   FREE_courses: state.course.FREE_courses.data,
   COTF_courses: state.course.COTF_courses.data,

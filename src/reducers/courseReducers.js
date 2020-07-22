@@ -19,7 +19,9 @@ import {
     ERR_FETCH_COURSES,
     SHOW_COURSE,
     PLAY_MODULES,
-    NULL_ERR_FETCH_COURSES
+    NULL_ERR_FETCH_COURSES,
+    GET_RECOMMENDED_COURSES,
+    ERR_GET_RECOMMENDED_COURSES
 } from "../Actions/types";
 
 const initialState = {
@@ -42,6 +44,8 @@ const initialState = {
     moduleLength: 0,
     items: {},
     item: {},
+    recommendedCourses: {},
+    recommendedCoursesFetchError: null,
 }
 
 export default function(state = initialState, action) {
@@ -126,6 +130,14 @@ export default function(state = initialState, action) {
         case NULL_ERR_FETCH_COURSES:
             return {...state,
                 fetchCourseError: null
+            }
+        case GET_RECOMMENDED_COURSES:
+            return {...state,
+                recommendedCourses: action.payload
+            }
+        case ERR_GET_RECOMMENDED_COURSES:
+            return {...state,
+                recommendedCoursesFetchError: action.payload
             }
 
         default:

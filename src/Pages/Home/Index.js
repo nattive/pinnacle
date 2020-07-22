@@ -16,10 +16,11 @@ import { connect } from "react-redux";
 import { fetchCourses } from "../../Actions/courseAction";
 import { Snackbar } from "@material-ui/core";
 import { Alert } from "@material-ui/lab";
+import NavBarHeader from "./NavBarHeader";
 
 class Index extends Component {
   async componentDidMount() {
-    await this.props.fetchCourses(3);
+    await this.props.fetchCourses(4);
   }
   render() {
     return (
@@ -35,6 +36,7 @@ class Index extends Component {
           </Alert>
         </Snackbar>
         <Header />
+        <NavBarHeader />
         <Slider />
         <AuthSection />
         <More />

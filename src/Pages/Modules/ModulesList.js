@@ -76,7 +76,7 @@ function ModulesList(props) {
     <Card style={{ width: "100%" }}>
       <CardHeader title="Course Modules" />
       <Divider />
-      <CardContent>
+      <CardContent style={{ heigth: 400 }}>
         {props.course ? (
           props.course.modules.map((item) => (
             <React.Fragment Key={item.id}>
@@ -113,7 +113,7 @@ function ModulesList(props) {
                                 }...`}
                               />
                             </ListItem>
-                            <Divider />
+                            {/* <Divider /> */}
                           </React.Fragment>
                         ))}
                     </List>

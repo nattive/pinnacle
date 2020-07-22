@@ -39,7 +39,7 @@ export default function TutorCard(props) {
   const { tutor } = props;
   return (
     <div className={classes.root}>
-      <Card className={classes.root}>
+      <Card elevation={0} className={classes.root}>
         <CardActionArea>
           <CardMedia
             className={classes.media}

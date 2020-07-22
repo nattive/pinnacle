@@ -27,7 +27,7 @@ export const login = credentials => dispatch => {
         .then(data => {
             // var token = jwt.sign({...data.data }, 'gk0ra6IcLrAmexlr4tZip9bmRXvRoXtDNNsEQnF1HIT0dI4tNaVbyg6ZhFvffqga');
             const { user } = data.data;
-            // console.log();
+            console.log(data);
             localStorage.removeItem('P_access_token')
             localStorage.setItem('P_access_token', data.data.access_token)
             switch (user.account_type) {
@@ -56,11 +56,13 @@ export const login = credentials => dispatch => {
             }
         })
         .catch(err => {
-            // const err
-            dispatch({
-                type: ERR_LOGIN_USER,
-                payload: err.response.data.error || err.message
-            })
+            // const 
+            console.log(err);
+
+            // dispatch({
+            //     type: ERR_LOGIN_USER,
+            //     payload: err.response.data.error || err.message
+            // })
             dispatch({
                 type: AUTH_LOADING_STATE,
                 payload: false
@@ -82,8 +84,8 @@ export const logout = () => dispatch => {
 
     Axios.post(`${BaseUrl}api/logout`)
         .then(data => {
-            localStorage.remove('user_as_token')
-            localStorage.remove('PO_user_token')
+            localStorage.removeItem("P_access_token");
+
             dispatch({
                 type: GET_USER_FROM_RESPONSE,
                 payload: {}

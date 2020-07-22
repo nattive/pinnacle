@@ -14,8 +14,8 @@ import { CardHeader } from "@material-ui/core";
 
 const useStyles = makeStyles({
   root: {
-    maxWidth: 245,
-    margin: 5,
+    maxWidth: '100%',
+    margin: 3,
     border: "1px solid  rgba(180, 180, 180, 0.075)",
   },
   media: {
@@ -36,12 +36,9 @@ export default function SingleCourseItem(props) {
             title={props.course.title}
           />
           <CardContent>
-            <Typography  variant="h6" >{props.course.title}</Typography>
+            <Typography variant="h6">{props.course.title}</Typography>
             <Typography gutterBottom variant="body2" component="p">
-              {`category: ${props.course.sub_category.name}`}
-            </Typography>
-            <Typography gutterBottom variant="caption" component="small">
-              300 Modules
+              {`category: ${props.course.sub_category && props.course.sub_category.name}`}
             </Typography>
             <Typography
               gutterBottom
@@ -49,16 +46,17 @@ export default function SingleCourseItem(props) {
               component="small"
               className="ml-1"
             >
-              by: {props.course.tutor.name}
-            </Typography>
-
-            <Typography variant="overline" className="text-danger pull-right">
-              {props.course.isFree ? "Free" : props.course.price}
+              {/* by: {props.course.tutor.name} */}
             </Typography>
             <ShowRating course={props.course} />
           </CardContent>
         </CardActionArea>
       </Link>
+      <CardActions>
+        <Typography variant="overline" className="text-danger pull-right">
+          {props.course.isFree ? "Free" : props.course.price}
+        </Typography>
+      </CardActions>
     </Card>
   );
 }

@@ -25,6 +25,7 @@ import { useSelector } from "react-redux";
 import { logout } from "../Actions/loginAction";
 import { getUser } from "../Actions/loginAction";
 import { MenuItem, Badge, Menu } from "@material-ui/core";
+import { Skeleton } from "@material-ui/lab";
 const drawerWidth = 240;
 
 const useStyles = makeStyles((theme) => ({
@@ -122,7 +123,7 @@ const useStyles = makeStyles((theme) => ({
     color: "inherit",
   },
   textBrandColor: {
-    color: "#fff",
+    color: "#000066",
   },
   inputInput: {
     padding: theme.spacing(1, 1, 1, 0),
@@ -182,8 +183,7 @@ function HeadBar(props) {
 
   const handleUserLogout = () => {
     props.logout();
-    localStorage.removeItem("PO_user_token");
-    localStorage.removeItem("user_as_token");
+    localStorage.removeItem("P_access_token");
     history.push("/");
   };
 
@@ -255,33 +255,7 @@ function HeadBar(props) {
       open={isMobileMenuOpen}
       onClose={handleMobileMenuClose}
     >
-      <MenuItem>
-        <IconButton aria-label="show 4 new mails" color="inherit">
-          <Badge badgeContent={4} color="secondary">
-            <MailIcon />
-          </Badge>
-        </IconButton>
-        <p>Messages</p>
-      </MenuItem>
-      <MenuItem>
-        <IconButton aria-label="show 11 new notifications" color="inherit">
-          <Badge badgeContent={11} color="secondary">
-            {/* <NotificationsIcon /> */}
-          </Badge>
-        </IconButton>
-        <p>Notifications</p>
-      </MenuItem>
-      <MenuItem onClick={handleProfileMenuOpen}>
-        <IconButton
-          aria-label="account of current user"
-          aria-controls="primary-search-account-menu"
-          aria-haspopup="true"
-          color="inherit"
-        >
-          {/* <AccountCircle /> */}
-        </IconButton>
-        <p>Profile</p>
-      </MenuItem>
+     
       <MenuItem onClick={handleUserLogout}>
         <IconButton
           aria-label="logout current user"
@@ -304,6 +278,8 @@ function HeadBar(props) {
     <div className={classes.grow}>
       <AppBar
         position="static"
+        variant="outlined"
+        color="default"
         className={clsx(classes.appBar, {
           [classes.appBarShift]: open,
         })}
@@ -323,6 +299,23 @@ function HeadBar(props) {
             <MenuIcon />
           </IconButton>
           {menu}
+          <div className={classes.grow} />
+          <div className={classes.sectionDesktop}>
+            <IconButton
+              edge="end"
+              aria-label="account of current user"
+              aria-controls={menuId}
+              aria-haspopup="true"
+              onClick={handleProfileMenuOpen}
+              color="inherit"
+            >
+              <Typography variant="body1">
+                {props.user ? props.user.name : <Skeleton />}
+              </Typography>
+
+              <AccountCircle />
+            </IconButton>
+          </div>
         </Toolbar>
       </AppBar>
       <Drawer

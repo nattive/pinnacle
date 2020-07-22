@@ -12,9 +12,9 @@ class CategoryList extends Component {
     const { mainCategory } = this.props;
     return (
       <div>
-        <ul className="category-list container bg-light">
+        <ul className="category-list container-fluid bg-light" style={{overflowX: 'auto'}}>
           {mainCategory.length > 0
-            ? mainCategory.map((item) => <li key={item.id}>{item.name}</li>)
+            ? mainCategory.map((item) => <li key={item.id}><a href="">{item.name}</a></li>)
             : null}
             <CssBaseline />
         </ul>
