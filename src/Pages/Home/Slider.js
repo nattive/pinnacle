@@ -39,7 +39,7 @@ export default function Slider() {
                       Nigerians for the 21st century workplace.
                     </Typography>
                     <div className="video_service_btn">
-                      <Button variant="contained" style={{ padding: 15 }}>
+                      <Button to="/learn" component={Link} variant="contained" style={{ padding: 15 }}>
                         Learn More
                       </Button>
                     </div>
@@ -74,7 +74,7 @@ export default function Slider() {
                       professional,
                     </Typography>
                     <div className="video_service_btn">
-                      <Button variant="contained" style={{ padding: 15 }}>
+                      <Button to="/learn" component={Link} variant="contained" style={{ padding: 15 }}>
                         Learn More
                       </Button>
                     </div>
@@ -87,18 +87,34 @@ export default function Slider() {
         <div className="single_slider  d-flex align-items-center slider_bg_3 overlay2">
           <div className="container">
             <div className="row">
-              <div className="col-xl-12">
-                <div className="slider_text ">
-                  <h3>
-                    Top resources to build <br /> your future career
-                  </h3>
-                  <div className="video_service_btn">
-                    <a href="#" className="boxed-btn3">
-                      Our Services
-                    </a>
+               <Grid container>
+                <Grid md={5}>
+                  <div className="slider_text ">
+                    <Typography
+                      variant="h4"
+                      style={{
+                        color: "#fff",
+                        fontWeight: "bold",
+                        fontSize: "2em",
+                      }}
+                    >
+                      Build a Career for the Future
+                    </Typography>
+                    <Typography
+                      variant="body1"
+                      style={{ color: "#fff", fontSize: "1.4em" }}
+                    >
+                      A program geared towards the preparation of young
+                      Nigerians for the 21st century workplace.
+                    </Typography>
+                    <div className="video_service_btn">
+                      <Button to="/learn" component={Link} variant="contained" style={{ padding: 15 }}>
+                        Learn More
+                      </Button>
+                    </div>
                   </div>
-                </div>
-              </div>
+                </Grid>
+              </Grid>
             </div>
           </div>
         </div>

@@ -20,7 +20,7 @@ import NavBarHeader from "./NavBarHeader";
 
 class Index extends Component {
   async componentDidMount() {
-    await this.props.fetchCourses(4);
+    await this.props.fetchCourses();
   }
   render() {
     return (
@@ -32,7 +32,7 @@ class Index extends Component {
           onClose
         >
           <Alert onClose severity="error">
-            {this.props.fetchCourseError}
+            {JSON.stringify(this.props.fetchCourseError)}
           </Alert>
         </Snackbar>
         <Header />

@@ -159,6 +159,9 @@ export default function NavBarHeader(props) {
       <StyledMenuItem component={Link} to="/learn">
         <ListItemText primary="Pinnacle ULearn" />
       </StyledMenuItem>
+      <StyledMenuItem component={Link} to="/teach">
+        <ListItemText primary="Become an instructor" />
+      </StyledMenuItem>
       <StyledMenuItem>
         <ListItemText primary="Join Careers of the Future Program" />
       </StyledMenuItem>
@@ -214,6 +217,7 @@ export default function NavBarHeader(props) {
       <AppBar position="static" color="default">
         <Toolbar>
           <IconButton
+            hidden="md"
             edge="start"
             className={classes.menuButton}
             color="inherit"
@@ -247,21 +251,26 @@ export default function NavBarHeader(props) {
               aria-haspopup="true"
               variant="contained"
               color="primary"
-              onClick={handleClick}
-            >
-              Explore Pinnacle
-            </Button>
-            <StyledMenu
-              id="customized-menu"
-              anchorEl={anchorEl}
-              keepMounted
-              open={Boolean(anchorEl)}
-              onClose={handleClose}
-            >
-              {exploreMenu}
-            </StyledMenu>
-          </div>
 
+              // onMouseLeave={handleClose}
+            >
+              Our Courses
+            </Button>
+          </div>
+          <Button
+            onClick={handleClick}
+          >
+            Our Product/Services
+          </Button>
+          <StyledMenu
+            id="customized-menu"
+            anchorEl={anchorEl}
+            keepMounted
+            open={Boolean(anchorEl)}
+            onClose={handleClose}
+          >
+            {exploreMenu}
+          </StyledMenu>
           {/* <div className={classes.grow} /> */}
           <div className={classes.search}>
             <div className={classes.searchIcon}>

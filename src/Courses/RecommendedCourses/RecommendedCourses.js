@@ -16,7 +16,7 @@ const RecommendedCourses = (props) => {
         {props.recommendedCourses && props.recommendedCourses.length > 0 ? (
           props.recommendedCourses.map((item, key) => (
             <div key={key} className="col-xs-4 col-md-2">
-              <SingleCourseItem course={item} />{" "}
+              <SingleCourseItem course={item} />
             </div>
           ))
         ) : (

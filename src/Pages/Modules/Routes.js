@@ -10,22 +10,20 @@ import Footer from "../../Layout/Footer";
 import  Question  from "./Question";
 
 export default function Routes({ match }) {
-  let { path, url } = useRouteMatch();
+  const { path, url } = useRouteMatch();
 
   return (
     <>
-      <HeadBar />
       <div className="mt-4">
         <Switch>
           <Route exact path={path}>
             <PlayEnrolledCourse match={match} />
           </Route>
-          <Route path={`${path}/:id`}>
+          <Route path={`${path}/quiz/:id`}>
             <Question />
           </Route>
         </Switch>
       </div>
-      <Footer />
     </>
   );
 }

@@ -64,10 +64,10 @@ function CourseRow(props) {
   }, [])
   useEffect(() => {
     props.user && props.user.account_type === "isPO"
-      ? props.fetchPOCourses(6)
+      ? props.fetchPOCourses(5)
       : props.user.account_type === "isCareer"
-      ? props.fetchCOTFCourses(6)
-      : props.fetchFREECourses(6);
+      ? props.fetchCOTFCourses(5)
+      : props.fetchFREECourses(5);
   }, [props.user]);
   const classes = useStyles();
   const theme = useTheme();
@@ -107,7 +107,7 @@ function CourseRow(props) {
               <div className="row">
                 {props.ENROLLED_courses.length > 0 ? (
                   props.ENROLLED_courses.map((item, key) => (
-                    <div key={key} className="col-xs-4 col-md-2">
+                    <div key={key} className="col-xs-4 col-md-3">
                       <SingleCourseItem course={item} />{" "}
                     </div>
                   ))
@@ -120,7 +120,7 @@ function CourseRow(props) {
               <div className="row">
                 {props.user.account_type === "isPO" ? (
                   props.PO_courses !== undefined &&
-                  props.PO_courses.length !== 0 ? (
+                  props.PO_courses.length > 0 ? (
                     props.PO_courses.map((item, key) => (
                       <div key={key} className="col-xs-4 col-md-2">
                         <SingleCourseItem course={item} />{" "}

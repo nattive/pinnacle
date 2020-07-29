@@ -22,7 +22,7 @@ import {
   showCourse,
 } from "../../Actions/courseAction";
 import { postReview, fetchReview } from "../../Actions/ReviewAction";
-import { verifyUserTokenAction } from "../../Actions/verifyUserTokenAction";
+// import { verifyUserTokenAction } from "../../Actions/verifyUserTokenAction";
 import { Link } from "react-router-dom";
 import SignInForm from "../../Pages/User/SignInForm";
 import SignUp from "../../Pages/User/SignUp";
@@ -38,9 +38,7 @@ class PostReview extends Component {
     this.handlePostReview = this.handlePostReview.bind(this);
     this.reviewText = this.reviewText.bind(this);
   }
-  componentDidMount() {
-    this.props.verifyUserTokenAction();
-  }
+ 
 
   reviewText() {
     switch (this.state.rating) {
@@ -166,7 +164,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = {
   enrollCourse,
-  verifyUserTokenAction,
+  // verifyUserTokenAction,
   isCourseEnrolled,
   playCourse,
   fetchReview,

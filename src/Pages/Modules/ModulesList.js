@@ -5,9 +5,9 @@ import MuiExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary";
 import MuiExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails";
 import Typography from "@material-ui/core/Typography";
 import { connect } from "react-redux";
-import { showCourse } from "../../Actions/courseAction";
+import { showCourse, showNodule } from "../../Actions/courseAction";
 import { Skeleton } from "@material-ui/lab";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import PlayCircleOutlineIcon from "@material-ui/icons/PlayCircleOutline";
 import {
   Card,
@@ -67,7 +67,12 @@ function ModulesList(props) {
     props.showCourse(props.match.params.course);
   }, []);
   const [expanded, setExpanded] = React.useState("panel1");
-
+  const history = useHistory();
+  const handleModuleChange = (id) => {
+    props.showNodule(id);
+    console.log(id);
+    // history.push(`/learn/course/${props.match.params.course}/${id}`);
+  };
   const handleChange = (panel) => (event, newExpanded) => {
     setExpanded(newExpanded ? panel : false);
   };
@@ -101,7 +106,10 @@ function ModulesList(props) {
                       {item.course_materials &&
                         item.course_materials.map((item) => (
                           <React.Fragment key={item.id}>
-                            <ListItem button component={Link} to={`${item.id}`}>
+                            <ListItem
+                              button
+                              onClick={() => handleModuleChange(item.id)}
+                            >
                               <ListItemIcon>
                                 <PlayCircleOutlineIcon color="primary" />
                               </ListItemIcon>
@@ -135,11 +143,13 @@ function ModulesList(props) {
 }
 
 const mapStateToProps = (state) => ({
+  moduleToPlay: state.course.moduleToPlay,
   course: state.course.showCourse.data,
 });
 
 const mapDispatchToProps = {
   showCourse,
+  showNodule,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ModulesList);

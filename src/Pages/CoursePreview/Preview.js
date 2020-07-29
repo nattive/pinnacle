@@ -4,11 +4,6 @@ import HeadBar from "../../Courses/HeadBar";
 import { useHistory } from "react-router-dom";
 
 export default function Preview(props) {
-    const history = useHistory()
-  return (
-    <div>
-      <HeadBar />
-      <PlayCourse history={history} {...props} />
-    </div>
-  );
+  const history = useHistory();
+  return <PlayCourse history={history} {...props} />;
 }

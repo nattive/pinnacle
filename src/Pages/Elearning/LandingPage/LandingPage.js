@@ -106,7 +106,6 @@ export default function LandingPage() {
         <Divider className="m-4" />
         <UlearnIntro />
       </div>
-      <Footer />
     </>
   );
 }

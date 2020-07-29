@@ -11,7 +11,7 @@ import { BaseUrl } from "../Patials/BaseUrl";
 import { Link, useRouteMatch } from "react-router-dom";
 import ShowRating from "../General Components/ShowRating";
 import { CardHeader } from "@material-ui/core";
-
+import course from '../Assets/img/banner/info_banner.png'
 const useStyles = makeStyles({
   root: {
     maxWidth: '100%',
@@ -27,36 +27,38 @@ export default function SingleCourseItem(props) {
   const classes = useStyles();
   let { path, url } = useRouteMatch();
   return (
-    <Card className={classes.root}>
-      <Link to={`/learn/course/${props.course.slug}`}>
-        <CardActionArea>
-          <CardMedia
-            className={classes.media}
-            image={BaseUrl + props.course.banner}
-            title={props.course.title}
-          />
-          <CardContent>
-            <Typography variant="h6">{props.course.title}</Typography>
+    <div className="classes">
+      <div
+        className="classes-img"
+        style={{
+          backgroundImage: `url(${course})`,
+        }}
+      ></div>
+      <div className="wrap">
+        <div className="desc">
+          <span className="teacher">{props.course.tutor.name}</span>
+          <h3>
+            <a href="#" style={{ textTransform: "capitalize" }}>
+              {props.course.title}
+            </a>
+          </h3>
+        </div>
+        <div className="pricing">
+          <p>
+            <Typography variant="overline" className="text-danger pull-right">
+              {props.course.isFree ? "Free" : props.course.price}
+            </Typography>
             <Typography gutterBottom variant="body2" component="p">
-              {`category: ${props.course.sub_category && props.course.sub_category.name}`}
+              {`category: ${
+                props.course.sub_category && props.course.sub_category.name
+              }`}
             </Typography>
-            <Typography
-              gutterBottom
-              variant="caption"
-              component="small"
-              className="ml-1"
-            >
-              {/* by: {props.course.tutor.name} */}
-            </Typography>
-            <ShowRating course={props.course} />
-          </CardContent>
-        </CardActionArea>
-      </Link>
-      <CardActions>
-        <Typography variant="overline" className="text-danger pull-right">
-          {props.course.isFree ? "Free" : props.course.price}
-        </Typography>
-      </CardActions>
-    </Card>
+            <span className="more">
+              <ShowRating course={props.course} />
+            </span>
+          </p>
+        </div>
+      </div>
+    </div>
   );
 }

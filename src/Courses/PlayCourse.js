@@ -38,7 +38,7 @@ import {
   playCourse,
   showCourse,
 } from "../Actions/courseAction";
-import { verifyUserTokenAction } from "../Actions/verifyUserTokenAction";
+// import { verifyUserTokenAction } from "../Actions/verifyUserTokenAction";
 import { connect } from "react-redux";
 import HeadBar from "./HeadBar";
 import Footer from "../Layout/Footer";
@@ -85,7 +85,7 @@ class PlayCourse extends Component {
     console.log(this.props);
 
     // this.props.enrollCourse(5);
-    this.props.verifyUserTokenAction();
+    // this.props.verifyUserTokenAction();
   }
 
   componentWillReceiveProps(newProps) {
@@ -147,10 +147,6 @@ class PlayCourse extends Component {
     const { showedCourse } = this.state;
     return (
       <>
-        {/* <HeadBar /> */}
-        {/* <div className="container-fluid ">
-          <CourseHeadTitle course={showedCourse} />
-        </div> */}
         <div className="container">
           <div className="row">
             <div className="col-sm-12 col-md-7">
@@ -328,7 +324,6 @@ class PlayCourse extends Component {
             </div>
           </div>
         </div>
-        <Footer />
       </>
     );
   }
@@ -342,7 +337,7 @@ const mapStateToProps = (state) => ({
 
 export default connect(mapStateToProps, {
   enrollCourse,
-  verifyUserTokenAction,
+  // verifyUserTokenAction,
   isCourseEnrolled,
   playCourse,
   showCourse,

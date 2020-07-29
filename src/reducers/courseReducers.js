@@ -14,6 +14,7 @@ import {
     COURSE_IS_ENROLLED,
     START_COURSE_REVIEW,
     END_COURSE_REVIEW,
+    EMPTY_PLAY_MODULES,
     CHECK_COURSE_PROGRESS,
     ERR_COURSE_IS_ENROLLED,
     ERR_FETCH_COURSES,
@@ -91,6 +92,15 @@ export default function(state = initialState, action) {
                 ...state,
                 moduleToPlay: action.payload
             }
+        case EMPTY_PLAY_MODULES:
+            /**
+             * Present playing module
+             */
+            return {
+                ...state,
+                moduleToPlay: {}
+            }
+
         case NULL_ERR_PLAY_COURSE:
             return {...state,
                 playError: ''

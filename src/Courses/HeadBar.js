@@ -24,7 +24,7 @@ import { VERIFY_USER } from "../Actions/types";
 import { useSelector } from "react-redux";
 import { logout } from "../Actions/loginAction";
 import { getUser } from "../Actions/loginAction";
-import { MenuItem, Badge, Menu } from "@material-ui/core";
+import { MenuItem, Badge, Menu, LinearProgress } from "@material-ui/core";
 import { Skeleton } from "@material-ui/lab";
 const drawerWidth = 240;
 
@@ -277,7 +277,7 @@ function HeadBar(props) {
   return (
     <div className={classes.grow}>
       <AppBar
-        position="static"
+        position="fixed"
         variant="outlined"
         color="default"
         className={clsx(classes.appBar, {
@@ -317,6 +317,7 @@ function HeadBar(props) {
             </IconButton>
           </div>
         </Toolbar>
+     {props.busy && <LinearProgress />}
       </AppBar>
       <Drawer
         className={classes.drawer}
@@ -345,6 +346,7 @@ function HeadBar(props) {
 }
 const mapStateToProps = (state) => ({
   user: state.auth.user,
+  busy: state.loading.busy
 });
 
 const mapDispatchToProps = {

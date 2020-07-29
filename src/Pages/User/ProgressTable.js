@@ -9,24 +9,10 @@ import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 import { connect } from "react-redux";
 import { blue } from "@material-ui/core/colors";
+import Skeleton from "@material-ui/lab/Skeleton";
 import { LinearProgress, Box, Typography } from "@material-ui/core";
-import BrightnessLowIcon from '@material-ui/icons/BrightnessLow';
-const useStyles = makeStyles({
-  table: {
-    minWidth: 650,
-    marginTop: 20,
-    marginBottom: 20,
-  },
-});
-
-function createData(
-  CourseName,
-  progress,
-  grade,
-  completed
-) {
-  return { CourseName, progress, grade, completed };
-}
+import BrightnessLowIcon from "@material-ui/icons/BrightnessLow";
+import { useEffect } from "react";
 
 function LinearProgressWithLabel(props) {
   return (
@@ -42,52 +28,77 @@ function LinearProgressWithLabel(props) {
     </Box>
   );
 }
-const rows = [
-  createData(
-    "Introduction to yam",
-    <LinearProgressWithLabel variant="determinate" value={80} total={100} />,
-    24,
-    <BrightnessLowIcon />
-  ),
-];
-const ProgressTable = () => {
-  const classes = useStyles();
+const ProgressTable = (props) => {
+  const { progress } = props;
+  console.log(progress);
 
   return (
-    <TableContainer component={Paper}>
-      <Table className={classes.table} aria-label="simple table">
-        <TableHead>
-          <TableRow>
-            <TableCell >Course Name</TableCell>
-            <TableCell >Your Progress</TableCell>
-            <TableCell align="right">Accumulated Grade</TableCell>
-            <TableCell align="right">Certificate</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {rows.map((row) => (
-            <TableRow key={row.CourseName}>
-              <TableCell component="th" scope="row">
-                {row.CourseName}
-              </TableCell>
-              <TableCell align="right">
-                {row.progress}
-              </TableCell>
-              <TableCell align="right">
-                {row.grade}
-              </TableCell>
-              <TableCell align="right">
-                {row.completed}
-              </TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
+    <div class="table-responsive">
+      <table class="table table-hover">
+        <thead>
+          <tr>
+            <th scope="col">Course</th>
+            <th scope="col">Module</th>
+            <th scope="col">progress</th>
+            <th scope="col">grade</th>
+            <th scope="col">completed</th>
+          </tr>
+        </thead>
+        <tbody>
+          {!props.isLoadingProgress ? (
+            progress && progress.length > 0 ? (
+              progress.map((item, id) => (
+                <tr key={id}>
+                  <th scope="row">{item.course_name}</th>
+                  <th scope="row">{item.module_name}</th>
+                  <td>
+                    <LinearProgressWithLabel
+                      variant="determinate"
+                      value={Object.keys(item.consumed_materials_array).length}
+                      total={item.total_course_material}
+                    />
+                  </td>
+                  <td>{24}</td>
+                  <td>
+                    <BrightnessLowIcon />
+                  </td>
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td colSpan={4}>No data</td>
+              </tr>
+            )
+          ) : (
+            <tr>
+              <td scope="row">
+                <Skeleton />
+              </td>
+              <td scope="row">
+                <Skeleton />
+              </td>
+
+              <td scope="row">
+                <Skeleton />
+              </td>
+              <td scope="row">
+                <Skeleton />
+              </td>
+              <td scope="row">
+                <Skeleton />
+              </td>
+            </tr>
+          )}
+        </tbody>
+      </table>
+    </div>
   );
 };
 
-const mapStateToProps = (state) => ({});
+const mapStateToProps = (state) => ({
+  progress: state.module.userProgress.data,
+  isLoadingProgress: state.loading.isLoadingUserProgress,
+});
 
 const mapDispatchToProps = {};
 

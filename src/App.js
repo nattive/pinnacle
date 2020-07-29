@@ -18,7 +18,7 @@ import About from "./Pages/About/About";
 // import PinacleOnline from "./Pages/PinnacleOnline/PinacleOnline";
 import { Provider } from "react-redux";
 import store from "./Patials/store";
-// import Courses from "./Courses/Courses";
+import Tutor from "./Pages/Tutor";
 import Blog from "./Pages/Blog/Blog";
 import SignUp from "./Pages/User/SignUp";
 import Auth from "./Pages/User/Auth";
@@ -32,27 +32,30 @@ function App() {
         <Switch>
           <Route exact path="/">
             <Index />
-          </Route>
+          </Route>{" "}
           <Route path="/about">
             <About />
-          </Route>
+          </Route>{" "}
           <Route path="/blog">
             <Blog />
+          </Route>{" "}
+          <Route path="/teach">
+            <Tutor />
           </Route>
           <Route path="/auth/signin">
             <Auth />
-          </Route>
+          </Route>{" "}
           <Route path="/auth/signup">
             <SignUp />
-          </Route>
+          </Route>{" "}
           <Route path="/learn">
             <Routes />
-          </Route>
+          </Route>{" "}
           <Route path="*">
-            <p> 404 </p>
-          </Route>
-        </Switch>
-      </Router>
+            <p> 404 </p>{" "}
+          </Route>{" "}
+        </Switch>{" "}
+      </Router>{" "}
     </Provider>
   );
 }

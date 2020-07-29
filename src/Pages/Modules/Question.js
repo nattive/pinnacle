@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, useEffect } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
@@ -28,9 +28,11 @@ import {
   Box,
   CircularProgress,
   Grid,
+  Backdrop,
 } from "@material-ui/core";
 import { useState } from "react";
 import { Alert } from "@material-ui/lab";
+import { storeQuestionResult } from "../../Actions/moduleActions";
 
 const useStyles = makeStyles({
   root: {
@@ -40,13 +42,21 @@ const useStyles = makeStyles({
   media: {
     height: 140,
   },
+  backdrop: {
+    zIndex: 99999,
+    color: "#fff",
+  },
 });
 const Question = (props) => {
   const classes = useStyles();
   const [total, setTotal] = useState(0);
   const [open, setOpen] = useState(false);
+  const [submitDisabled, setSubmitDisabled] = useState(false);
+  const [openDialog, setOpenDialog] = useState(false);
   const [showAnswer, setShowAnswer] = useState(false);
-
+  const handleClose = () => {
+    setOpenDialog(false);
+  };
   const [answerArray, setAnswerArray] = useState(
     new Array(
       props.moduleToPlay.course_questions
@@ -62,14 +72,19 @@ const Question = (props) => {
     )
   );
   const [percentage, setPercentage] = useState(0);
-  const [wrongAnswer, setWrongWoman] = useState(0);
+  const [wrongAnswer, setwrongAnswer] = useState(0);
   const handleSelectAnswer = (index, answer, selectedOption) => {
     setTotal(answer === selectedOption ? total + 5 : total + 0);
     selectAnswer[index] = selectedOption;
     answerArray[index] = answer;
   };
 
+  useEffect(() => {
+    setOpenDialog(props.showResult);
+  }, [props.showResult]);
+
   const handleAnswer = () => {
+    setSubmitDisabled(true);
     const totalQuestion = props.moduleToPlay.course_questions.length;
     const totalQuestionAccum = totalQuestion * 5;
     /**
@@ -80,24 +95,46 @@ const Question = (props) => {
       const correctAnswer = answerArray[a];
       const correctSelectedAnswer = selectAnswer[a];
       setTotal(correctAnswer === correctSelectedAnswer ? total + 5 : total + 0);
-      setWrongWoman(correctAnswer === correctSelectedAnswer && wrongAnswer + 1);
+      setwrongAnswer(
+        correctAnswer !== correctSelectedAnswer ? wrongAnswer + 1 : wrongAnswer
+      );
       const percent = (total / totalQuestionAccum) * 100;
       setShowAnswer(true);
       setOpen(true);
-      setPercentage(percent);
+      setPercentage(percent > 100 ? 100 : percent);
+
+      const result = {
+        module_id: props.moduleToPlay.id, // course material id
+        no_correct_answer:
+          props.moduleToPlay.course_questions.length - wrongAnswer,
+        no_wrong_answer: wrongAnswer,
+        total: total,
+        percentage: percentage,
+        totalNumberOfQuestions: props.moduleToPlay.course_questions.length,
+      };
+      props.storeQuestionResult({ result });
     }
   };
 
   return (
     <Container>
-      <Dialog open={open} aria-labelledby="form-dialog-title">
+      <Backdrop className={classes.backdrop} open={props.appIsBusy}>
+        <CircularProgress color="inherit" />
+      </Backdrop>
+      <Dialog
+        maxWidth={"sm"}
+        fullWidth={true}
+        onClose={handleClose}
+        open={openDialog}
+        aria-labelledby="form-dialog-title"
+      >
         <DialogTitle id="form-dialog-title">
           {`Your Grade on ${props.moduleToPlay.title}`}
         </DialogTitle>
         <DialogContent>
           <DialogContentText>Your Grade</DialogContentText>
-          <Grid container>
-            <Grid item xs={12} md={6}>
+          <div className="row">
+            <div className="col-sm-6">
               <Box
                 position="relative"
                 justifySelf="center"
@@ -105,7 +142,8 @@ const Question = (props) => {
               >
                 <CircularProgress
                   value={percentage}
-                  size="100px"
+                  size="200px"
+                  style={{ padding: "10%" }}
                   variant="static"
                 />
                 <Box
@@ -125,30 +163,46 @@ const Question = (props) => {
                   >{`${percentage}%`}</Typography>
                 </Box>
               </Box>
-            </Grid>
-            <Grid item xs={12} md={6}>
-              <Typography variant="body">
-                Total correct Answer:{" "}
-                {props.moduleToPlay.course_questions.length - wrongAnswer}
-              </Typography>{" "}
-              <br />
-              <Typography variant="body">
-                Total wrong Answer: {wrongAnswer}
-              </Typography>{" "}
-              <br />
-              <Typography variant="body">
-                Total Accumulated Point:
-              </Typography>{" "}
-              <br />
-              <Typography variant="h5">
-                Total Percentage: {percentage}
-              </Typography>
-            </Grid>
-          </Grid>
+            </div>
+            <div className="col-sm-6">
+              <div class="table-responsive">
+                <table class="table table-hover">
+                  <thead>
+                    <tr>
+                      <th scope="col">CourseName</th>
+                      <th scope="col">progress</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td scope="row"> Total correct Answer</td>
+                      <td>
+                        {props.moduleToPlay.course_questions &&
+                         props.moduleToPlay.course_questions.length -
+                          wrongAnswer}
+                      </td>
+                    </tr>
+                    <tr>
+                      <td scope="row"> Total wrong Answer</td>
+                      <td>{wrongAnswer}</td>
+                    </tr>
+                    <tr>
+                      <td scope="row"> Total Accumulated Point</td>
+                      <td>{total}</td>
+                    </tr>
+                    <tr>
+                      <td scope="row"> Total Percentage:</td>
+                      <td>{percentage}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
         </DialogContent>
         <DialogActions>
-          <Button color="primary" variant="contained">
-            Next Nodule
+          <Button color="primary" onClick={handleClose} variant="contained">
+            Close
           </Button>
         </DialogActions>
       </Dialog>
@@ -229,7 +283,7 @@ const Question = (props) => {
           <p>no module selected</p>
         </Alert>
       )}
-      <Button color="primary" onClick={handleAnswer} style={{ margin: 15 }}>
+      <Button color="primary" onClick={handleAnswer} disabled={submitDisabled} style={{ margin: 15 }}>
         Submit Answer
       </Button>
     </Container>
@@ -242,9 +296,11 @@ Question.propTypes = {
 
 const mapStateToProps = (state) => ({
   moduleToPlay: state.course.moduleToPlay,
+  appIsBusy: state.loading.appIsBusy,
   questions: state.module.showQuestions,
+  showResult: state.module.showResult,
 });
 
-const mapDispatchToProps = {};
+const mapDispatchToProps = { storeQuestionResult };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Question);

@@ -8,6 +8,8 @@ import { connect } from "react-redux";
 import { verifyToken } from "../../Actions/verifyTokenAction";
 import { getUser } from "../../Actions/loginAction";
 import Modules from "../Modules";
+import HeadBar from "../../Courses/HeadBar";
+import Footer from "../../Layout/Footer";
 function Routes(props) {
   let { path, url } = useRouteMatch();
 
@@ -15,21 +17,22 @@ function Routes(props) {
     props.getUser();
   }, []);
   return (
-    <Switch>
-      <Route exact path={path}>
-        <Elearning />
-      </Route>
-      <Route path={`${path}/dashboard`}>
-        <Dashboard />
-      </Route>
-      <Route
-        path={`${path}/course/:course`}
-        render={(props) => <CoursePreview {...props} url={url} />}
-      ></Route>
-      {/* <Route path={`${path}/course/:course/:id`}>
-        <Modules />
-      </Route> */}
-    </Switch>
+    <>
+      <HeadBar />
+      <Switch>
+        <Route exact path={path}>
+          <Elearning />
+        </Route>
+        <Route path={`${path}/dashboard`}>
+          <Dashboard />
+        </Route>
+        <Route
+          path={`${path}/course/:course`}
+          render={(props) => <CoursePreview {...props} url={url} />}
+        ></Route>
+      </Switch>
+      <Footer />
+    </>
   );
 }
 

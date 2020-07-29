@@ -5,6 +5,9 @@ import { showCourse } from "../../Actions/courseAction";
 import { Skeleton } from "@material-ui/lab";
 import Modules from "../Modules";
 import { useRouteMatch, Switch, BrowserRouter, Route } from "react-router-dom";
+import HeadBar from "../../Courses/HeadBar";
+import Footer from "../../Layout/Footer";
+import { Container } from "@material-ui/core";
 class Course extends Component {
   constructor() {
     super();
@@ -32,14 +35,19 @@ class Course extends Component {
 function PreviewFunc(props) {
   let { path, url } = useRouteMatch();
   return (
-    <Switch>
-      <Route exact path={path}>
-        <Preview {...props} url={url} />
-      </Route>
-      <Route path={`${path}/:id`} render={({match}) =>  <Modules match={match} />}>
-       
-      </Route>
-    </Switch>
+    <>
+      <Container style={{ marginTop: "10%" }}>
+        <Switch>
+          <Route exact path={path}>
+            <Preview {...props} url={url} />
+          </Route>
+          <Route
+            path={`${path}/:id`}
+            render={({ match }) => <Modules match={match} />}
+          />
+        </Switch>
+      </Container>
+    </>
   );
 }
 

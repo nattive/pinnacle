@@ -7,23 +7,42 @@ import CourseRow from "../../Courses/CourseList/CourseRow";
 import Footer from "../../Layout/Footer";
 import ProgressTable from "../User/ProgressTable";
 import RecommendedCourses from "../../Courses/RecommendedCourses/RecommendedCourses";
-export default class Dashboard extends Component {
+import { getUserProgress } from "../../Actions/moduleActions"
+import { connect } from "react-redux";
+class Dashboard extends Component {
+  componentDidMount(){
+    this.props.getUserProgress();
+  }
   render() {
     return (
       <>
-        <HeadBar />
-        <TitleHeader title="Pinnacle Ulearn" />
+        <div style={{ marginTop: "7%" }}>
+          <TitleHeader
+            title={
+              this.props.user && this.props.user.account_type === "isPO"
+                ? "Pinnacle Ulearn"
+                : this.props.user.account_type === "isCareer"
+                ? "Career of the Future"
+                : this.props.user.account_type
+            }
+          />
+        </div>
         <CategoryList />
         <div className="container mt-4">
           <CourseRow />
           <div className="mb-4 mt-4">
             <ProgressTable />
             <RecommendedCourses />
-          </div>
+          </div>{" "}
           <ListCourses />
-        </div>
-        <Footer />
+        </div>{" "}
       </>
     );
   }
 }
+
+const mapStateToProps = (state) => ({
+  user: state.auth.user,
+});
+
+export default connect(mapStateToProps, {getUserProgress})(Dashboard);

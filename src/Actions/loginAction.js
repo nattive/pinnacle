@@ -9,7 +9,9 @@ import {
     ASYNC_ERROR,
     NULL_ERRORS,
     TOGGLE_LOGIN_FORM,
-    ACCOUNT_TYPE
+    ACCOUNT_TYPE,
+    WORKING,
+    STOPPED_WORKING
 } from "./types"
 import { verifyToken } from "./verifyTokenAction"
 var jwt = require('jsonwebtoken');
@@ -22,10 +24,16 @@ export const login = credentials => dispatch => {
     dispatch({
         type: NULL_ERRORS
     })
+    dispatch({
+        type: WORKING
+    })
 
     Axios.post(`${BaseUrl}api/login`, credentials)
         .then(data => {
-            // var token = jwt.sign({...data.data }, 'gk0ra6IcLrAmexlr4tZip9bmRXvRoXtDNNsEQnF1HIT0dI4tNaVbyg6ZhFvffqga');
+            dispatch({
+                    type: STOPPED_WORKING
+                })
+                // var token = jwt.sign({...data.data }, 'gk0ra6IcLrAmexlr4tZip9bmRXvRoXtDNNsEQnF1HIT0dI4tNaVbyg6ZhFvffqga');
             const { user } = data.data;
             console.log(data);
             localStorage.removeItem('P_access_token')
@@ -58,11 +66,13 @@ export const login = credentials => dispatch => {
         .catch(err => {
             // const 
             console.log(err);
-
-            // dispatch({
-            //     type: ERR_LOGIN_USER,
-            //     payload: err.response.data.error || err.message
-            // })
+            dispatch({
+                    type: STOPPED_WORKING
+                })
+                // dispatch({
+                //     type: ERR_LOGIN_USER,
+                //     payload: err.response.data.error || err.message
+                // })
             dispatch({
                 type: AUTH_LOADING_STATE,
                 payload: false
@@ -77,7 +87,9 @@ export const logout = () => dispatch => {
         type: AUTH_LOADING_STATE,
         payload: true
     })
-
+    dispatch({
+        type: WORKING
+    })
     dispatch({
         type: NULL_ERRORS
     })
@@ -85,7 +97,9 @@ export const logout = () => dispatch => {
     Axios.post(`${BaseUrl}api/logout`)
         .then(data => {
             localStorage.removeItem("P_access_token");
-
+            dispatch({
+                type: STOPPED_WORKING
+            })
             dispatch({
                 type: GET_USER_FROM_RESPONSE,
                 payload: {}
@@ -105,6 +119,9 @@ export const logout = () => dispatch => {
                 type: AUTH_LOADING_STATE,
                 payload: false
             })
+            dispatch({
+                type: STOPPED_WORKING
+            })
         })
 }
 
@@ -119,7 +136,9 @@ export const toggleForm = (value) => dispatch => {
 
 export const getUser = () => dispatch => {
     const token_to_verify = localStorage.getItem('P_access_token')
-
+    dispatch({
+        type: WORKING
+    })
     if (token_to_verify) {
 
         Axios.get(`${BaseUrl}api/user`, { headers: { Authorization: `Bearer ${token_to_verify}` } })

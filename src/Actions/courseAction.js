@@ -26,7 +26,10 @@ import {
     NULL_ERR_FETCH_COURSES,
     PLAY_MODULES,
     GET_RECOMMENDED_COURSES,
-    ERR_GET_RECOMMENDED_COURSES
+    ERR_GET_RECOMMENDED_COURSES,
+    EMPTY_PLAY_MODULES,
+    STOPPED_WORKING,
+    WORKING
 } from '../Actions/types'
 
 export const fetchCourses = (number) => dispatch => {
@@ -34,14 +37,24 @@ export const fetchCourses = (number) => dispatch => {
     dispatch({
         type: NULL_ERR_FETCH_COURSES
     })
+    dispatch({
+        type: WORKING
+    })
     Axios.get(`${BaseUrl}api/courses/get/${number}`)
-        .then(response => dispatch({
-            type: FETCH_COURSES,
-            payload: response.data
-        }))
+        .then(response => {
+            dispatch({
+                type: FETCH_COURSES,
+                payload: response.data
+            })
+            dispatch({
+                type: STOPPED_WORKING
+            })
+        })
         .catch(err => {
             console.log(err.message);
-
+            dispatch({
+                type: STOPPED_WORKING
+            })
             dispatch({
                 type: ERR_FETCH_COURSES,
                 payload: err.response ? err.response.message : err.message ? err.message : 'error occurred'
@@ -54,16 +67,23 @@ export const fetchCourses = (number) => dispatch => {
 export const fetchPOCourses = (number) => dispatch => {
     console.log(number);
 
+    dispatch({ type: WORKING })
     Axios.get(`${BaseUrl}api/courses/get/PO/${number}`)
-        .then(response => dispatch({
-            type: FETCH_PO_COURSES,
-            payload: response.data
-        }))
-        .catch(err => dispatch({
-            type: ERR_FETCH_COURSES,
-            payload: err.response ? err.response.message : 'error occurred'
+        .then(response => {
+            dispatch({ type: STOPPED_WORKING })
+            dispatch({
+                type: FETCH_PO_COURSES,
+                payload: response.data
+            })
+        })
+        .catch(err => {
+            dispatch({ type: STOPPED_WORKING })
+            dispatch({
+                type: ERR_FETCH_COURSES,
+                payload: err.response ? err.response.message : 'error occurred'
 
-        }))
+            })
+        })
 
 
 }
@@ -71,15 +91,22 @@ export const fetchPOCourses = (number) => dispatch => {
 export const fetchCOTFCourses = (number) => dispatch => {
     console.log(number);
 
+    dispatch({ type: WORKING })
     Axios.get(`${BaseUrl}api/courses/get/COTF/${number}`)
-        .then(response => dispatch({
-            type: FETCH_COTF_COURSES,
-            payload: response.data
-        }))
-        .catch(err => dispatch({
-            type: ERR_FETCH_COURSES,
-            payload: err.response.message
-        }))
+        .then(response => {
+            dispatch({ type: STOPPED_WORKING })
+            dispatch({
+                type: FETCH_COTF_COURSES,
+                payload: response.data
+            })
+        })
+        .catch(err => {
+            dispatch({ type: STOPPED_WORKING })
+            dispatch({
+                type: ERR_FETCH_COURSES,
+                payload: err.response.message
+            })
+        })
 
 
 }
@@ -103,35 +130,45 @@ export const fetchFREECourses = (number) => dispatch => {
 
 export const getEnrolledCourse = () => dispatch => {
     const token = localStorage.getItem('P_access_token')
+    dispatch({ type: WORKING })
 
     Axios.get(`${BaseUrl}api/courses/get_enrolled_course`, {
             headers: { Authorization: `Bearer ${token}` },
         })
-        .then(response => dispatch({
-            type: ENROLLED_COURSES,
-            payload: response.data
-        }))
-        .catch(err => dispatch({
-            type: ERR_FETCH_COURSES,
-            payload: err
-        }))
-}
-
-export const enrollCourse = (user, course) => dispatch => {
-
-    Axios.post(`${BaseUrl}api/courses/enroll`, {
-            user_id: user,
-            course_id: course,
-        })
         .then(response => {
-            console.log(response);
+            dispatch({ type: STOPPED_WORKING })
+
             dispatch({
                 type: ENROLLED_COURSES,
                 payload: response.data
             })
         })
         .catch(err => {
-            alert('You cant error into this course')
+            dispatch({ type: STOPPED_WORKING })
+            dispatch({
+                type: ERR_FETCH_COURSES,
+                payload: err
+            })
+        })
+}
+
+export const enrollCourse = (user, course) => dispatch => {
+
+    dispatch({ type: WORKING })
+    Axios.post(`${BaseUrl}api/courses/enroll`, {
+            user_id: user,
+            course_id: course,
+        })
+        .then(response => {
+            dispatch({ type: STOPPED_WORKING })
+            dispatch({
+                type: ENROLLED_COURSES,
+                payload: response.data
+            })
+        })
+        .catch(err => {
+            dispatch({ type: STOPPED_WORKING })
+            alert('An error occurred')
             dispatch({
                 type: ERR_FETCH_COURSES,
                 payload: err.response ? err.response.message : 'error occurred'
@@ -143,6 +180,7 @@ export const enrollCourse = (user, course) => dispatch => {
 }
 
 export const playCourse = (user, course) => dispatch => {
+    dispatch({ type: WORKING })
 
     dispatch({
         type: NULL_ERR_PLAY_COURSE
@@ -152,7 +190,8 @@ export const playCourse = (user, course) => dispatch => {
             course_id: course,
         })
         .then(response => {
-            console.log(response);
+            dispatch({ type: STOPPED_WORKING })
+
             dispatch({
                 type: PLAY_COURSE,
                 payload: response.data.data
@@ -162,19 +201,23 @@ export const playCourse = (user, course) => dispatch => {
                 payload: response.data.data.course_materials
             })
         })
-        .catch(err => dispatch({
-            type: ERR_PLAY_COURSE,
-            payload: err.message
-        }))
+        .catch(err => {
+            dispatch({ type: STOPPED_WORKING })
+
+            dispatch({
+                type: ERR_PLAY_COURSE,
+                payload: err.message
+            })
+        })
 
 
 }
 
 export const isCourseEnrolled = (user, course) => dispatch => {
 
-    // dispatch({
-    //     type: NULL_ERR_PLAY_COURSE
-    // })
+    dispatch({
+        type: WORKING
+    })
     console.log(user + ' ' + course);
 
     Axios.post(`${BaseUrl}api/courses/check_enrolled`, {
@@ -182,16 +225,21 @@ export const isCourseEnrolled = (user, course) => dispatch => {
             course_id: course,
         })
         .then(response => {
-            console.log(response);
+            dispatch({ type: STOPPED_WORKING })
+
             dispatch({
                 type: COURSE_IS_ENROLLED,
                 payload: response.data
             })
         })
-        .catch(err => dispatch({
-            type: ERR_COURSE_IS_ENROLLED,
-            payload: err.message
-        }))
+        .catch(err => {
+            dispatch({ type: STOPPED_WORKING })
+
+            dispatch({
+                type: ERR_COURSE_IS_ENROLLED,
+                payload: err.message
+            })
+        })
 
 
 }
@@ -221,9 +269,9 @@ export const checkCourseProgress = (user, course, module) => dispatch => {
 
 export const showCourse = (course) => dispatch => {
 
-    // dispatch({
-    //     type: NULL_ERR_PLAY_COURSE
-    // })
+    dispatch({
+        type: WORKING
+    })
     dispatch({
         type: LOADING_SHOW_COURSE
     })
@@ -233,6 +281,8 @@ export const showCourse = (course) => dispatch => {
             dispatch({
                 type: LOADING_SHOW_COURSE
             })
+            dispatch({ type: STOPPED_WORKING })
+
             dispatch({
                 type: SHOW_COURSE,
                 payload: response.data
@@ -242,6 +292,8 @@ export const showCourse = (course) => dispatch => {
             dispatch({
                 type: END_LOADING_SHOW_COURSE
             })
+            dispatch({ type: STOPPED_WORKING })
+
             dispatch({
                 type: ERR_SHOW_COURSE,
                 payload: err.message
@@ -253,9 +305,9 @@ export const showCourse = (course) => dispatch => {
 
 export const showNodule = (courseId) => dispatch => {
 
-    // dispatch({
-    //     type: NULL_ERR_PLAY_COURSE
-    // })
+    dispatch({
+        type: EMPTY_PLAY_MODULES
+    })
     dispatch({
         type: LOADING_SHOW_COURSE
     })
@@ -265,6 +317,9 @@ export const showNodule = (courseId) => dispatch => {
 
         Axios.get(`${BaseUrl}api/courses/material/show/` + courseId, { headers: { Authorization: `Bearer ${token_to_verify}` } })
             .then(response => {
+                dispatch({ type: WORKING })
+                dispatch({ type: STOPPED_WORKING })
+
                 console.log(response);
                 dispatch({
                     type: LOADING_SHOW_COURSE
@@ -278,6 +333,8 @@ export const showNodule = (courseId) => dispatch => {
                 dispatch({
                     type: END_LOADING_SHOW_COURSE
                 })
+                dispatch({ type: STOPPED_WORKING })
+
                 dispatch({
                     type: ERR_SHOW_COURSE,
                     payload: err.message
