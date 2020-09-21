@@ -10,6 +10,9 @@ import { getUser } from "../../Actions/loginAction";
 import Modules from "../Modules";
 import HeadBar from "../../Courses/HeadBar";
 import Footer from "../../Layout/Footer";
+import PlayCourse from "../../Courses/PlayCourse";
+import PlaySavedModules from "../../Courses/PlaySavedModules";
+import Play from "../../Courses/PlayArena";
 function Routes(props) {
   let { path, url } = useRouteMatch();
 
@@ -30,8 +33,11 @@ function Routes(props) {
           path={`${path}/course/:course`}
           render={(props) => <CoursePreview {...props} url={url} />}
         ></Route>
+        <Route
+          path={`${path}/play/:course`}
+          render={(props) => <Play {...props} url={url} />}
+        ></Route>
       </Switch>
-      <Footer />
     </>
   );
 }

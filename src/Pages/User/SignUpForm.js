@@ -16,7 +16,6 @@ import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { register } from "../../Actions/registerAction";
 import { toggleForm } from "../../Actions/loginAction";
-import { verifyUserTokenAction } from "../../Actions/verifyUserTokenAction";
 import { Alert } from "@material-ui/lab";
 class SignUpForm extends Component {
   constructor() {
@@ -42,9 +41,7 @@ class SignUpForm extends Component {
     console.log(e);
   }
 
-  componentWillMount() {
-    this.props.verifyUserTokenAction();
-  }
+  
 
   componentWillReceiveProps(newProps) {
     const { path, history } = this.props;
@@ -160,7 +157,6 @@ class SignUpForm extends Component {
                 <MenuItem value="isCareer">
                   Sign up to Career of the future Portal
                 </MenuItem>
-                <MenuItem value="isTutor"> Be a tutor </MenuItem>
               </Select>
             </FormControl>
           </div>
@@ -198,7 +194,6 @@ SignUpForm.propTypes = {
 };
 
 export default connect(mapStateToProps, {
-  verifyUserTokenAction,
   register,
   toggleForm,
 })(SignUpForm);

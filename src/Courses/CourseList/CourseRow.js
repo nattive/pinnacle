@@ -8,16 +8,21 @@ import Tab from "@material-ui/core/Tab";
 import Typography from "@material-ui/core/Typography";
 import Box from "@material-ui/core/Box";
 import { CircularProgress } from "@material-ui/core";
+import { Skeleton } from "@material-ui/lab";
 import SingleCourseItem from "../SingleCourseItem";
+import EnrolledCourseCard from "../EnrolledCourseCard";
 import { connect } from "react-redux";
 import {
   fetchPOCourses,
   fetchCOTFCourses,
   fetchFREECourses,
+  allCourses,
   getEnrolledCourse,
   enrollCourse,
 } from "../../Actions/courseAction";
 import { useEffect } from "react";
+import { Segment, Header, Icon, Button } from "semantic-ui-react";
+import EnrolledCarousel from "./EnrolledCarousel";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -59,15 +64,13 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 function CourseRow(props) {
-  useEffect(() => {
-    props.getEnrolledCourse();
-  }, [])
+ 
   useEffect(() => {
     props.user && props.user.account_type === "isPO"
       ? props.fetchPOCourses(5)
       : props.user.account_type === "isCareer"
-      ? props.fetchCOTFCourses(5)
-      : props.fetchFREECourses(5);
+        ? props.fetchCOTFCourses(5)
+        : props.fetchFREECourses(5);
   }, [props.user]);
   const classes = useStyles();
   const theme = useTheme();
@@ -96,7 +99,8 @@ function CourseRow(props) {
           >
             <Tab label="Courses you are following" {...a11yProps(0)} />
             <Tab label="Top Rated Courses" {...a11yProps(1)} />
-            <Tab label="Courses You might like" {...a11yProps(2)} />
+            <Tab label="WishList" {...a11yProps(2)} />
+            <Tab label="All Courses" {...a11yProps(3)} />
           </Tabs>
           <SwipeableViews
             axis={theme.direction === "rtl" ? "x-reverse" : "x"}
@@ -104,57 +108,82 @@ function CourseRow(props) {
             onChangeIndex={handleChangeIndex}
           >
             <TabPanel value={value} index={0} dir={theme.direction}>
-              <div className="row">
-                {props.ENROLLED_courses.length > 0 ? (
-                  props.ENROLLED_courses.map((item, key) => (
-                    <div key={key} className="col-xs-4 col-md-3">
-                      <SingleCourseItem course={item} />{" "}
-                    </div>
-                  ))
-                ) : (
-                  <p>You are not following any course</p>
-                )}
-              </div>
+              <EnrolledCarousel />
             </TabPanel>
             <TabPanel value={value} index={1} dir={theme.direction}>
               <div className="row">
                 {props.user.account_type === "isPO" ? (
                   props.PO_courses !== undefined &&
-                  props.PO_courses.length > 0 ? (
-                    props.PO_courses.map((item, key) => (
-                      <div key={key} className="col-xs-4 col-md-2">
-                        <SingleCourseItem course={item} />{" "}
-                      </div>
-                    ))
-                  ) : (
-                    <>
-                      <div className="mx-auto text-center mt-4">
-                        {/* <CircularProgress /> */}
-                        <p>No Courses Here...</p>
-                      </div>
-                    </>
-                  )
+                    props.PO_courses.length > 0 ? (
+                      props.PO_courses.map((item, key) => (
+                        <div key={key} className="col-xs-4 col-md-2">
+                          <SingleCourseItem course={item} />{" "}
+                        </div>
+                      ))
+                    ) : (
+                      <>
+                        <div className="mx-auto text-center mt-4">
+                          {/* <CircularProgress /> */}
+                          <p>No Courses Here...</p>
+                        </div>
+                      </>
+                    )
                 ) : props.user.account_type === "isCareer" ? (
                   props.COTF_courses !== undefined &&
-                  props.COTF_courses.length !== 0 ? (
-                    props.COTF_courses.map((item, key) => (
-                      <div key={key} className="col-xs-4 col-md-2">
-                        <SingleCourseItem course={item} />{" "}
-                      </div>
-                    ))
-                  ) : (
-                    <>
-                      <div className="mx-auto text-center mt-4">
-                        {/* <CircularProgress /> */}
-                        <p>No Courses Here...</p>
-                      </div>
-                    </>
-                  )
+                    props.COTF_courses.length !== 0 ? (
+                      props.COTF_courses.map((item, key) => (
+                        <div key={key} className="col-xs-4 col-md-2">
+                          <SingleCourseItem course={item} />{" "}
+                        </div>
+                      ))
+                    ) : (
+                      <>
+                        <div className="mx-auto text-center mt-4">
+                          {/* <CircularProgress /> */}
+                          <p>No Courses Here...</p>
+                        </div>
+                      </>
+                    )
                 ) : null}
               </div>
             </TabPanel>
             <TabPanel value={value} index={2} dir={theme.direction}>
               <p>No Courses Here...</p>
+            </TabPanel>
+            <TabPanel value={value} index={3} dir={theme.direction}>
+              <div className="row">
+                {props.fetchCourseError ?
+                  (
+                    <>
+                      <Segment placeholder>
+                        <Header icon>
+                          <Icon color='red' name='warning sign' />
+                          {JSON.stringify(props.fetchCourseError)}
+                        </Header>
+                        <Button primary onClick={props.allCourses}>Retry</Button>
+                      </Segment>
+                    </>)
+                  : props.ALL_courses && props.ALL_courses.length > 0 ? props.ALL_courses.map(course => (
+                    <div key={course.id} className="col-xs-4 col-md-3 col-sm-6 col-xs-12 no-gutters">
+                      <SingleCourseItem course={course} />
+                    </div>
+                  )) : (
+                      <div className="row">
+                        <div className="col-xs-4 col-md-3 col-sm-6 col-xs-12">
+                          <Skeleton variant='rect' height={300} />
+                        </div>
+                        <div className="col-xs-4 col-md-3 col-sm-6 col-xs-12">
+                          <Skeleton variant='rect' height={300} />
+                        </div>
+                        <div className="col-xs-4 col-md-3 col-sm-6 col-xs-12">
+                          <Skeleton variant='rect' height={300} />
+                        </div>
+                        <div className="col-xs-4 col-md-3 col-sm-6 col-xs-12">
+                          <Skeleton variant='rect' height={300} />
+                        </div>
+
+                      </div>
+                    )}</div>
             </TabPanel>
           </SwipeableViews>
         </>
@@ -167,8 +196,9 @@ const mapStateToProps = (state) => ({
   user: state.auth.user,
   PO_courses: state.course.PO_courses.data,
   FREE_courses: state.course.FREE_courses.data,
+  ALL_courses: state.course.ALL_courses.data,
+  fetchCourseError: state.course.fetchCourseError,
   COTF_courses: state.course.COTF_courses.data,
-  ENROLLED_courses: state.course.ENROLLED_courses,
   account_type: state.auth.account_type,
 });
 
@@ -178,5 +208,6 @@ const mapDispatchToProps = {
   fetchFREECourses,
   getEnrolledCourse,
   enrollCourse,
+  allCourses,
 };
 export default connect(mapStateToProps, mapDispatchToProps)(CourseRow);

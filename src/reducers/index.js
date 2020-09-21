@@ -4,6 +4,7 @@ import authReducers from './authReducers'
 import loadingReducer from './loadingReducer'
 import moduleReducers from './moduleReducers'
 import reviewReducers from './reviewReducers'
+import commentReducer from './commentReducer'
 
 
 export default combineReducers({
@@ -11,5 +12,6 @@ export default combineReducers({
     auth: authReducers,
     loading: loadingReducer,
     module: moduleReducers,
-    reviews: reviewReducers
+    reviews: reviewReducers,
+    comment: commentReducer
 })

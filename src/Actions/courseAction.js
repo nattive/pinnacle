@@ -29,7 +29,10 @@ import {
     ERR_GET_RECOMMENDED_COURSES,
     EMPTY_PLAY_MODULES,
     STOPPED_WORKING,
-    WORKING
+    WORKING,
+    ALL_COURSES,
+    ENROLLING_COURSE,
+    ERROR_ENROLLING_COURSE
 } from '../Actions/types'
 
 export const fetchCourses = (number) => dispatch => {
@@ -40,7 +43,7 @@ export const fetchCourses = (number) => dispatch => {
     dispatch({
         type: WORKING
     })
-    Axios.get(`${BaseUrl}api/courses/get/${number}`)
+    Axios.get(`${BaseUrl}courses/get/${number}`)
         .then(response => {
             dispatch({
                 type: FETCH_COURSES,
@@ -64,11 +67,48 @@ export const fetchCourses = (number) => dispatch => {
 
 }
 
+export const allCourses = () => dispatch => {
+    const token = localStorage.getItem('P_access_token')
+
+    dispatch({
+        type: NULL_ERR_FETCH_COURSES
+    })
+    dispatch({
+        type: WORKING
+    })
+    Axios.get(`${BaseUrl}user/course`, {
+            headers: { Authorization: `Bearer ${token}` },
+        })
+        .then(response => {
+            dispatch({
+                type: ALL_COURSES,
+                payload: response.data
+            })
+            dispatch({
+                type: STOPPED_WORKING
+            })
+        })
+        .catch(err => {
+            console.log(err.message);
+            dispatch({
+                type: STOPPED_WORKING
+            })
+            dispatch({
+                type: ERR_FETCH_COURSES,
+                payload: err.response ? err.response.data &&
+                    err.response.data.message : err.message ?
+                    JSON.stringify(err.message) : 'error occurred'
+            })
+        })
+
+
+}
+
 export const fetchPOCourses = (number) => dispatch => {
     console.log(number);
 
     dispatch({ type: WORKING })
-    Axios.get(`${BaseUrl}api/courses/get/PO/${number}`)
+    Axios.get(`${BaseUrl}courses/get/PO/${number}`)
         .then(response => {
             dispatch({ type: STOPPED_WORKING })
             dispatch({
@@ -92,7 +132,7 @@ export const fetchCOTFCourses = (number) => dispatch => {
     console.log(number);
 
     dispatch({ type: WORKING })
-    Axios.get(`${BaseUrl}api/courses/get/COTF/${number}`)
+    Axios.get(`${BaseUrl}courses/get/COTF/${number}`)
         .then(response => {
             dispatch({ type: STOPPED_WORKING })
             dispatch({
@@ -116,7 +156,7 @@ export const fetchFREECourses = (number) => dispatch => {
     dispatch({
         type: NULL_ERR_FETCH_COURSES
     })
-    Axios.get(`${BaseUrl}api/courses/get/FREE/${number}`)
+    Axios.get(`${BaseUrl}courses/get/FREE/${number}`)
         .then(response => dispatch({
             type: FETCH_FREE_COURSES,
             payload: response.data
@@ -132,7 +172,7 @@ export const getEnrolledCourse = () => dispatch => {
     const token = localStorage.getItem('P_access_token')
     dispatch({ type: WORKING })
 
-    Axios.get(`${BaseUrl}api/courses/get_enrolled_course`, {
+    Axios.get(`${BaseUrl}user/course/enroll`, {
             headers: { Authorization: `Bearer ${token}` },
         })
         .then(response => {
@@ -154,13 +194,17 @@ export const getEnrolledCourse = () => dispatch => {
 
 export const enrollCourse = (user, course) => dispatch => {
 
-    dispatch({ type: WORKING })
-    Axios.post(`${BaseUrl}api/courses/enroll`, {
+    const token = localStorage.getItem('P_access_token')
+
+
+
+    dispatch({ type: ENROLLING_COURSE })
+    Axios.post(`${BaseUrl}user/course/enroll`, {
             user_id: user,
             course_id: course,
-        })
+        }, { headers: { Authorization: `Bearer ${token}` } }, )
         .then(response => {
-            dispatch({ type: STOPPED_WORKING })
+            dispatch({ type: COURSE_IS_ENROLLED })
             dispatch({
                 type: ENROLLED_COURSES,
                 payload: response.data
@@ -170,7 +214,7 @@ export const enrollCourse = (user, course) => dispatch => {
             dispatch({ type: STOPPED_WORKING })
             alert('An error occurred')
             dispatch({
-                type: ERR_FETCH_COURSES,
+                type: ERROR_ENROLLING_COURSE,
                 payload: err.response ? err.response.message : 'error occurred'
 
             })
@@ -179,16 +223,13 @@ export const enrollCourse = (user, course) => dispatch => {
 
 }
 
-export const playCourse = (user, course) => dispatch => {
+export const playCourse = (id) => dispatch => {
     dispatch({ type: WORKING })
-
+    const token = localStorage.getItem('P_access_token')
     dispatch({
         type: NULL_ERR_PLAY_COURSE
     })
-    Axios.post(`${BaseUrl}api/courses/play`, {
-            user_id: user,
-            course_id: course,
-        })
+    Axios.get(`${BaseUrl}user/course/play/${id}`, { headers: { Authorization: `Bearer ${token}` } }, )
         .then(response => {
             dispatch({ type: STOPPED_WORKING })
 
@@ -214,16 +255,17 @@ export const playCourse = (user, course) => dispatch => {
 }
 
 export const isCourseEnrolled = (user, course) => dispatch => {
+    const token = localStorage.getItem('P_access_token')
 
     dispatch({
         type: WORKING
     })
     console.log(user + ' ' + course);
 
-    Axios.post(`${BaseUrl}api/courses/check_enrolled`, {
+    Axios.post(`${BaseUrl}user/course/enroll/check`, {
             user_id: user,
             course_id: course,
-        })
+        }, { headers: { Authorization: `Bearer ${token}` } }, )
         .then(response => {
             dispatch({ type: STOPPED_WORKING })
 
@@ -249,7 +291,7 @@ export const checkCourseProgress = (user, course, module) => dispatch => {
     // dispatch({
     //     type: NULL_ERR_PLAY_COURSE
     // })
-    Axios.post(`${BaseUrl}api/courses/check_progress`, {
+    Axios.post(`${BaseUrl}courses/check_progress`, {
             user_id: user,
             course_id: course,
             module_id: module,
@@ -275,7 +317,7 @@ export const showCourse = (course) => dispatch => {
     dispatch({
         type: LOADING_SHOW_COURSE
     })
-    Axios.get(`${BaseUrl}api/courses/` + course)
+    Axios.get(`${BaseUrl}courses/` + course)
         .then(response => {
             console.log(response);
             dispatch({
@@ -315,7 +357,7 @@ export const showNodule = (courseId) => dispatch => {
 
     if (token_to_verify) {
 
-        Axios.get(`${BaseUrl}api/courses/material/show/` + courseId, { headers: { Authorization: `Bearer ${token_to_verify}` } })
+        Axios.get(`${BaseUrl}courses/material/show/` + courseId, { headers: { Authorization: `Bearer ${token_to_verify}` } })
             .then(response => {
                 dispatch({ type: WORKING })
                 dispatch({ type: STOPPED_WORKING })
@@ -349,11 +391,13 @@ export const showNodule = (courseId) => dispatch => {
 }
 
 export const fetchMainCategory = () => dispatch => {
-
+    const token = localStorage.getItem('P_access_token')
     dispatch({
         type: NULL_ERR_MAIN_CATEGORIES
     })
-    Axios.get(`${BaseUrl}api/courses/main_controller/all`)
+    Axios.get(`${BaseUrl}course/category/main`, {
+            headers: { Authorization: `Bearer ${token}` }
+        })
         .then(response => {
             console.log(response);
             dispatch({
@@ -372,7 +416,7 @@ export const getRecommendedByUser = (user) => dispatch => {
     dispatch({
         type: NULL_ERR_MAIN_CATEGORIES
     })
-    Axios.get(`${BaseUrl}api/courses/recommendations/user/${user}`)
+    Axios.get(`${BaseUrl}courses/recommendations/user/${user}`)
         .then(response => {
             console.log(response);
             dispatch({

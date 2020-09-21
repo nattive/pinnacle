@@ -4,7 +4,7 @@ import MuiExpansionPanel from "@material-ui/core/ExpansionPanel";
 import MuiExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary";
 import MuiExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails";
 import Typography from "@material-ui/core/Typography";
-import { connect } from "react-redux";
+import { connect, useDispatch } from "react-redux";
 import { showCourse, showNodule } from "../../Actions/courseAction";
 import { Skeleton } from "@material-ui/lab";
 import { Link, useHistory } from "react-router-dom";
@@ -19,6 +19,7 @@ import {
   ListItemIcon,
   ListItemText,
 } from "@material-ui/core";
+import { PLAY_MODULES } from "../../Actions/types";
 
 const ExpansionPanel = withStyles({
   root: {
@@ -63,14 +64,11 @@ const ExpansionPanelDetails = withStyles((theme) => ({
 
 function ModulesList(props) {
   console.log(props);
-  useEffect(() => {
-    props.showCourse(props.match.params.course);
-  }, []);
+  const dispatch = useDispatch()
   const [expanded, setExpanded] = React.useState("panel1");
   const history = useHistory();
-  const handleModuleChange = (id) => {
-    props.showNodule(id);
-    console.log(id);
+  const handleModuleChange = (selectedModule) => {
+    dispatch({ type: PLAY_MODULES, payload: selectedModule})
     // history.push(`/learn/course/${props.match.params.course}/${id}`);
   };
   const handleChange = (panel) => (event, newExpanded) => {
@@ -78,12 +76,12 @@ function ModulesList(props) {
   };
 
   return (
-    <Card style={{ width: "100%" }}>
+    <Card style={{ width: "100%"}}>
       <CardHeader title="Course Modules" />
       <Divider />
-      <CardContent style={{ heigth: 400 }}>
-        {props.course ? (
-          props.course.modules.map((item) => (
+      <CardContent style={{ minHeight: 500, overflowY: 'auto' }}>
+        {props.Modules && props.Modules.length ? (
+          props.Modules.map((item) => (
             <React.Fragment Key={item.id}>
               <ExpansionPanel
                 square
@@ -96,7 +94,7 @@ function ModulesList(props) {
                 >
                   <Typography>{item.title}</Typography> <br />
                 </ExpansionPanelSummary>
-                <ExpansionPanelDetails>
+                <ExpansionPanelDetails style={{ maxHeight: 400, overflowY: 'auto' }}>
                   <Typography>
                     <Typography variant="body2">{`${
                       item.course_materials ? item.course_materials.length : 0
@@ -104,20 +102,20 @@ function ModulesList(props) {
                     <Divider />
                     <List>
                       {item.course_materials &&
-                        item.course_materials.map((item) => (
-                          <React.Fragment key={item.id}>
+                        item.course_materials.map((material) => (
+                          <React.Fragment key={material.id}>
                             <ListItem
                               button
-                              onClick={() => handleModuleChange(item.id)}
+                              onClick={() => handleModuleChange(material)}
                             >
                               <ListItemIcon>
                                 <PlayCircleOutlineIcon color="primary" />
                               </ListItemIcon>
                               <ListItemText
-                                primary={item.title}
+                                primary={material.title}
                                 secondary={`${
-                                  item.objective &&
-                                  item.objective.substring(0, 100)
+                                  material.objective &&
+                                  material.objective.substring(0, 100)
                                 }...`}
                               />
                             </ListItem>

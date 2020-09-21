@@ -28,7 +28,7 @@ export const login = credentials => dispatch => {
         type: WORKING
     })
 
-    Axios.post(`${BaseUrl}api/login`, credentials)
+    Axios.post(`${BaseUrl}login`, credentials)
         .then(data => {
             dispatch({
                     type: STOPPED_WORKING
@@ -67,12 +67,12 @@ export const login = credentials => dispatch => {
             // const 
             console.log(err);
             dispatch({
-                    type: STOPPED_WORKING
-                })
-                // dispatch({
-                //     type: ERR_LOGIN_USER,
-                //     payload: err.response.data.error || err.message
-                // })
+                type: STOPPED_WORKING
+            })
+            dispatch({
+                type: ERR_LOGIN_USER,
+                payload: err.response ? err.response.data.error : JSON.stringify(err.message)
+            })
             dispatch({
                 type: AUTH_LOADING_STATE,
                 payload: false
@@ -94,7 +94,7 @@ export const logout = () => dispatch => {
         type: NULL_ERRORS
     })
 
-    Axios.post(`${BaseUrl}api/logout`)
+    Axios.post(`${BaseUrl}logout`)
         .then(data => {
             localStorage.removeItem("P_access_token");
             dispatch({
@@ -141,14 +141,14 @@ export const getUser = () => dispatch => {
     })
     if (token_to_verify) {
 
-        Axios.get(`${BaseUrl}api/user`, { headers: { Authorization: `Bearer ${token_to_verify}` } })
+        Axios.get(`${BaseUrl}me`, { headers: { Authorization: `Bearer ${token_to_verify}` } })
             .then(res => {
                 dispatch({
                     type: GET_USER_FROM_RESPONSE,
-                    payload: res.data
+                    payload: res.data.user
                 })
                 dispatch({
-                    type: res.data.account_type,
+                    type: res.data.user && res.data.user.account_type,
                     payload: 'isPO'
                 })
                 console.log(res)

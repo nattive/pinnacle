@@ -36,7 +36,7 @@ function PreviewFunc(props) {
   let { path, url } = useRouteMatch();
   return (
     <>
-      <Container style={{ marginTop: "10%" }}>
+      {/* <Container> */}
         <Switch>
           <Route exact path={path}>
             <Preview {...props} url={url} />
@@ -46,7 +46,7 @@ function PreviewFunc(props) {
             render={({ match }) => <Modules match={match} />}
           />
         </Switch>
-      </Container>
+      {/* </Container> */}
     </>
   );
 }

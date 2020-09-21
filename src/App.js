@@ -24,7 +24,8 @@ import SignUp from "./Pages/User/SignUp";
 import Auth from "./Pages/User/Auth";
 import Routes from "./Pages/LearnRoutes/Routes";
 // import { Routes as ElearningRoutes } from "./Pages/LearnRoutes";
-
+import 'semantic-ui-css/semantic.min.css'
+import Footer from "./Layout/Footer";
 function App() {
   return (
     <Provider store={store} className="super_container">
@@ -55,6 +56,7 @@ function App() {
             <p> 404 </p>{" "}
           </Route>{" "}
         </Switch>{" "}
+        <Footer />
       </Router>{" "}
     </Provider>
   );

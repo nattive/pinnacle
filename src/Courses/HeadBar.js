@@ -15,17 +15,26 @@ import ChevronRightIcon from "@material-ui/icons/ChevronRight";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
-import InboxIcon from "@material-ui/icons/MoveToInbox";
+import ArrowRightIcon from '@material-ui/icons/ArrowRight';
 import MailIcon from "@material-ui/icons/Mail";
 import AccountCircle from "@material-ui/icons/AccountCircle";
 import { Link, useHistory } from "react-router-dom";
 import { connect, useDispatch } from "react-redux";
-import { VERIFY_USER } from "../Actions/types";
+import { VERIFY_USER, LOAD_SUB, LOGIN_USER } from "../Actions/types";
 import { useSelector } from "react-redux";
-import { logout } from "../Actions/loginAction";
-import { getUser } from "../Actions/loginAction";
-import { MenuItem, Badge, Menu, LinearProgress } from "@material-ui/core";
+import { logout, getUser } from "../Actions/loginAction";
+import { allCourses, fetchMainCategory } from "../Actions/courseAction";
+import {
+  MenuItem, Badge, Menu, LinearProgress,
+  Popper, Grow, Paper, ClickAwayListener,
+  MenuList, Button
+} from "@material-ui/core";
 import { Skeleton } from "@material-ui/lab";
+import ListItemAvatar from '@material-ui/core/ListItemAvatar';
+import Avatar from '@material-ui/core/Avatar';
+import ImageIcon from '@material-ui/icons/Image';
+import Search from "../General Components/SearchCourse";
+
 const drawerWidth = 240;
 
 const useStyles = makeStyles((theme) => ({
@@ -153,6 +162,8 @@ function HeadBar(props) {
   const dispatch = useDispatch();
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
+  const [courseAnchorEl, setCourseAnchorEl] = React.useState(null);
+  const [categoryAnchorEl, setCategoryAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
   const user = useSelector((state) => state.auth.user);
   const isMenuOpen = Boolean(anchorEl);
@@ -160,7 +171,11 @@ function HeadBar(props) {
   const history = useHistory();
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
+  useEffect(() => {
+    props.allCourses()
+    props.fetchMainCategory()
 
+  }, [])
   const handleDrawerOpen = () => {
     setOpen(true);
   };
@@ -170,6 +185,12 @@ function HeadBar(props) {
   };
   const handleProfileMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
+  };
+  const handleCourseMenuOpen = (event) => {
+    setCourseAnchorEl(event.currentTarget);
+  };
+  const handleCategoryMenuOpen = (event) => {
+    setCategoryAnchorEl(event.currentTarget);
   };
 
   const handleMobileMenuClose = () => {
@@ -181,9 +202,20 @@ function HeadBar(props) {
     handleMobileMenuClose();
   };
 
+  const handleCourseMenuClose = () => {
+    setCourseAnchorEl(null);
+    handleMobileMenuClose();
+  };
+
+  const handleCategoryMenuClose = () => {
+    setCategoryAnchorEl(null);
+    handleMobileMenuClose();
+  };
+
   const handleUserLogout = () => {
-    props.logout();
     localStorage.removeItem("P_access_token");
+    dispatch({ type: LOGIN_USER, payload: ''})
+    props.logout();
     history.push("/");
   };
 
@@ -204,18 +236,96 @@ function HeadBar(props) {
     >
       <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
       <MenuItem onClick={handleMenuClose}>My account</MenuItem>
-      <MenuItem
-        onClick={() => {
-          props.logout();
-
-          localStorage.removeItem("PO_user_token");
-          localStorage.removeItem("user_as_token");
-          history.push("/");
-        }}
-      >
+      <MenuItem   onClick={handleUserLogout}  >
         Logout
       </MenuItem>
     </Menu>
+  );
+  const myCourses = (
+    <Popper open={Boolean(courseAnchorEl)} anchorEl={courseAnchorEl} role={undefined} transition disablePortal>
+      {({ TransitionProps, placement }) => (
+        <Grow
+          {...TransitionProps}
+          style={{ transformOrigin: placement === 'bottom' ? 'center top' : 'center bottom' }}
+        >
+          <Paper>
+            <ClickAwayListener onClickAway={handleCourseMenuClose}>
+              <MenuList autoFocusItem={Boolean(courseAnchorEl)} id="menu-list-grow" >
+                <MenuItem onClick={handleCourseMenuClose}>
+                  <ListItemIcon>
+                    <Avatar variant='square' />
+                  </ListItemIcon>
+                  <ListItemText primary='A short message' secondary='some radom description' />
+                </MenuItem>
+                <Divider />
+                <MenuItem>
+                  <Button variant="contained" fullWidth disableElevation color="primary">See Enrolled Courses</Button>
+                </MenuItem>
+              </MenuList>
+            </ClickAwayListener>
+          </Paper>
+        </Grow>
+      )}
+    </Popper>
+  );
+  const category = (
+    <>
+      <Menu
+        id="long-menu"
+        anchorEl={categoryAnchorEl}
+        keepMounted
+        elevation={0}
+        open={Boolean(categoryAnchorEl)}
+        onClose={handleCategoryMenuClose}
+        onMouseLeave={handleCourseMenuClose}  
+        PaperProps={{
+          style: {
+            maxHeight: 120 * 4.5,
+            // width: '20ch',
+          },
+        }}
+      >
+        <Paper>
+          <ClickAwayListener onClickAway={handleCourseMenuClose}>
+            <div style={{ display: 'flex' }}>
+              <MenuList autoFocusItem={Boolean(categoryAnchorEl)} id="menu-list-grow"  >
+                {
+                  props.mainCategories && props.mainCategories.length > 0 ? props.mainCategories.map(course =>
+                    <React.Fragment key={course.id}>
+                      <MenuItem onClick={() => dispatch({ type: LOAD_SUB, payload: course.sub_categories })} onMouseLeave={handleCourseMenuClose}  onMouseEnter={() => dispatch({ type: LOAD_SUB, payload: course.sub_categories})} >
+                        <ListItemText primary={course.name} />
+                        <ListItemIcon>
+                          <ArrowRightIcon />
+                        </ListItemIcon>
+                      </MenuItem>
+                      <Divider />
+                    </React.Fragment>
+                  ) : (<>
+                      loading...
+                  </>)
+                }
+
+              </MenuList>
+              <MenuList hidden={props.loadSub.length < 0} autoFocusItem={Boolean(categoryAnchorEl)} id="menu-list-grow"  >
+                {
+                  props.loadSub && props.loadSub.length > 0 ? props.loadSub.map(sub =>
+                    <React.Fragment key={sub.id}>
+                      <MenuItem onClick={handleCourseMenuClose}>
+                        <ListItemText primary={sub.name} />
+                      </MenuItem>
+                      <Divider />
+                    </React.Fragment>
+                  ) : (<>
+                        loading...
+                  </>)
+                }
+
+              </MenuList>
+            </div>
+          </ClickAwayListener>
+        </Paper>
+      </Menu>
+    </>
   );
 
   const menu = (
@@ -234,13 +344,17 @@ function HeadBar(props) {
           </Link>
         </Typography>
       </MenuItem>
-      <MenuItem>
+      <MenuItem button onClick={handleCourseMenuOpen}>
         <Typography variant="button" className={classes.title}>
-          <Link to="/learn/enrolled" className={classes.textBrandColor}>
-            My Courses
-          </Link>
+          My Courses
         </Typography>
       </MenuItem>
+      <MenuItem button onClick={handleCategoryMenuOpen} >
+        <Typography variant="button" className={classes.title}>
+          Category
+        </Typography>
+      </MenuItem>
+
     </>
   );
 
@@ -255,7 +369,7 @@ function HeadBar(props) {
       open={isMobileMenuOpen}
       onClose={handleMobileMenuClose}
     >
-     
+
       <MenuItem onClick={handleUserLogout}>
         <IconButton
           aria-label="logout current user"
@@ -277,9 +391,9 @@ function HeadBar(props) {
   return (
     <div className={classes.grow}>
       <AppBar
-        position="fixed"
+        // position="fixed"
         variant="outlined"
-        color="default"
+        color="primary"
         className={clsx(classes.appBar, {
           [classes.appBarShift]: open,
         })}
@@ -299,8 +413,11 @@ function HeadBar(props) {
             <MenuIcon />
           </IconButton>
           {menu}
-          <div className={classes.grow} />
+          {myCourses}
+          {category}
+          <di className={classes.grow} />
           <div className={classes.sectionDesktop}>
+            <Search />
             <IconButton
               edge="end"
               aria-label="account of current user"
@@ -317,7 +434,7 @@ function HeadBar(props) {
             </IconButton>
           </div>
         </Toolbar>
-     {props.busy && <LinearProgress />}
+        {props.busy && <LinearProgress />}
       </AppBar>
       <Drawer
         className={classes.drawer}
@@ -333,8 +450,8 @@ function HeadBar(props) {
             {theme.direction === "ltr" ? (
               <ChevronLeftIcon />
             ) : (
-              <ChevronRightIcon />
-            )}
+                <ChevronRightIcon />
+              )}
           </IconButton>
         </div>
         <Divider />
@@ -346,12 +463,16 @@ function HeadBar(props) {
 }
 const mapStateToProps = (state) => ({
   user: state.auth.user,
+  mainCategories: state.course.mainCategories,
+  loadSub: state.course.loadSub,
   busy: state.loading.busy
 });
 
 const mapDispatchToProps = {
   logout,
   getUser,
+  allCourses,
+  fetchMainCategory,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(HeadBar);

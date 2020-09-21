@@ -8,34 +8,23 @@ import Footer from "../../Layout/Footer";
 import ProgressTable from "../User/ProgressTable";
 import RecommendedCourses from "../../Courses/RecommendedCourses/RecommendedCourses";
 import { getUserProgress } from "../../Actions/moduleActions"
+import Banner from "../Elearning/LandingPage/Banner"
 import { connect } from "react-redux";
+import DashboardBanner from "./DashboardBanner";
+import { Container } from "@material-ui/core";
 class Dashboard extends Component {
-  componentDidMount(){
+  componentDidMount() {
     this.props.getUserProgress();
   }
   render() {
     return (
       <>
-        <div style={{ marginTop: "7%" }}>
-          <TitleHeader
-            title={
-              this.props.user && this.props.user.account_type === "isPO"
-                ? "Pinnacle Ulearn"
-                : this.props.user.account_type === "isCareer"
-                ? "Career of the Future"
-                : this.props.user.account_type
-            }
-          />
-        </div>
-        <CategoryList />
-        <div className="container mt-4">
+        <DashboardBanner />
+        {/* <Container> */}
           <CourseRow />
-          <div className="mb-4 mt-4">
-            <ProgressTable />
-            <RecommendedCourses />
-          </div>{" "}
-          <ListCourses />
-        </div>{" "}
+          <ProgressTable />
+          <RecommendedCourses />
+        {/* </Container> */}
       </>
     );
   }
@@ -45,4 +34,4 @@ const mapStateToProps = (state) => ({
   user: state.auth.user,
 });
 
-export default connect(mapStateToProps, {getUserProgress})(Dashboard);
+export default connect(mapStateToProps, { getUserProgress })(Dashboard);

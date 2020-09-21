@@ -14,7 +14,7 @@ import {
 } from "@material-ui/core";
 import { connect } from 'react-redux'
 import { displayQuestions } from "../Actions/moduleActions";
-
+import PropTypes from 'prop-types'
 class Question extends Component {
   constructor() {
     super();
@@ -39,8 +39,8 @@ class Question extends Component {
     // }
     return (
       <>
-        <Typography variant="h4" color="primary" className='m-3'>
-          Quiz: {this.props.course ? this.props.course.title : ""}
+        <Typography variant="h6" color="primary" className='m-3'>
+          Answer the Quiz to test your ability on the course
         </Typography>
         <>
           {quiz.length > 0 ? (
@@ -105,4 +105,7 @@ const mapDispatchToProps = {
   displayQuestions: displayQuestions,
 };
 
+Question.propTypes = {
+  question: PropTypes.array.isRequired
+};
 export default connect(mapStateToProps, mapDispatchToProps)(Question);

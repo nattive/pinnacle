@@ -1,32 +1,14 @@
 import React, { Component } from "react";
 import {
-  Grid,
-  Paper,
-  Card,
-  CardContent,
   Typography,
-  Button,
-  CardActions,
-  Avatar,
-  CssBaseline,
   Divider,
-  ListItemIcon,
-  CircularProgress,
-  ExpansionPanel,
-  ExpansionPanelSummary,
-  ExpansionPanelDetails,
-  List,
-  Box,
-  LinearProgress,
+  Icon,
+  Breadcrumbs,
+  Link,
 } from "@material-ui/core";
 import image from "../Assets/img/blog/single_blog_1.png";
 import TutorCard from "./TutorCard";
-import { getCourseById } from "../Patials/patials";
-import { BaseUrl } from "../Patials/BaseUrl";
-import Skeleton from "@material-ui/lab/Skeleton";
-import ReactPlaceholder from "react-placeholder/lib";
-import CourseHeadTitle from "./CourseHeadTitle";
-import { Alert, AlertTitle } from "@material-ui/lab";
+import { Alert, AlertTitle, Skeleton } from "@material-ui/lab";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
 import PlayCircleFilledIcon from "@material-ui/icons/PlayCircleFilled";
@@ -41,12 +23,15 @@ import {
 // import { verifyUserTokenAction } from "../Actions/verifyUserTokenAction";
 import { connect } from "react-redux";
 import HeadBar from "./HeadBar";
-import Footer from "../Layout/Footer";
+import 'semantic-ui-css/semantic.min.css'
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import ShowRating from "../General Components/ShowRating";
-import Comments from "./Cmments/Comments";
+import Comments from "./Cmments/Reviews";
 import PostReview from "./Review/PostReview";
-
+import "./PlayCourse.css"
+import { Link as RouterLink } from 'react-router-dom'
+import { Header, Segment, Breadcrumb } from "semantic-ui-react";
+import { Card as SemanticCard, Button as SemanticButton, List, Icon as SemanticIcon } from 'semantic-ui-react'
 var PHPUnserialize = require("php-unserialize");
 
 var parse = require("html-react-parser");
@@ -61,9 +46,10 @@ class PlayCourse extends Component {
       enrollLoading: true,
       showAll: false,
       readMoreText: "Read More",
+      readMore: false,
     };
     this.unserialize = this.unserialize.bind(this);
-    this.handleClick = this.handleClick.bind(this);
+    this.handleEnrollCourse = this.handleEnrollCourse.bind(this);
     this.toggleReadMore = this.toggleReadMore.bind(this);
   }
   toggleReadMore() {
@@ -77,7 +63,7 @@ class PlayCourse extends Component {
     this.state.loading = true;
     this.state.loading = false;
 
-    this.props.showCourse(this.props.courseId);
+    this.props.showCourse(this.props.match.params.course);
     // this.props.isCourseEnrolled(this.props.user.id, this.props.courseId);
     /**
      * Get the course, course id was received from props
@@ -89,7 +75,7 @@ class PlayCourse extends Component {
   }
 
   componentWillReceiveProps(newProps) {
-    if (newProps.courseId) {
+    if (newProps.courseId & newProps.user.id) {
       this.setState({
         courseId: newProps.courseId,
         user: newProps.user,
@@ -120,7 +106,7 @@ class PlayCourse extends Component {
     }
   }
 
-  async handleClick(id) {
+  async handleEnrollCourse(id) {
     await this.props.enrollCourse(this.props.user.id, id);
     await this.props.isCourseEnrolled(this.props.user.id, id);
     // this.props.history.push(this.props.url + "/enroll/" + id);
@@ -144,183 +130,146 @@ class PlayCourse extends Component {
         },
       ],
     };
+
+    const sections = [
+      { key: 'Home', content: 'Home', link: true },
+      { key: 'Store', content: 'Store', link: true },
+      { key: 'Shirt', content: 'T-Shirt', active: true },
+    ]
     const { showedCourse } = this.state;
+    const objArray = this.state.showedCourse.objective ? this.state.showedCourse.objective.split(',') : []
+    console.log(objArray)
     return (
       <>
-        <div className="container">
-          <div className="row">
-            <div className="col-sm-12 col-md-7">
-              <div className="pr-2" style={{ background: "#fff" }}>
-                {!showedCourse ? (
-                  <div>
-                    <Skeleton variant="rect" width="100%" height={500} />
-                    <ReactPlaceholder
-                      type="text"
-                      rows={5}
-                      className="p-4"
-                      widths={700}
-                      showLoadingAnimation
-                    />
-                  </div>
-                ) : (
+        <div className="container-fluid mb-4">
+          <div className="overlay" style={{
+            backgroundColor: ' #2a2a5a', backgroundImage: `url(${showedCourse.banner})`,
+            backgroundSize: 'cover', minHeight: '30em', marginTop: '3em', padding: "7em 6em 0 6em", alignContent: 'center'
+          }} />
+          <div className="container row" style={{ margin: '-25em 5em' }}>
+            <div className="col-xs-12 col-md-7 d-none d-md-block">
+              <Breadcrumbs aria-label="breadcrumb">
+                <Link color="inherit" style={{ color: '#fff' }} to="/" component={RouterLink}>
+                  Home
+      </Link>
+                <Link color="inherit" style={{ color: '#fff' }} to="/" component={RouterLink}>
+                  ULearn
+      </Link>
+                <Typography style={{ color: '#fff' }} color="textPrimary">{showedCourse.title}</Typography>
+              </Breadcrumbs>
+              {
+                showedCourse.id ? (
                   <>
-                    <div className="p-3 mb-4">
-                      {/* <p>your Progress</p> */}
-                      {showedCourse.introVideo ? (
-                        <VideoPlayer course={showedCourse} />
-                      ) : showedCourse.videoPath ? (
-                        <VideoPlayer course={showedCourse} />
-                      ) : (
-                        <img
-                          src={BaseUrl + showedCourse.banner}
-                          alt=""
-                          width="100%"
-                          height={500}
-                          className="img-responsive w-100"
-                        />
-                      )}
-                    </div>
-                    <Typography
-                      variant="h5"
-                      style={{ color: "#000066", padding: "5px" }}
-                    >
-                      {showedCourse.title}
-                    </Typography>
-
-                    <Divider />
-                    {showedCourse.objective ? (
-                      <Alert severity="info">
-                        <AlertTitle> Objective </AlertTitle>
-                        <p style={{ textAlign: "justify" }}>
-                          {" "}
-                          {showedCourse.objective}{" "}
-                        </p>
-                      </Alert>
-                    ) : null}
-                    <CssBaseline />
-                    <Divider />
-                    <div className="mt-4 mb-4">
-                      <p>
-                        {showedCourse.description &&
-                          parse(
-                            this.state.showAll
-                              ? showedCourse.description
-                              : showedCourse.description.substring(0, 800) +
-                                  "..."
-                          )}{" "}
-                        {this.state.showAll && (
-                          <Button onClick={this.toggleReadMore} variant="text">
-                            {this.state.readMoreText}
-                          </Button>
-                        )}
-                      </p>
-                    </div>
-
-                    <div className="d-flex" style={{ marginTop: "2%" }}>
-                      <TextureIcon
-                        style={{ color: "#000066", padding: "5px" }}
-                      />
-                      <Typography
-                        variant="h6"
-                        style={{ color: "#000066", padding: "5px" }}
-                      >
-                        Course Reviews
-                      </Typography>
-                      <LinearProgress variant="determinate" value={20} />
-                    </div>
-                    <Divider />
-                  </>
-                )}
-              </div>
-
-              <div className="col-12">
-                {this.props.user.id ? (
-                  <>
-                    <Button
-                      size="large"
-                      variant="contained"
-                      color="primary"
-                      className="m-4"
-                      onClick={() => this.handleClick(showedCourse.id)}
-                    >
-                      {/* <CircularProgress /> */}
-                      {this.props.isEnrolled === true ? "unfollow" : "follow"}
-                    </Button>
-                    {this.props.isEnrolled && (
-                      <Button
-                        size="large"
-                        variant="contained"
-                        color="primary"
-                        className="m-4"
-                        onClick={() =>
-                          this.handlePlay(showedCourse.id, showedCourse.title)
-                        }
-                      >
-                        Start Course
-                      </Button>
-                    )}
+                    <Typography variant="h3" style={{ color: '#fff' }}>{showedCourse.title}</Typography>
+                    <Typography variant="h5" style={{ color: '#fff' }}>{showedCourse.subtitle}</Typography>
+                    <Typography variant="body1" style={{ color: '#fff' }}>{`Difficulty: ${showedCourse.course_difficulty} 
+              | Category: ${showedCourse.sub_category && showedCourse.sub_category.name}`}</Typography>
+                    <Typography style={{ color: '#fff' }} variant="body1">{`Created By: ${showCourse.tutor ? showCourse.tutor.name : 'Tutors name'}`}</Typography>
+                    <Typography style={{ color: '#fff' }} variant="body1">{`Last Updated: ${showCourse.updated_at}`}</Typography>
+                    <Typography style={{ color: '#fff' }} variant="body1"><Icon name="globe" color='white' />{showCourse.language || 'English'}</Typography>
                   </>
                 ) : (
-                  <p className="alert alert-warning mt-4">
-                    Sign in to follow this course
-                  </p>
-                )}
-              </div>
+                    <>
+                      <Skeleton />
+                      <Skeleton />
+                      <Skeleton />
+                      <Skeleton />
+                      <Skeleton />
+                    </>
+                  )
+              }
+
+              <Segment fluid padded style={{ marginTop: '8em' }} >
+                <Typography variant='h6'>In this course you will learn</Typography>
+                <Divider />
+                <List>
+                  {
+                    this.props.showingCourse ? (
+                      <>
+                        <Skeleton />
+                        <Skeleton />
+                        <Skeleton />
+                        <Skeleton />
+                        <Skeleton />
+                        <Skeleton />
+                      </>
+                    ) :
+                      objArray.length > 0 ? objArray.map((objective, index) => (
+                        <List.Item as='a'>
+                          <SemanticIcon name='check' />
+                          <List.Content>
+                            <List.Description>
+                              {objective !== '' && objective}
+                            </List.Description>
+                          </List.Content>
+                        </List.Item>
+                      )) : 'Not Set'
+                  }
+                </List>
+              </Segment>
+              {
+                showedCourse.description &&
+                <Segment fluid padded basic>
+                  <Typography variant='h4'>Description</Typography>
+                  <Divider />
+                  <Typography variant='body1' className="text-dark mt-3">  {parse(showedCourse.description.length > 1000 && !this.state.readMore ?
+                    showedCourse.description.substring(0, 1000) : showedCourse.description || '')}</Typography>
+                  <Link component={Typography} variant="button" className="btn-link" onClick={() => this.setState((state) => ({
+                    readMore: !state.readMore,
+                  }))} > {this.state.readMore ? 'Show Less' : 'Show More'} </Link>
+                </Segment>
+              }
             </div>
-            <div className="col-sm-12 col-md-5">
-              <TutorCard tutor={showedCourse.tutor} />
-              {showedCourse.id && <Comments course_id={showedCourse.id} />}
+            <div className=" col-sm-12 col-md-5">
+              <SemanticCard fluid  >
+                <VideoPlayer course={showedCourse} />
+                <SemanticButton.Group fluid>
+                  <SemanticButton color="blue" disabled={this.props.courseIsEnrolled}>{this.props.courseIsEnrolled ? 'You are already taking this course' : 'Add to Cart'}</SemanticButton>
+                  <SemanticButton.Or />
+                  <SemanticButton color='blue' loading={this.props.isEnrollingCourse} basic onClick={() => this.handleEnrollCourse(showedCourse.id)}>Start Course Now</SemanticButton>
+                </SemanticButton.Group>
+                <SemanticCard.Content className="p-4">
+                  <Alert severity="info">
+                    {showedCourse.courseType === "isPO" ? 'This course is for Pinnacled Ulearn Learners' :
+                      'This course is for Career of the Future (CotF) Learners'
+                    }
+                  </Alert>
+                  <Typography variant="h5" className="m-2 pull-right"> {showCourse.price || 'Free'}</Typography>
+                  <div className="clearfix"></div>
+                  <Typography variant="h5" className="text-dark mt-2 mb-2">This Course has:</Typography>
+                  <List>
+                    <List.Item as='a'>
+                      <SemanticIcon name='check' />
+                      <List.Content>
+                        <List.Description>
+                          {showedCourse.modules && showedCourse.modules.length} Course Modules
+                          </List.Description>
 
-              <PostReview course={showedCourse} />
-              <div className="d-flex" style={{ marginTop: "20px" }}>
-                <TextureIcon style={{ color: "#000066", padding: "5px" }} />
-                <Typography
-                  variant="h6"
-                  style={{ color: "#000066", padding: "5px" }}
-                >
-                  Course Modules
-                </Typography>
-              </div>
-              <Divider />
-              {showedCourse.modules && showedCourse.modules.length < 0
-                ? null
-                : showedCourse.modules &&
-                  showedCourse.modules.map((item, index) => (
-                    <ExpansionPanel key={index}>
-                      <ExpansionPanelSummary
-                        expandIcon={<ExpandMoreIcon />}
-                        aria-controls="panel1a-content"
-                        id="panel1a-header"
-                      >
-                        <Typography className>{item.title}</Typography>
-                      </ExpansionPanelSummary>
-                      <ExpansionPanelDetails>
-                        <List>
-                          {item.course_materials &&
-                            item.course_materials.map((module) => (
-                              <ListItem
-                                button
-                                className="p-1"
-                                // onClick={this.playModule(module.id)}
-                              >
-                                <ListItemIcon>
-                                  <PlayCircleFilledIcon />
-                                </ListItemIcon>
-                                <p
-                                  style={{
-                                    lineHeight: "14px",
-                                    fontSize: "14px",
-                                    padding: "10px",
-                                  }}
-                                >
-                                  {module.title}
-                                </p>
-                              </ListItem>
-                            ))}
-                        </List>
-                      </ExpansionPanelDetails>
-                    </ExpansionPanel>
-                  ))}
+                      </List.Content>
+                    </List.Item>
+                    <List.Item as='a'>
+                      <SemanticIcon name='video' />
+                      <List.Content>
+                        <List.Description>
+                          {showedCourse.modules && showedCourse.modules.length} Video Materials
+                          </List.Description>
+                      </List.Content>
+                    </List.Item>
+                    <List.Item as='a'>
+                      <List.Content>
+                        <List.Description>
+                          <ShowRating {...showedCourse} />
+                        </List.Description>
+
+                      </List.Content>
+                    </List.Item>
+                  </List>
+                </SemanticCard.Content>
+                <SemanticCard.Content extra>
+                  <Comments course_id={showedCourse.id} />
+                  <PostReview course={showedCourse} />
+                </SemanticCard.Content>
+              </SemanticCard>
             </div>
           </div>
         </div>
@@ -333,6 +282,12 @@ const mapStateToProps = (state) => ({
   user: state.auth.user,
   isEnrolled: state.course.isEnrolled,
   showedCourse: state.course.showCourse.data,
+  showingCourse: state.course.showingCourse,
+  errShowingCourse: state.course.errShowingCourse,
+  isEnrollingCourse: state.course.isEnrollingCourse,
+  enrollCourseError: state.course.enrollCourseError,
+  courseIsEnrolled: state.course.courseIsEnrolled,
+
 });
 
 export default connect(mapStateToProps, {

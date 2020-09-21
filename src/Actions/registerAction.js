@@ -23,7 +23,7 @@ export const register = credentials => dispatch => {
         payload: false
     })
 
-    Axios.post(`${BaseUrl}api/register`, credentials)
+    Axios.post(`${BaseUrl}register`, credentials)
         .then(data => {
             const { user } = data.data;
             dispatch({

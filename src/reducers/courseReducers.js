@@ -2,7 +2,6 @@ import {
     FETCH_COURSES,
     FETCH_PO_COURSES,
     FETCH_COTF_COURSES,
-    ENROLLED_COURSES,
     FETCH_FREE_COURSES,
     PLAY_COURSE,
     NULL_ERR_MAIN_CATEGORIES,
@@ -12,7 +11,12 @@ import {
     ERR_PLAY_COURSE,
     SAVE_PLAYING_MODULES,
     COURSE_IS_ENROLLED,
+    END_LOADING_SHOW_COURSE,
     START_COURSE_REVIEW,
+    ENROLLING_COURSE,
+    ENROLLED_COURSES,
+    LOAD_SUB,
+    LOADING_SHOW_COURSE,
     END_COURSE_REVIEW,
     EMPTY_PLAY_MODULES,
     CHECK_COURSE_PROGRESS,
@@ -22,12 +26,14 @@ import {
     PLAY_MODULES,
     NULL_ERR_FETCH_COURSES,
     GET_RECOMMENDED_COURSES,
+    ALL_COURSES,
+    ERROR_ENROLLING_COURSE,
     ERR_GET_RECOMMENDED_COURSES
 } from "../Actions/types";
 
 const initialState = {
     showCourse: {},
-    moduleToPlay: {},
+    modulePlaying: {},
     fetchCourseError: null,
     mainCategories: {},
     mainCategoriesFetchError: null,
@@ -45,8 +51,15 @@ const initialState = {
     moduleLength: 0,
     items: {},
     item: {},
+    loadSub: {},
     recommendedCourses: {},
     recommendedCoursesFetchError: null,
+    showingCourse: false,
+    errShowingCourse: {},
+    isEnrollingCourse: false,
+    enrollCourseError: null,
+    courseIsEnrolled: false,
+
 }
 
 export default function(state = initialState, action) {
@@ -54,6 +67,11 @@ export default function(state = initialState, action) {
         case FETCH_COURSES:
             return {...state,
                 items: action.payload
+            }
+        case LOAD_SUB:
+            return {
+                ...state,
+                loadSub: action.payload
             }
         case FETCH_PO_COURSES:
             return {...state,
@@ -86,11 +104,12 @@ export default function(state = initialState, action) {
             }
         case PLAY_MODULES:
             /**
+             * get/load course module to play
              * Present playing module
              */
             return {
                 ...state,
-                moduleToPlay: action.payload
+                modulePlaying: action.payload
             }
         case EMPTY_PLAY_MODULES:
             /**
@@ -98,16 +117,29 @@ export default function(state = initialState, action) {
              */
             return {
                 ...state,
-                moduleToPlay: {}
+                modulePlaying: {}
             }
 
         case NULL_ERR_PLAY_COURSE:
             return {...state,
                 playError: ''
             }
+        case ENROLLING_COURSE:
+            return {...state,
+                isEnrollingCourse: true,
+                enrollCourseError: null
+            }
+        case ERROR_ENROLLING_COURSE:
+            return {...state,
+                enrollCourseError: action.payload,
+                isEnrollingCourse: false,
+
+            }
+
         case COURSE_IS_ENROLLED:
             return {...state,
-                isEnrolled: action.payload
+                isEnrollingCourse: false,
+                courseIsEnrolled: action.payload
             }
         case ERR_COURSE_IS_ENROLLED:
             return {...state,
@@ -131,8 +163,19 @@ export default function(state = initialState, action) {
             }
         case SHOW_COURSE:
             return {...state,
-                showCourse: action.payload
+                showCourse: action.payload,
+                showingCourse: false
             }
+        case LOADING_SHOW_COURSE:
+            return {...state,
+                showingCourse: true
+            }
+        case END_LOADING_SHOW_COURSE:
+            return {...state,
+                showingCourse: false,
+                errShowingCourse: action.payload,
+            }
+
         case ERR_FETCH_COURSES:
             return {...state,
                 fetchCourseError: action.payload
@@ -148,6 +191,10 @@ export default function(state = initialState, action) {
         case ERR_GET_RECOMMENDED_COURSES:
             return {...state,
                 recommendedCoursesFetchError: action.payload
+            }
+        case ALL_COURSES:
+            return {...state,
+                ALL_courses: action.payload
             }
 
         default:
