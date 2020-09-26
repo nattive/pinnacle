@@ -20,18 +20,24 @@ import {
   playCourse,
   showCourse,
 } from "../Actions/courseAction";
-// import { verifyUserTokenAction } from "../Actions/verifyUserTokenAction";
+import { recommended } from "../Patials/constant";
 import { connect } from "react-redux";
 import HeadBar from "./HeadBar";
-import 'semantic-ui-css/semantic.min.css'
+import "semantic-ui-css/semantic.min.css";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import ShowRating from "../General Components/ShowRating";
 import Comments from "./Cmments/Reviews";
 import PostReview from "./Review/PostReview";
-import "./PlayCourse.css"
-import { Link as RouterLink } from 'react-router-dom'
-import { Header, Segment, Breadcrumb } from "semantic-ui-react";
-import { Card as SemanticCard, Button as SemanticButton, List, Icon as SemanticIcon } from 'semantic-ui-react'
+import "./PlayCourse.css";
+import { Link as RouterLink } from "react-router-dom";
+import { Header, Segment, Breadcrumb, Message } from "semantic-ui-react";
+import {
+  Card as SemanticCard,
+  Button as SemanticButton,
+  List,
+  Icon as SemanticIcon,
+} from "semantic-ui-react";
+import RecommendedCourses from "./RecommendedCourses/RecommendedCourses";
 var PHPUnserialize = require("php-unserialize");
 
 var parse = require("html-react-parser");
@@ -56,13 +62,7 @@ class PlayCourse extends Component {
     this.setState({ showAll: true });
   }
 
-  // componentWillUpdate() {
-  //   this.props.isCourseEnrolled(this.props.user.user.id, course.data.id);
-  // }
   componentDidMount() {
-    this.state.loading = true;
-    this.state.loading = false;
-
     this.props.showCourse(this.props.match.params.course);
     // this.props.isCourseEnrolled(this.props.user.id, this.props.courseId);
     /**
@@ -75,17 +75,35 @@ class PlayCourse extends Component {
   }
 
   componentWillReceiveProps(newProps) {
-    if (newProps.courseId & newProps.user.id) {
+    console.log(newProps)
+    if (newProps.showedCourse & newProps.user) {
+      const { showedCourse } = newProps;
       this.setState({
-        courseId: newProps.courseId,
+        courseId: showedCourse.id,
         user: newProps.user,
       });
-      this.props.isCourseEnrolled(newProps.user, newProps.courseId);
+      this.props.isCourseEnrolled(newProps.user, showedCourse.id);
     }
     if (newProps.showedCourse) {
+      const { showedCourse } = newProps;
       this.setState({
         showedCourse: newProps.showedCourse,
       });
+
+      var recommend = localStorage.getItem(recommended);
+      if (recommend) {
+        var recommendArray = JSON.parse(recommend);
+        if (recommendArray.includes(showedCourse.slug)) {
+          return;
+        } else {
+          recommendArray.push(showedCourse.slug);
+          localStorage.setItem(recommended, JSON.stringify(recommendArray));
+        }
+      } else {
+        const recommendArray = [];
+        recommendArray.push(showedCourse.slug);
+        localStorage.setItem(recommended, JSON.stringify(recommendArray));
+      }
       this.props.isCourseEnrolled(newProps.user.id, newProps.showedCourse.id);
     }
   }
@@ -120,147 +138,234 @@ class PlayCourse extends Component {
     this.state.user &&
       this.props.isCourseEnrolled(this.state.user.id, this.state.courseId);
 
-    const videoJsOptions = {
-      autoplay: true,
-      controls: true,
-      sources: [
-        {
-          src: "/path/to/video.mp4",
-          type: "video/mp4",
-        },
-      ],
-    };
-
-    const sections = [
-      { key: 'Home', content: 'Home', link: true },
-      { key: 'Store', content: 'Store', link: true },
-      { key: 'Shirt', content: 'T-Shirt', active: true },
-    ]
     const { showedCourse } = this.state;
-    const objArray = this.state.showedCourse.objective ? this.state.showedCourse.objective.split(',') : []
-    console.log(objArray)
+  
+    
+    const sections = [
+      { key: "Home", content: "Home", link: true },
+      { key: "Store", content: "Store", link: true },
+      { key: "Shirt", content: "T-Shirt", active: true },
+    ];
+    const objArray = this.state.showedCourse.objective
+      ? this.state.showedCourse.objective.split(",")
+      : [];
+    console.log(objArray);
     return (
       <>
         <div className="container-fluid mb-4">
-          <div className="overlay" style={{
-            backgroundColor: ' #2a2a5a', backgroundImage: `url(${showedCourse.banner})`,
-            backgroundSize: 'cover', minHeight: '30em', marginTop: '3em', padding: "7em 6em 0 6em", alignContent: 'center'
-          }} />
-          <div className="container row" style={{ margin: '-25em 5em' }}>
+          <div
+            className="overlay"
+            style={{
+              backgroundColor: "red",
+              backgroundImage: `url(${showedCourse.banner})`,
+              backgroundPosition: "fixed",
+              backgroundSize: "cover",
+              minHeight: "30em",
+              marginTop: "3em",
+              padding: "7em 6em 0 6em",
+              alignContent: "center",
+            }}
+          />
+          <div className="container row" style={{ margin: "-25em 5em" }}>
             <div className="col-xs-12 col-md-7 d-none d-md-block">
               <Breadcrumbs aria-label="breadcrumb">
-                <Link color="inherit" style={{ color: '#fff' }} to="/" component={RouterLink}>
+                <Link
+                  color="inherit"
+                  style={{ color: "#fff" }}
+                  to="/"
+                  component={RouterLink}
+                >
                   Home
-      </Link>
-                <Link color="inherit" style={{ color: '#fff' }} to="/" component={RouterLink}>
+                </Link>
+                <Link
+                  color="inherit"
+                  style={{ color: "#fff" }}
+                  to="/learn"
+                  component={RouterLink}
+                >
                   ULearn
-      </Link>
-                <Typography style={{ color: '#fff' }} color="textPrimary">{showedCourse.title}</Typography>
+                </Link>
+                <Typography style={{ color: "#fff" }} color="textPrimary">
+                  {showedCourse.title}
+                </Typography>
               </Breadcrumbs>
-              {
-                showedCourse.id ? (
-                  <>
-                    <Typography variant="h3" style={{ color: '#fff' }}>{showedCourse.title}</Typography>
-                    <Typography variant="h5" style={{ color: '#fff' }}>{showedCourse.subtitle}</Typography>
-                    <Typography variant="body1" style={{ color: '#fff' }}>{`Difficulty: ${showedCourse.course_difficulty} 
-              | Category: ${showedCourse.sub_category && showedCourse.sub_category.name}`}</Typography>
-                    <Typography style={{ color: '#fff' }} variant="body1">{`Created By: ${showCourse.tutor ? showCourse.tutor.name : 'Tutors name'}`}</Typography>
-                    <Typography style={{ color: '#fff' }} variant="body1">{`Last Updated: ${showCourse.updated_at}`}</Typography>
-                    <Typography style={{ color: '#fff' }} variant="body1"><Icon name="globe" color='white' />{showCourse.language || 'English'}</Typography>
-                  </>
-                ) : (
+              {showedCourse.id ? (
+                <>
+                  <Typography
+                    variant="h3"
+                    style={{ color: "#fff", textTransform: "capitalize" }}
+                  >
+                    {showedCourse.title}
+                  </Typography>
+                  <Typography variant="h5" style={{ color: "#fff" }}>
+                    {showedCourse.subtitle}
+                  </Typography>
+                  <Typography
+                    variant="body1"
+                    style={{ color: "#fff" }}
+                  >{`Difficulty: ${showedCourse.course_difficulty} 
+              | Category: ${
+                showedCourse.SubCategory && showedCourse.SubCategory.name
+              }`}</Typography>
+                  <Typography
+                    style={{ color: "#fff" }}
+                    variant="body1"
+                  >{`Created By: ${
+                    showCourse.tutor ? showCourse.tutor.name : "Tutors name"
+                  }`}</Typography>
+                  <Typography
+                    style={{ color: "#fff" }}
+                    variant="body1"
+                  >{`Last Updated: ${showCourse.updated_at}`}</Typography>
+                  <Typography style={{ color: "#fff" }} variant="body1">
+                    <Icon name="globe" color="white" />
+                    {showCourse.language || "English"}
+                  </Typography>
+                </>
+              ) : (
+                <>
+                  <Skeleton />
+                  <Skeleton />
+                  <Skeleton />
+                  <Skeleton />
+                  <Skeleton />
+                </>
+              )}
+
+              <Segment fluid padded style={{ marginTop: "8em" }}>
+                <Typography variant="h6">
+                  In this course you will learn
+                </Typography>
+                <Divider />
+                <List>
+                  {this.props.showingCourse ? (
                     <>
                       <Skeleton />
                       <Skeleton />
                       <Skeleton />
                       <Skeleton />
                       <Skeleton />
+                      <Skeleton />
                     </>
-                  )
-              }
-
-              <Segment fluid padded style={{ marginTop: '8em' }} >
-                <Typography variant='h6'>In this course you will learn</Typography>
-                <Divider />
-                <List>
-                  {
-                    this.props.showingCourse ? (
-                      <>
-                        <Skeleton />
-                        <Skeleton />
-                        <Skeleton />
-                        <Skeleton />
-                        <Skeleton />
-                        <Skeleton />
-                      </>
-                    ) :
-                      objArray.length > 0 ? objArray.map((objective, index) => (
-                        <List.Item as='a'>
-                          <SemanticIcon name='check' />
-                          <List.Content>
-                            <List.Description>
-                              {objective !== '' && objective}
-                            </List.Description>
-                          </List.Content>
-                        </List.Item>
-                      )) : 'Not Set'
-                  }
+                  ) : objArray.length > 0 ? (
+                    objArray.map((objective, index) => (
+                      <List.Item as="a">
+                        <SemanticIcon name="check" />
+                        <List.Content>
+                          <List.Description>
+                            {objective !== "" && objective}
+                          </List.Description>
+                        </List.Content>
+                      </List.Item>
+                    ))
+                  ) : (
+                    "Not Set"
+                  )}
                 </List>
               </Segment>
-              {
-                showedCourse.description &&
+              {showedCourse.description && (
                 <Segment fluid padded basic>
-                  <Typography variant='h4'>Description</Typography>
+                  <Typography variant="h4">Description</Typography>
                   <Divider />
-                  <Typography variant='body1' className="text-dark mt-3">  {parse(showedCourse.description.length > 1000 && !this.state.readMore ?
-                    showedCourse.description.substring(0, 1000) : showedCourse.description || '')}</Typography>
-                  <Link component={Typography} variant="button" className="btn-link" onClick={() => this.setState((state) => ({
-                    readMore: !state.readMore,
-                  }))} > {this.state.readMore ? 'Show Less' : 'Show More'} </Link>
+                  <Typography variant="body1" className="text-dark mt-3">
+                    {" "}
+                    {parse(
+                      showedCourse.description.length > 1000 &&
+                        !this.state.readMore
+                        ? showedCourse.description.substring(0, 1000)
+                        : showedCourse.description || ""
+                    )}
+                  </Typography>
+                  <Link
+                    component={Typography}
+                    variant="button"
+                    className="btn-link"
+                    onClick={() =>
+                      this.setState((state) => ({
+                        readMore: !state.readMore,
+                      }))
+                    }
+                  >
+                    {" "}
+                    {this.state.readMore ? "Show Less" : "Show More"}{" "}
+                  </Link>
                 </Segment>
-              }
+              )}
             </div>
             <div className=" col-sm-12 col-md-5">
-              <SemanticCard fluid  >
-                <VideoPlayer course={showedCourse} />
+              <SemanticCard fluid>
+                <VideoPlayer
+                  videoUrl={showedCourse.videoUrl}
+                  banner={showedCourse.banner}
+                />
                 <SemanticButton.Group fluid>
-                  <SemanticButton color="blue" disabled={this.props.courseIsEnrolled}>{this.props.courseIsEnrolled ? 'You are already taking this course' : 'Add to Cart'}</SemanticButton>
+                  <SemanticButton
+                    color="blue"
+                    disabled={this.props.courseIsEnrolled}
+                  >
+                    {this.props.courseIsEnrolled
+                      ? "You are already taking this course"
+                      : "Add to Cart"}
+                  </SemanticButton>
                   <SemanticButton.Or />
-                  <SemanticButton color='blue' loading={this.props.isEnrollingCourse} basic onClick={() => this.handleEnrollCourse(showedCourse.id)}>Start Course Now</SemanticButton>
+                  <SemanticButton
+                    color="green"
+                    loading={this.props.isEnrollingCourse}
+                    onClick={() => {
+                      this.props.courseIsEnrolled
+                        ? this.props.history.push(
+                            "/learn/play/" + showedCourse.slug
+                          )
+                        : this.handleEnrollCourse(showedCourse.id);
+                    }}
+                  >
+                    {this.props.courseIsEnrolled
+                      ? "Continue Course"
+                      : "Start Course Now"}
+                  </SemanticButton>
                 </SemanticButton.Group>
                 <SemanticCard.Content className="p-4">
+                  <Message
+                    error={this.props.enrollCourseError}
+                    hidden={!this.props.enrollCourseError}
+                  >
+                    {JSON.stringify(this.props.enrollCourseError)}
+                  </Message>
                   <Alert severity="info">
-                    {showedCourse.courseType === "isPO" ? 'This course is for Pinnacled Ulearn Learners' :
-                      'This course is for Career of the Future (CotF) Learners'
-                    }
+                    {`This course is for ${showedCourse.courseType} subscribers`}
                   </Alert>
-                  <Typography variant="h5" className="m-2 pull-right"> {showCourse.price || 'Free'}</Typography>
-                  <div className="clearfix"></div>
-                  <Typography variant="h5" className="text-dark mt-2 mb-2">This Course has:</Typography>
-                  <List>
-                    <List.Item as='a'>
-                      <SemanticIcon name='check' />
-                      <List.Content>
-                        <List.Description>
-                          {showedCourse.modules && showedCourse.modules.length} Course Modules
-                          </List.Description>
 
-                      </List.Content>
-                    </List.Item>
-                    <List.Item as='a'>
-                      <SemanticIcon name='video' />
+                  <Typography variant="h5" className="m-2 pull-right">
+                    {" "}
+                    {showCourse.price || "Free"}
+                  </Typography>
+                  <div className="clearfix"></div>
+                  {/* <Typography variant="h5" className="text-dark mt-2 mb-2">
+                    This Course has:
+                  </Typography> */}
+                  <List>
+                    <List.Item as="a">
+                      <SemanticIcon name="check" />
                       <List.Content>
                         <List.Description>
-                          {showedCourse.modules && showedCourse.modules.length} Video Materials
-                          </List.Description>
+                          {showedCourse.Modules && showedCourse.Modules.length}{" "}
+                          Course Modules
+                        </List.Description>
                       </List.Content>
                     </List.Item>
-                    <List.Item as='a'>
+                    <List.Item as="a">
+                      <SemanticIcon name="video" />
+                      <List.Content>
+                        <List.Description>
+                          {showedCourse.total_materials} Video Materials
+                        </List.Description>
+                      </List.Content>
+                    </List.Item>
+                    <List.Item as="a">
                       <List.Content>
                         <List.Description>
                           <ShowRating {...showedCourse} />
                         </List.Description>
-
                       </List.Content>
                     </List.Item>
                   </List>
@@ -271,6 +376,7 @@ class PlayCourse extends Component {
                 </SemanticCard.Content>
               </SemanticCard>
             </div>
+            <RecommendedCourses />
           </div>
         </div>
       </>
@@ -287,7 +393,6 @@ const mapStateToProps = (state) => ({
   isEnrollingCourse: state.course.isEnrollingCourse,
   enrollCourseError: state.course.enrollCourseError,
   courseIsEnrolled: state.course.courseIsEnrolled,
-
 });
 
 export default connect(mapStateToProps, {

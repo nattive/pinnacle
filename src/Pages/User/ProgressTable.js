@@ -33,14 +33,14 @@ const ProgressTable = (props) => {
   console.log(progress);
 
   return (
-    <div class="table-responsive">
-      <table class="table table-hover">
+    <div className="table-responsive m-4">
+      <table className="table table-hover">
         <thead>
           <tr>
             <th scope="col">Course</th>
             <th scope="col">Module</th>
-            <th scope="col">progress</th>
-            <th scope="col">grade</th>
+            <th scope="col">Progress</th>
+            <th scope="col">Average Grade</th>
             <th scope="col">completed</th>
           </tr>
         </thead>

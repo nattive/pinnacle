@@ -21,12 +21,12 @@ const SingleCourseItem = (props) => (
     )}
     header={
       (
-        <Typography variant='h6'>{props.course.title}</Typography>
+        <Typography variant='h6' style={{textTransform: 'capitalize'}}>{props.course.title}</Typography>
       )
     }
     meta={props.course.subtitle}
-    description={`Category: ${props.course.sub_category && props.course.sub_category.name} |
-     Tutor: ${props.course.tutor && props.course.tutor.user && props.course.tutor.user.name}`}
+    description={`Category: ${props.course.SubCategory && props.course.SubCategory.name} |
+     By: ${props.course.tutor && props.course.tutor.user && props.course.tutor.user.name}`}
     extra={(
       <>
         <Typography variant="overline" className="text-danger pull-right">

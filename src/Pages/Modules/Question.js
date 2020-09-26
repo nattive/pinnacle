@@ -58,23 +58,15 @@ const Question = (props) => {
     setOpenDialog(false);
   };
   const [answerArray, setAnswerArray] = useState(
-    new Array(
-      props.moduleToPlay.course_questions
-        ? props.moduleToPlay.course_questions.length
-        : 0
-    )
+    new Array(props.question ? props.question.length : 0)
   );
   const [selectAnswer, setSelectAnswer] = useState(
-    new Array(
-      props.moduleToPlay.course_questions
-        ? props.moduleToPlay.course_questions.length
-        : 0
-    )
+    new Array(props.question.length)
   );
-  const [percentage, setPercentage] = useState(0);
-  const [wrongAnswer, setwrongAnswer] = useState(0);
+  const [totalQuestion, setTotalQuestion] = useState(
+    props.question ? props.question.length : 0
+  );
   const handleSelectAnswer = (index, answer, selectedOption) => {
-    setTotal(answer === selectedOption ? total + 5 : total + 0);
     selectAnswer[index] = selectedOption;
     answerArray[index] = answer;
   };
@@ -85,35 +77,37 @@ const Question = (props) => {
 
   const handleAnswer = () => {
     setSubmitDisabled(true);
-    const totalQuestion = props.moduleToPlay.course_questions.length;
-    const totalQuestionAccum = totalQuestion * 5;
+    setTotalQuestion(props.question.length);
+    const totalQuestionAccum = Number(totalQuestion) * 5;
     /**
      * Get the total possible getElementsByName('A')price
      */
+    let score = 0;
+    let wrongAnswer = 0;
+    let correctAnswer = 0;
+    let percentage = 0;
+    answerArray.map((answer, index) => {
+      if (answer === selectAnswer[index]) {
+        score += 5;
+        correctAnswer += 1;
+      } else {
+        wrongAnswer += 1;
+      }
+    });
+    percentage = (score / totalQuestionAccum) * 100;
+    setShowAnswer(true);
+    setOpen(true);
 
-    for (let a = 0; a < totalQuestion; a++) {
-      const correctAnswer = answerArray[a];
-      const correctSelectedAnswer = selectAnswer[a];
-      setTotal(correctAnswer === correctSelectedAnswer ? total + 5 : total + 0);
-      setwrongAnswer(
-        correctAnswer !== correctSelectedAnswer ? wrongAnswer + 1 : wrongAnswer
-      );
-      const percent = (total / totalQuestionAccum) * 100;
-      setShowAnswer(true);
-      setOpen(true);
-      setPercentage(percent > 100 ? 100 : percent);
-
-      const result = {
-        module_id: props.moduleToPlay.id, // course material id
-        no_correct_answer:
-          props.moduleToPlay.course_questions.length - wrongAnswer,
-        no_wrong_answer: wrongAnswer,
-        total: total,
-        percentage: percentage,
-        totalNumberOfQuestions: props.moduleToPlay.course_questions.length,
-      };
-      props.storeQuestionResult({ result });
-    }
+    const result = {
+      module_id: props.moduleToPlay.id, // course material id
+      no_correct_answer: correctAnswer,
+      no_wrong_answer: wrongAnswer,
+      total: score,
+      percentage: percentage,
+      totalNumberOfQuestions: totalQuestion,
+    };
+    console.log(result);
+    props.storeQuestionResult({ result });
   };
 
   return (
@@ -131,7 +125,7 @@ const Question = (props) => {
         <DialogTitle id="form-dialog-title">
           {`Your Grade on ${props.moduleToPlay.title}`}
         </DialogTitle>
-        <DialogContent>
+        {/* <DialogContent>
           <DialogContentText>Your Grade</DialogContentText>
           <div className="row">
             <div className="col-sm-6">
@@ -176,11 +170,7 @@ const Question = (props) => {
                   <tbody>
                     <tr>
                       <td scope="row"> Total correct Answer</td>
-                      <td>
-                        {props.moduleToPlay.course_questions &&
-                         props.moduleToPlay.course_questions.length -
-                          wrongAnswer}
-                      </td>
+                      <td>{totalQuestion - wrongAnswer}</td>
                     </tr>
                     <tr>
                       <td scope="row"> Total wrong Answer</td>
@@ -199,7 +189,7 @@ const Question = (props) => {
               </div>
             </div>
           </div>
-        </DialogContent>
+        </DialogContent> */}
         <DialogActions>
           <Button color="primary" onClick={handleClose} variant="contained">
             Close
@@ -207,14 +197,13 @@ const Question = (props) => {
         </DialogActions>
       </Dialog>
 
-      <Typography variant="body1">
-        Take a quiz on {props.moduleToPlay.title}
-      </Typography>
-      {props.moduleToPlay ? (
-        props.moduleToPlay.course_questions &&
-        (props.moduleToPlay.course_questions.length > 0
-          ? props.moduleToPlay.course_questions.map((quiz, key) => (
+      {props.question &&
+        (props.question.length > 0
+          ? props.question.map((quiz, key) => (
               <>
+                <Typography variant="body1">
+                  Take a quiz on {props.moduleToPlay.title}
+                </Typography>
                 <Card gutterBottom className={classes.root}>
                   <CardActionArea>
                     <CardContent>
@@ -275,17 +264,17 @@ const Question = (props) => {
                     )}
                   </CardActions>
                 </Card>
+                <Button
+                  color="primary"
+                  onClick={handleAnswer}
+                  disabled={submitDisabled}
+                  style={{ margin: 15 }}
+                >
+                  Submit Answer
+                </Button>
               </>
             ))
-          : console.log(props.moduleToPlay.course_questions))
-      ) : (
-        <Alert severity="info">
-          <p>no module selected</p>
-        </Alert>
-      )}
-      <Button color="primary" onClick={handleAnswer} disabled={submitDisabled} style={{ margin: 15 }}>
-        Submit Answer
-      </Button>
+          : "This module has no quiz")}
     </Container>
   );
 };
@@ -295,7 +284,7 @@ Question.propTypes = {
 };
 
 const mapStateToProps = (state) => ({
-  moduleToPlay: state.course.moduleToPlay,
+  moduleToPlay: state.course.modulePlaying,
   appIsBusy: state.loading.appIsBusy,
   questions: state.module.showQuestions,
   showResult: state.module.showResult,

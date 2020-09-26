@@ -1,0 +1,1 @@
+export const recommended = "clicked_slug_array"

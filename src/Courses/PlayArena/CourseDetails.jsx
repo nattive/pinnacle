@@ -9,7 +9,7 @@ import Box from '@material-ui/core/Box';
 import { Container, Divider } from '@material-ui/core';
 import { Segment,Container as SemanticContainer, Header } from 'semantic-ui-react';
 import parse from "html-react-parser";
-import Question from "../Question"
+import Question from "../../Pages/Modules/Question"
 import Comments from './Comments';
 function TabPanel(props) {
     const { children, value, index, ...other } = props;
@@ -90,7 +90,7 @@ function CourseDetails(props) {
                 </Container>
             </TabPanel>
             <TabPanel value={value} index={1}>
-                {props.question ? <Question question={props.question} />:
+                {props.course_questions ? <Question question={props.course_questions} />:
                  <Typography variant='subtitle1'>There are no question in this module</Typography>}
              </TabPanel>
             <TabPanel value={value} index={2}>

@@ -34,7 +34,11 @@ import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import Avatar from '@material-ui/core/Avatar';
 import ImageIcon from '@material-ui/icons/Image';
 import Search from "../General Components/SearchCourse";
-
+import { Icon } from "semantic-ui-react";
+import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
+import AccountBoxIcon from '@material-ui/icons/AccountBox';
+import FavoriteIcon from '@material-ui/icons/Favorite';
+import logo_white from '../Assets/img/Pinnacle/logoWhite.png'
 const drawerWidth = 240;
 
 const useStyles = makeStyles((theme) => ({
@@ -132,7 +136,7 @@ const useStyles = makeStyles((theme) => ({
     color: "inherit",
   },
   textBrandColor: {
-    color: "#000066",
+    color: "#fff",
   },
   inputInput: {
     padding: theme.spacing(1, 1, 1, 0),
@@ -187,6 +191,7 @@ function HeadBar(props) {
     setAnchorEl(event.currentTarget);
   };
   const handleCourseMenuOpen = (event) => {
+    console.log(event.currentTarget);
     setCourseAnchorEl(event.currentTarget);
   };
   const handleCategoryMenuOpen = (event) => {
@@ -242,24 +247,59 @@ function HeadBar(props) {
     </Menu>
   );
   const myCourses = (
-    <Popper open={Boolean(courseAnchorEl)} anchorEl={courseAnchorEl} role={undefined} transition disablePortal>
+    <Popper
+      open={Boolean(courseAnchorEl)}
+      anchorEl={courseAnchorEl}
+      role={undefined}
+      transition
+      disablePortal
+    >
       {({ TransitionProps, placement }) => (
         <Grow
           {...TransitionProps}
-          style={{ transformOrigin: placement === 'bottom' ? 'center top' : 'center bottom' }}
+          style={{
+            transformOrigin:
+              placement === "bottom" ? "center top" : "center bottom",
+          }}
         >
           <Paper>
             <ClickAwayListener onClickAway={handleCourseMenuClose}>
-              <MenuList autoFocusItem={Boolean(courseAnchorEl)} id="menu-list-grow" >
-                <MenuItem onClick={handleCourseMenuClose}>
+              <MenuList
+                autoFocusItem={Boolean(courseAnchorEl)}
+                id="menu-list-grow"
+              >
+                {props.ENROLLED_courses.map 
+                ? props.ENROLLED_courses.map(course => 
+                <>
+                <MenuItem>
                   <ListItemIcon>
-                    <Avatar variant='square' />
+                    <Avatar variant="square" src={course.banner} />
                   </ListItemIcon>
-                  <ListItemText primary='A short message' secondary='some radom description' />
+                  <ListItemText
+                    primary={course.title}
+                    secondary={course.subtitle}
+                  />
                 </MenuItem>
+
+                </>) :
+                <MenuItem>
+                  <ListItemText
+                    primary={'You are Yet to Enroll in any course'}
+                  />
+                </MenuItem>
+                
+                
+                 }
                 <Divider />
                 <MenuItem>
-                  <Button variant="contained" fullWidth disableElevation color="primary">See Enrolled Courses</Button>
+                  <Button
+                    variant="contained"
+                    fullWidth
+                    disableElevation
+                    color="primary"
+                  >
+                    See Enrolled Courses
+                  </Button>
                 </MenuItem>
               </MenuList>
             </ClickAwayListener>
@@ -277,7 +317,6 @@ function HeadBar(props) {
         elevation={0}
         open={Boolean(categoryAnchorEl)}
         onClose={handleCategoryMenuClose}
-        onMouseLeave={handleCourseMenuClose}  
         PaperProps={{
           style: {
             maxHeight: 120 * 4.5,
@@ -286,13 +325,13 @@ function HeadBar(props) {
         }}
       >
         <Paper>
-          <ClickAwayListener onClickAway={handleCourseMenuClose}>
+          <ClickAwayListener >
             <div style={{ display: 'flex' }}>
               <MenuList autoFocusItem={Boolean(categoryAnchorEl)} id="menu-list-grow"  >
                 {
                   props.mainCategories && props.mainCategories.length > 0 ? props.mainCategories.map(course =>
                     <React.Fragment key={course.id}>
-                      <MenuItem onClick={() => dispatch({ type: LOAD_SUB, payload: course.sub_categories })} onMouseLeave={handleCourseMenuClose}  onMouseEnter={() => dispatch({ type: LOAD_SUB, payload: course.sub_categories})} >
+                      <MenuItem onClick={() => dispatch({ type: LOAD_SUB, payload: course.sub_categories })}   onMouseEnter={() => dispatch({ type: LOAD_SUB, payload: course.sub_categories})} >
                         <ListItemText primary={course.name} />
                         <ListItemIcon>
                           <ArrowRightIcon />
@@ -310,7 +349,7 @@ function HeadBar(props) {
                 {
                   props.loadSub && props.loadSub.length > 0 ? props.loadSub.map(sub =>
                     <React.Fragment key={sub.id}>
-                      <MenuItem onClick={handleCourseMenuClose}>
+                      <MenuItem >
                         <ListItemText primary={sub.name} />
                       </MenuItem>
                       <Divider />
@@ -377,7 +416,7 @@ function HeadBar(props) {
           aria-haspopup="true"
           color="inherit"
         >
-          <AccountCircle />
+          <Avatar />
         </IconButton>
         <p>Logout</p>
       </MenuItem>
@@ -399,6 +438,7 @@ function HeadBar(props) {
         })}
       >
         <Toolbar>
+          <img src={logo_white} alt="pinnacle logo" style={{ width: 100 }} />
           <IconButton
             color="inherit"
             aria-label="open drawer"
@@ -418,6 +458,7 @@ function HeadBar(props) {
           <di className={classes.grow} />
           <div className={classes.sectionDesktop}>
             <Search />
+
             <IconButton
               edge="end"
               aria-label="account of current user"
@@ -426,11 +467,35 @@ function HeadBar(props) {
               onClick={handleProfileMenuOpen}
               color="inherit"
             >
-              <Typography variant="body1">
-                {props.user ? props.user.name : <Skeleton />}
-              </Typography>
-
-              <AccountCircle />
+              <ShoppingCartIcon />
+            </IconButton>
+            <IconButton
+              edge="end"
+              aria-label="account of current user"
+              aria-controls={menuId}
+              aria-haspopup="true"
+              onClick={handleProfileMenuOpen}
+              color="inherit"
+            >
+              <FavoriteIcon />
+            </IconButton>
+            <IconButton
+              edge="end"
+              aria-label="account of current user"
+              aria-controls={menuId}
+              aria-haspopup="true"
+              onClick={handleProfileMenuOpen}
+              color="inherit"
+            >
+              <Avatar
+                style={{
+                  backgroundColor: "#fff",
+                  border: `1px solid #2c2c6b`,
+                  color: "#2c2c6b",
+                }}
+                alt={props.user.name}
+                src="/static/images/avatar/1.jpg"
+              />
             </IconButton>
           </div>
         </Toolbar>
@@ -450,8 +515,8 @@ function HeadBar(props) {
             {theme.direction === "ltr" ? (
               <ChevronLeftIcon />
             ) : (
-                <ChevronRightIcon />
-              )}
+              <ChevronRightIcon />
+            )}
           </IconButton>
         </div>
         <Divider />
@@ -465,7 +530,8 @@ const mapStateToProps = (state) => ({
   user: state.auth.user,
   mainCategories: state.course.mainCategories,
   loadSub: state.course.loadSub,
-  busy: state.loading.busy
+  busy: state.loading.busy,
+  ENROLLED_courses: state.course.ENROLLED_courses,
 });
 
 const mapDispatchToProps = {

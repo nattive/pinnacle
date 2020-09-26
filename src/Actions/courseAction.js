@@ -34,6 +34,7 @@ import {
     ENROLLING_COURSE,
     ERROR_ENROLLING_COURSE
 } from '../Actions/types'
+import { recommended } from "../Patials/constant";
 
 export const fetchCourses = (number) => dispatch => {
     console.log(number);
@@ -212,10 +213,10 @@ export const enrollCourse = (user, course) => dispatch => {
         })
         .catch(err => {
             dispatch({ type: STOPPED_WORKING })
-            alert('An error occurred')
+                // alert(err.response.data)
             dispatch({
                 type: ERROR_ENROLLING_COURSE,
-                payload: err.response ? err.response.message : 'error occurred'
+                payload: err.response ? err.response.data : 'error occurred'
 
             })
         })
@@ -411,12 +412,14 @@ export const fetchMainCategory = () => dispatch => {
         }))
 }
 
-export const getRecommendedByUser = (user) => dispatch => {
-
+export const getRecommendation = () => dispatch => {
+    const slugArray = localStorage.getItem(recommended)
     dispatch({
         type: NULL_ERR_MAIN_CATEGORIES
     })
-    Axios.get(`${BaseUrl}courses/recommendations/user/${user}`)
+    Axios.post(`${BaseUrl}courses/recommendations`, {
+            slugArray: JSON.parse(slugArray)
+        })
         .then(response => {
             console.log(response);
             dispatch({

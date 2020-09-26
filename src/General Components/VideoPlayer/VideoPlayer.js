@@ -69,34 +69,22 @@ class VideoPlayer extends Component {
     const { videoUrl, banner } = this.props
   return (
     <>
-      {
+      <Player
+        ref={(player) => {
+          this.player = player;
+        }}
+        poster={banner}
+        fluid
+      >
+        <ControlBar autoHide={false}>
+          <ReplayControl seconds={10} order={2.2} />
 
-        videoUrl && (
-          <>
-
-            <Player
-              ref={(player) => {
-                this.player = player;
-              }}
-              poster={banner}
-              fluid
-            >
-              <ControlBar autoHide={false}>
-                <ReplayControl seconds={10} order={2.2} />
-
-                {/* <ReplayIcon onClick={() => this.load()} order={7} /> */}
-                {/* <GetAppIcon order={7} /> */}
-              </ControlBar>
-              <BigPlayButton position="center" />
-              <source
-                src={
-                   videoUrl
-                }
-              />
-            </Player>
-          </>
-        )
-      }
+          {/* <ReplayIcon onClick={() => this.load()} order={7} /> */}
+          {/* <GetAppIcon order={7} /> */}
+        </ControlBar>
+        <BigPlayButton position="center" />
+        <source src={videoUrl} />
+      </Player>
     </>
   );
 }

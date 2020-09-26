@@ -39,13 +39,13 @@ export const storeQuestionResult = ({ result }) => dispatch => {
     dispatch({ type: WORKING })
     const token = localStorage.getItem('P_access_token')
 
-    Axios.post(`${BaseUrl}api/courses/user/quiz-result/store`, {
-            module_id: result.module_id,
-            no_correct_answer: result.no_correct_answer,
-            no_wrong_answer: result.no_wrong_answer,
-            percentage: result.percentage,
-            total: result.total,
-            totalNumberOfQuestions: result.totalNumberOfQuestions,
+    Axios.post(`${BaseUrl}user/course/quiz`, {
+            module_id: Number(result.module_id),
+            no_correct_answer: Number(result.no_correct_answer),
+            no_wrong_answer: Number(result.no_wrong_answer),
+            percentage: Number(result.percentage),
+            total: Number(result.total),
+            totalNumberOfQuestions: Number(result.totalNumberOfQuestions),
         }, { headers: { Authorization: `Bearer ${token}` } })
         .then(data => {
             dispatch({ type: STOPPED_WORKING })
@@ -68,7 +68,7 @@ export const getUserProgress = () => dispatch => {
     dispatch({ type: WORKING })
     dispatch({ type: GETTING_PROGRESS_STATUS })
     const token = localStorage.getItem('P_access_token')
-    Axios.get(`${BaseUrl}api/courses/user/progress-status`, { headers: { Authorization: `Bearer ${token}` } })
+    Axios.get(`${BaseUrl}user/course/progress`, { headers: { Authorization: `Bearer ${token}` } }, )
         .then(data => {
             dispatch({ type: GET_USER_COURSE_PROGRESS, payload: data.data })
             dispatch({ type: STOPPED_WORKING })

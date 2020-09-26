@@ -12,9 +12,9 @@ import {
   CardHeader,
   CircularProgress,
 } from "@material-ui/core";
-import { connect } from 'react-redux'
+import { connect } from "react-redux";
 import { displayQuestions } from "../Actions/moduleActions";
-import PropTypes from 'prop-types'
+import PropTypes from "prop-types";
 class Question extends Component {
   constructor() {
     super();
@@ -22,7 +22,7 @@ class Question extends Component {
   render() {
     const quiz = [];
     const { showQuestions, displayQuestions } = this.props;
-    const questionsArray = JSON.parse(this.props.question);
+    const questionsArray = this.props.question;
     console.log(questionsArray);
     for (const property in questionsArray) {
       if (questionsArray.hasOwnProperty(property)) {
@@ -39,60 +39,68 @@ class Question extends Component {
     // }
     return (
       <>
-        <Typography variant="h6" color="primary" className='m-3'>
-          Answer the Quiz to test your ability on the course
-        </Typography>
-        <>
-          {quiz.length > 0 ? (
-            quiz.map((item, key) => (
-              <Card key={key} className="row m-4" variant="outlined">
-                <CardContent>
-                  <Typography
-                    // className
-                    color="textSecondary"
-                    gutterBottom
-                  >
-                    {item.questionToAsk}
-                  </Typography>
-                  <div className="m-2">
-                    <FormControl component="fieldset" className="mt-3">
-                      {/* <FormLabel component="legend"><i>Choose Either </i></FormLabel> */}
-                      <RadioGroup
-                        aria-label="Options"
-                        name="Options1"
-                        // value={value}
-                        // onChange={handleChange}
+        {questionsArray.length > 0 ? (
+          <>
+            <Typography variant="h6" color="primary" className="m-3">
+              Answer the Quiz to test your ability on the course
+            </Typography>
+            <>
+              {quiz.length > 0 ? (
+                quiz.map((item, key) => (
+                  <Card key={key} className="row m-4" variant="outlined">
+                    <CardContent>
+                      <Typography
+                        // className
+                        color="textSecondary"
+                        gutterBottom
                       >
-                        <FormControlLabel
-                          value="A"
-                          control={<Radio />}
-                          label={item.optionA}
-                        />
-                        <FormControlLabel
-                          value="B"
-                          control={<Radio />}
-                          label={item.optionB}
-                        />
-                        <FormControlLabel
-                          value="C"
-                          control={<Radio />}
-                          label={item.optionC}
-                        />
-                        <FormControlLabel
-                          value="D"
-                          control={<Radio />}
-                          label={item.optionD}
-                        />
-                      </RadioGroup>
-                    </FormControl>
-                  </div>
-                </CardContent>
-              </Card>
-            ))
-          ) : (
-            <CircularProgress />
-          )}
-        </>
+                        {item.questionToAsk}
+                      </Typography>
+                      <div className="m-2">
+                        <FormControl component="fieldset" className="mt-3">
+                          {/* <FormLabel component="legend"><i>Choose Either </i></FormLabel> */}
+                          <RadioGroup
+                            aria-label="Options"
+                            name="Options1"
+                            // value={value}
+                            // onChange={handleChange}
+                          >
+                            <FormControlLabel
+                              value="A"
+                              control={<Radio />}
+                              label={item.optionA}
+                            />
+                            <FormControlLabel
+                              value="B"
+                              control={<Radio />}
+                              label={item.optionB}
+                            />
+                            <FormControlLabel
+                              value="C"
+                              control={<Radio />}
+                              label={item.optionC}
+                            />
+                            <FormControlLabel
+                              value="D"
+                              control={<Radio />}
+                              label={item.optionD}
+                            />
+                          </RadioGroup>
+                        </FormControl>
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))
+              ) : (
+                <CircularProgress />
+              )}
+            </>
+          </>
+        ) : (
+          <Typography variant="h6" color="primary" className="m-3">
+            This module has no Quiz
+          </Typography>
+        )}
       </>
     );
   }
@@ -106,6 +114,6 @@ const mapDispatchToProps = {
 };
 
 Question.propTypes = {
-  question: PropTypes.array.isRequired
+  question: PropTypes.array.isRequired,
 };
 export default connect(mapStateToProps, mapDispatchToProps)(Question);

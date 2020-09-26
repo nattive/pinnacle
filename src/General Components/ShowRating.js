@@ -8,7 +8,7 @@ import { Rating, Label } from 'semantic-ui-react'
   return (
     <div>
       <Box component="fieldset" mb={3} borderColor="transparent">
-        <Rating icon='star' size='large' rating={props.rating} maxRating={5} className='p-1' />
+        <Rating icon='star' size='large' disabled rating={props.rating} maxRating={5} className='p-1' />
         <Label >{`${props.no_rated_user} Ratings `}</Label>
       </Box>
     </div>
