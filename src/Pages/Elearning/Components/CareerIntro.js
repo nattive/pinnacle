@@ -22,12 +22,11 @@ export default function CareerIntro() {
           <div className="col-md-5">
             <div className="row">
               <div className="col-md-12 colorlib-heading">
-                <h1 className="heading-big">Careers of the Future</h1>
-                <h2>Careers of the Future</h2>
+                <h3 className="course-heading">Careers of the Future</h3>
               </div>
             </div>
             <div className="row">
-              <div className="col-md-12">
+              <div className="col-md-12 mb-3">
                 <p>
                   <strong>Build your Career for the Future</strong>
                 </p>
@@ -38,7 +37,7 @@ export default function CareerIntro() {
                   for a younger audience.
                 </p>
               </div>
-              <div className="col-md-6 col-sm-6">
+              <div className="col-md-6 col-sm-6 mt-2">
                 <div className="counter-entry">
                   <div className="desc">
                     <span
@@ -52,7 +51,7 @@ export default function CareerIntro() {
                   </div>
                 </div>
               </div>
-              <div className="col-md-6 col-sm-6">
+              <div className="col-md-6 col-sm-6 mt-2">
                 <div className="counter-entry">
                   <div className="desc">
                     <span
@@ -66,7 +65,7 @@ export default function CareerIntro() {
                   </div>
                 </div>
               </div>
-              <div className="col-md-6 col-sm-6">
+              <div className="col-md-6 col-sm-6 mt-2">
                 <div className="counter-entry">
                   <div className="desc">
                     <span
@@ -82,7 +81,7 @@ export default function CareerIntro() {
                   </div>
                 </div>
               </div>
-              <div className="col-md-6 col-sm-6">
+              <div className="col-md-6 col-sm-6 mt-2">
                 <div className="counter-entry">
                   <div className="desc">
                     <span
@@ -97,7 +96,14 @@ export default function CareerIntro() {
                 </div>
               </div>
             </div>
-            <Button variant='contained' color='primary'> Sign Up </Button>
+            <Button
+              variant="contained"
+              className="btn btn-primary btn-outline btn-lg btn-discover popup-vimeo"
+              color="primary"
+            >
+              {" "}
+              Sign Up{" "}
+            </Button>
           </div>
         </div>
       </div>

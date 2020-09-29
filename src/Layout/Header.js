@@ -8,22 +8,22 @@ export default function Header(props) {
   const user = useSelector((state) => state.auth.user);
   return (
     <>
-      <header class="header" style={{position: 'static'}}>
-        <div class="top_bar">
-          <div class="top_bar_container">
-            <div class="container">
-              <div class="row">
-                <div class="col">
-                  <div class="top_bar_content d-flex flex-row align-items-center justify-content-start">
-                    <ul class="top_bar_contact_list">
+      <header className="header" style={{position: 'static'}}>
+        <div className="top_bar">
+          <div className="top_bar_container">
+            <div className="container">
+              <div className="row">
+                <div className="col">
+                  <div className="top_bar_content d-flex flex-row align-items-center justify-content-start">
+                    <ul className="top_bar_contact_list">
                       <li>
-                        <div class="question">Have any questions?</div>
+                        <div className="question">Have any questions?</div>
                       </li>
                       <li>
-                        <div>(009) 35475 6688933 32</div>
+                        <div>(00234) 80 456 3778</div>
                       </li>
                       <li>
-                        <div>info@elaerntemplate.com</div>
+                        <div>info@pinnacleOnline.org</div>
                       </li>
                     </ul>
                   </div>

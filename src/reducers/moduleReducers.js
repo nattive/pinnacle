@@ -2,6 +2,7 @@ import {
     DISPLAY_QUESTIONS,
     HIDE_DISPLAY_QUESTIONS,
     SHOW_RESULT,
+    RESULT,
     HIDE_RESULT,
     ERR_RESULT,
     GET_USER_COURSE_PROGRESS,
@@ -9,17 +10,23 @@ import {
 } from "../Actions/types";
 
 const initialState = {
-    showQuestions: false,
+    showQuestions: true,
     showResult: false,
     errResult: false,
-    userProgress: {}
+    result: {},
+    userProgress: {},
 }
 export default function(state = initialState, action) {
     switch (action.type) {
         case DISPLAY_QUESTIONS:
             return {
                 ...state,
-                showQuestions: true
+                showQuestions: Boolean(action.payload)
+            }
+        case RESULT:
+            return {
+                ...state,
+                result: action.payload
             }
         case HIDE_DISPLAY_QUESTIONS:
             return {

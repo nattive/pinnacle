@@ -33,21 +33,22 @@ const RecommendedCourses = (props) => {
   };
   return (
     <Container>
-      <h3 className="pt-2 pb-2">
-        {" "}
-        Because you checked {props.recommendedCourses.Title}
-      </h3>{" "}
-      <Divider className='mb-4 mt-4' />
-      <Carousel responsive={responsive}>
-        {props.recommendedCourses.Course &&
-        props.recommendedCourses.Course.length > 0 ? (
-          props.recommendedCourses.Course.map((item, key) => (
-            <SingleCourseItem course={item} />
-          ))
-        ) : (
-          <Skeleton variant="rect" height={300}/>
-        )}
-      </Carousel>
+      {props.recommendedCourses.Title && (
+        <>
+          <h3 className="pt-2 pb-2">
+            Because you checked {props.recommendedCourses.Title}
+          </h3>
+          <Divider className="mb-4 mt-4" />
+          <Carousel responsive={responsive}>
+            {props.recommendedCourses.Course &&
+            props.recommendedCourses.Course.length > 0
+              ? props.recommendedCourses.Course.map((item, key) => (
+                  <SingleCourseItem course={item} />
+                ))
+              : null}
+          </Carousel>
+        </>
+      )}
     </Container>
   );
 };

@@ -1746,6 +1746,13 @@ input[type="text"] {
     font-size: 60px;
 }
 
+.course-heading {
+    color: #636ac0;
+    z-index: -1;
+    font-weight: 700;
+    font-size: 30px;
+}
+
 @media screen and (max-width: 768px) {
     .colorlib-heading h1.heading-big {
         font-size: 40px;

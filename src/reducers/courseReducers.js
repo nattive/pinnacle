@@ -28,11 +28,21 @@ import {
     GET_RECOMMENDED_COURSES,
     ALL_COURSES,
     ERROR_ENROLLING_COURSE,
-    ERR_GET_RECOMMENDED_COURSES
+    SUB_CATEGORIES,
+    ERR_SUB_CATEGORIES,
+    ERR_GET_RECOMMENDED_COURSES,
+    SEARCH_RESULT,
+    START_SEARCH,
+    SEARCH_RESULT_ERROR,
 } from "../Actions/types";
 
 const initialState = {
+    searchCourse: {},
+    errorSearchingCourse: null,
+    isSearching: false,
     showCourse: {},
+    subCategories: {},
+    errorSubCategories: null,
     modulePlaying: {},
     fetchCourseError: null,
     mainCategories: {},
@@ -68,11 +78,38 @@ export default function(state = initialState, action) {
             return {...state,
                 items: action.payload
             }
+        case SEARCH_RESULT:
+            return {...state,
+                isSearching: false,
+                searchCourse: action.payload
+            }
+        case START_SEARCH:
+            return {...state,
+                isSearching: true,
+                errorSearchingCourse: null
+            }
+        case SEARCH_RESULT_ERROR:
+            return {...state,
+                isSearching: false,
+                errorSearchingCourse: action.payload
+            }
+
         case LOAD_SUB:
             return {
                 ...state,
                 loadSub: action.payload
             }
+        case SUB_CATEGORIES:
+            return {
+                ...state,
+                subCategories: action.payload
+            }
+        case ERR_SUB_CATEGORIES:
+            return {
+                ...state,
+                errorSubCategories: action.payload
+            }
+
         case FETCH_PO_COURSES:
             return {...state,
                 PO_courses: action.payload

@@ -48,6 +48,8 @@ export const NULL_ERR_FETCH_COURSES = 'NULL_ERR_FETCH_COURSES'
      * main Category
      */
 export const MAIN_CATEGORIES = 'MAIN_CATEGORIES'
+export const SUB_CATEGORIES = 'SUB_CATEGORIES'
+export const ERR_SUB_CATEGORIES = 'ERR_SUB_CATEGORIES'
 export const ERR_MAIN_CATEGORIES = 'ERR_MAIN_CATEGORIES'
 export const NULL_ERR_MAIN_CATEGORIES = 'NULL_ERR_MAIN_CATEGORIES'
 export const LOAD_SUB = 'LOAD_SUB'
@@ -67,8 +69,10 @@ export const END_DELETE_REVIEW = 'END_DELETE_REVIEW'
  * Module Question
  */
 export const SHOW_RESULT = 'SHOW_RESULT'
+export const RESULT = 'RESULT'
 export const HIDE_RESULT = 'HIDE_RESULT'
 export const ERR_RESULT = 'ERR_RESULT'
+export const CHECK_IF_USER_TOOK_COURSE = 'CHECK_IF_USER_TOOK_COURSE'
 
 /**
  * Course Progress
@@ -105,3 +109,11 @@ export const COMMENT_DELETED = 'COMMENT_DELETED'
 export const GET_COMMENT = 'GET_COMMENT'
 export const GET_COMMENT_ERROR = 'GET_COMMENT_ERROR'
 export const COMMENT = 'COMMENT'
+
+/**
+ * Course Search/ Filter
+ */
+
+export const SEARCH_RESULT = 'SEARCH_RESULT'
+export const START_SEARCH = 'START_SEARCH'
+export const SEARCH_RESULT_ERROR = 'SEARCH_RESULT_ERROR'

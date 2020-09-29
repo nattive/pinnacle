@@ -1,8 +1,6 @@
 import React, { Component } from "react";
-import imgClass2 from "../Assests/images/classes-2.jpg";
-import OwlCarousel from "react-owl-carousel";
-import "owl.carousel/dist/assets/owl.carousel.css";
-import "owl.carousel/dist/assets/owl.theme.default.css";
+import Carousel from "react-multi-carousel";
+import "react-multi-carousel/lib/styles.css";
 import "../Assests/css/style.css";
 import { connect } from "react-redux";
 import { Skeleton } from "@material-ui/lab";
@@ -16,6 +14,7 @@ import {
   fetchCourses,
 } from "../../../Actions/courseAction";
 import { BaseUrl } from "../../../Patials/BaseUrl";
+import SingleCourseItem from "../../../Courses/SingleCourseItem";
 
 class CourseSlide extends Component {
   constructor() {
@@ -40,6 +39,25 @@ class CourseSlide extends Component {
   render() {
     const { courses } = this.state;
 
+  const responsive = {
+    superLargeDesktop: {
+      // the naming can be any, depends on you.
+      breakpoint: { max: 4000, min: 3000 },
+      items: 5,
+    },
+    desktop: {
+      breakpoint: { max: 3000, min: 1024 },
+      items: 3,
+    },
+    tablet: {
+      breakpoint: { max: 1024, min: 464 },
+      items: 2,
+    },
+    mobile: {
+      breakpoint: { max: 464, min: 0 },
+      items: 1,
+    },
+  };
     return (
       <div className="colorlib-classes">
         {console.log(courses)}
@@ -52,50 +70,11 @@ class CourseSlide extends Component {
           </div>
           <div className="row">
             <div className="col-md-12 ">
-              <OwlCarousel
-                className="owl-theme, owl-carousel"
-                loop
-                items={4}
-                margin={10}
-                mergeFit
-                //   s
-              >
+              <Carousel responsive={responsive}>
                 {this.state.courses.map((item) => (
-                  <div className="item" key={item.id}>
-                    <div className="classes">
-                      <div
-                        className="classes-img"
-                        style={{
-                          backgroundImage: `url(${BaseUrl + item.banner})`,
-                        }}
-                      ></div>
-                      <div className="wrap">
-                        <div className="desc">
-                          <span className="teacher">{item.tutor.name}</span>
-                          <h3>
-                            <a href="#" style={{ textTransform: "capitalize" }}>
-                              {item.title}
-                            </a>
-                          </h3>
-                        </div>
-                        <div className="pricing">
-                          <p>
-                            <span className="price">
-                              {item.isFree === "true" ? "Free" : item.price}
-                            </span>
-                            {/* <span className="price old-price">$250</span> */}
-                            <span className="more">
-                              <a href="#">
-                                <i className="icon-link"></i>
-                              </a>
-                            </span>
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+                  <SingleCourseItem course={item} />
                 ))}
-              </OwlCarousel>
+              </Carousel>
             </div>
           </div>
         </div>
@@ -105,7 +84,7 @@ class CourseSlide extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  courses: state.course.items.data,
+  courses: state.course.ALL_courses.data,
   PO_courses: state.course.PO_courses,
   FREE_courses: state.course.FREE_courses,
   COTF_courses: state.course.COTF_courses,

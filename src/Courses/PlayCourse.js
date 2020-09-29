@@ -156,7 +156,7 @@ class PlayCourse extends Component {
           <div
             className="overlay"
             style={{
-              backgroundColor: "red",
+              // backgroundColor: "red",
               backgroundImage: `url(${showedCourse.banner})`,
               backgroundPosition: "fixed",
               backgroundSize: "cover",

@@ -23,7 +23,7 @@ export default function Slider() {
             <div className="row">
               <Grid container>
                 <Grid md={5}>
-                  <div className="slider_text ">
+                  <div className="slider_text bg-light p-3">
                     <Typography
                       variant="h4"
                       style={{
@@ -47,12 +47,12 @@ export default function Slider() {
             </div>
           </div>
         </div>
-        <div className="single_slider  d-flex align-items-center slider_bg_2 overlay2">
+        <div className="single_slider  d-flex align-items-center slider_bg_2 ">
           <div className="container">
             <div className="row">
               <Grid container>
                 <Grid md={5}>
-                  <div className="slider_text float-right">
+                  <div className="slider_text float-right bg-light p-3">
                     <Typography
                       variant="h4"
                       style={{
@@ -77,23 +77,33 @@ export default function Slider() {
             </div>
           </div>
         </div>
-        <div className="single_slider  d-flex align-items-center slider_bg_3 overlay2">
+        <div className="single_slider  d-flex align-items-center slider_bg_3 ">
           <div className="container">
             <div className="row">
-              <div className="col-xl-12">
-                <div className="slider_text ">
-                  <h3>
-                    Top resources to build <br /> your future career
-                  </h3>
-                  <div className="video_service_btn">
-                    <a href="#" className="boxed-btn3">
-                      Our Services
-                    </a>
+              <Grid container>
+                <Grid md={5}>
+                  <div className="slider_text float-right bg-light p-3">
+                    <Typography
+                      variant="h4"
+                      style={{
+                        color: "#000066",
+                        fontWeight: "bold",
+                        fontSize: "2em",
+                      }}
+                    >
+                        Top resources to build <br /> your future career
+                    </Typography>
+                    <Typography
+                      variant="body1"
+                      style={{ color: "#000066", fontSize: "1.4em" }}
+                    >
+                      We have hundred of courses by well trained tutor Engineered to steer young and teenage student to a bette career path
+                    </Typography>
                   </div>
-                </div>
-              </div>
-            </div>
+                </Grid>
+              </Grid>
           </div>
+        </div>
         </div>
       </OwlCarousel>
     </div>

@@ -32,7 +32,15 @@ import {
     WORKING,
     ALL_COURSES,
     ENROLLING_COURSE,
-    ERROR_ENROLLING_COURSE
+    ERROR_ENROLLING_COURSE,
+    CHECK_IF_USER_TOOK_COURSE,
+    DISPLAY_QUESTIONS,
+    RESULT,
+    SUB_CATEGORIES,
+    ERR_SUB_CATEGORIES,
+    START_SEARCH,
+    SEARCH_RESULT,
+    SEARCH_RESULT_ERROR,
 } from '../Actions/types'
 import { recommended } from "../Patials/constant";
 
@@ -61,6 +69,28 @@ export const fetchCourses = (number) => dispatch => {
             })
             dispatch({
                 type: ERR_FETCH_COURSES,
+                payload: err.response ? err.response.message : err.message ? err.message : 'error occurred'
+            })
+        })
+
+
+}
+
+export const searchCourses = (query) => dispatch => {
+    dispatch({
+        type: START_SEARCH
+    })
+    Axios.get(`${BaseUrl}course/search/${query}`)
+        .then(response => {
+            dispatch({
+                type: SEARCH_RESULT,
+                payload: response.data
+            })
+        })
+        .catch(err => {
+            console.log(err.message);
+            dispatch({
+                type: SEARCH_RESULT_ERROR,
                 payload: err.response ? err.response.message : err.message ? err.message : 'error occurred'
             })
         })
@@ -410,6 +440,59 @@ export const fetchMainCategory = () => dispatch => {
             type: ERR_MAIN_CATEGORIES,
             payload: err.message
         }))
+}
+
+export const fetchSubCategory = () => dispatch => {
+    const token = localStorage.getItem('P_access_token')
+    dispatch({
+        type: NULL_ERR_MAIN_CATEGORIES
+    })
+    Axios.get(`${BaseUrl}course/category/sub`, {
+            headers: { Authorization: `Bearer ${token}` }
+        })
+        .then(response => {
+            console.log(response);
+            dispatch({
+                type: SUB_CATEGORIES,
+                payload: response.data
+            })
+        })
+        .catch(err => dispatch({
+            type: ERR_SUB_CATEGORIES,
+            payload: err.message
+        }))
+}
+
+export const userHasTakenQuiz = (id) => dispatch => {
+    const token = localStorage.getItem('P_access_token')
+    dispatch({
+        type: CHECK_IF_USER_TOOK_COURSE
+    })
+    Axios.get(`${BaseUrl}user/course/quiz/userHasTakenQuiz/${id}`, {
+            headers: { Authorization: `Bearer ${token}` }
+        })
+        .then(response => {
+            console.log(response);
+            if (response.data.id) {
+                dispatch({
+                    type: RESULT,
+                    payload: response.data
+                })
+                dispatch({
+                    type: DISPLAY_QUESTIONS,
+                    payload: false
+                })
+            } else {
+                dispatch({
+                    type: DISPLAY_QUESTIONS,
+                    payload: true
+                })
+            }
+
+        })
+        .catch(err => {
+            console.log(err.response)
+        })
 }
 
 export const getRecommendation = () => dispatch => {

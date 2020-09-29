@@ -33,6 +33,8 @@ import {
 import { useState } from "react";
 import { Alert } from "@material-ui/lab";
 import { storeQuestionResult } from "../../Actions/moduleActions";
+import { userHasTakenQuiz } from "../../Actions/courseAction";
+import { Segment, Message } from "semantic-ui-react";
 
 const useStyles = makeStyles({
   root: {
@@ -49,14 +51,15 @@ const useStyles = makeStyles({
 });
 const Question = (props) => {
   const classes = useStyles();
-  const [total, setTotal] = useState(0);
+  const [correct, setCorrect] = useState(0);
+  const [wrong, setWrong] = useState(0);
+  const [totalScore, setTotalScore] = useState(0);
+  const [percent, setPercent] = useState(0);
+  const [QuestionCount, setQuestionCount] = useState(0);
   const [open, setOpen] = useState(false);
   const [submitDisabled, setSubmitDisabled] = useState(false);
   const [openDialog, setOpenDialog] = useState(false);
   const [showAnswer, setShowAnswer] = useState(false);
-  const handleClose = () => {
-    setOpenDialog(false);
-  };
   const [answerArray, setAnswerArray] = useState(
     new Array(props.question ? props.question.length : 0)
   );
@@ -70,6 +73,10 @@ const Question = (props) => {
     selectAnswer[index] = selectedOption;
     answerArray[index] = answer;
   };
+
+  useEffect(() => {
+    props.userHasTakenQuiz(props.moduleToPlay.id);
+  }, []);
 
   useEffect(() => {
     setOpenDialog(props.showResult);
@@ -86,6 +93,10 @@ const Question = (props) => {
     let wrongAnswer = 0;
     let correctAnswer = 0;
     let percentage = 0;
+    /**
+     * Loop the answers and check it against the option selected
+     * to check for correct answer
+     */
     answerArray.map((answer, index) => {
       if (answer === selectAnswer[index]) {
         score += 5;
@@ -97,7 +108,9 @@ const Question = (props) => {
     percentage = (score / totalQuestionAccum) * 100;
     setShowAnswer(true);
     setOpen(true);
-
+    /**
+     * Format result to object
+     */
     const result = {
       module_id: props.moduleToPlay.id, // course material id
       no_correct_answer: correctAnswer,
@@ -106,7 +119,14 @@ const Question = (props) => {
       percentage: percentage,
       totalNumberOfQuestions: totalQuestion,
     };
-    console.log(result);
+    /**
+     * Set result to component state
+     */
+    setCorrect(correctAnswer);
+    setWrong(wrongAnswer);
+    setTotalScore(score);
+    setPercent(percentage);
+    setQuestionCount(totalQuestion);
     props.storeQuestionResult({ result });
   };
 
@@ -115,166 +135,154 @@ const Question = (props) => {
       <Backdrop className={classes.backdrop} open={props.appIsBusy}>
         <CircularProgress color="inherit" />
       </Backdrop>
-      <Dialog
-        maxWidth={"sm"}
-        fullWidth={true}
-        onClose={handleClose}
-        open={openDialog}
-        aria-labelledby="form-dialog-title"
-      >
-        <DialogTitle id="form-dialog-title">
-          {`Your Grade on ${props.moduleToPlay.title}`}
-        </DialogTitle>
-        {/* <DialogContent>
-          <DialogContentText>Your Grade</DialogContentText>
-          <div className="row">
-            <div className="col-sm-6">
-              <Box
-                position="relative"
-                justifySelf="center"
-                display="inline-flex"
-              >
-                <CircularProgress
-                  value={percentage}
-                  size="200px"
-                  style={{ padding: "10%" }}
-                  variant="static"
-                />
+      {props.question && props.question.length > 0 ? (
+        !props.showQuestions && props.result.id ? (
+          <Segment placeholder>
+            <div className="row">
+              <div className="col-sm-6">
                 <Box
-                  top={0}
-                  left={0}
-                  bottom={0}
-                  right={0}
-                  position="absolute"
-                  display="flex"
-                  alignItems="center"
-                  justifyContent="center"
+                  position="relative"
+                  justifySelf="center"
+                  display="inline-flex"
                 >
-                  <Typography
-                    variant="h5"
-                    component="div"
-                    color="textSecondary"
-                  >{`${percentage}%`}</Typography>
+                  <CircularProgress
+                    value={props.result.percentage}
+                    size="200px"
+                    style={{ padding: "10%" }}
+                    variant="static"
+                  />
+                  <Box
+                    top={0}
+                    left={0}
+                    bottom={0}
+                    right={0}
+                    position="absolute"
+                    display="flex"
+                    alignItems="center"
+                    justifyContent="center"
+                  >
+                    <Typography
+                      variant="h5"
+                      component="div"
+                      color="textSecondary"
+                    >{`${props.result.percentage}%`}</Typography>
+                  </Box>
                 </Box>
-              </Box>
-            </div>
-            <div className="col-sm-6">
-              <div class="table-responsive">
-                <table class="table table-hover">
-                  <thead>
-                    <tr>
-                      <th scope="col">CourseName</th>
-                      <th scope="col">progress</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td scope="row"> Total correct Answer</td>
-                      <td>{totalQuestion - wrongAnswer}</td>
-                    </tr>
-                    <tr>
-                      <td scope="row"> Total wrong Answer</td>
-                      <td>{wrongAnswer}</td>
-                    </tr>
-                    <tr>
-                      <td scope="row"> Total Accumulated Point</td>
-                      <td>{total}</td>
-                    </tr>
-                    <tr>
-                      <td scope="row"> Total Percentage:</td>
-                      <td>{percentage}</td>
-                    </tr>
-                  </tbody>
-                </table>
+              </div>
+              <div className="col-sm-6">
+                <div class="table-responsive">
+                  <table class="table table-hover">
+                    <thead>
+                      <tr>
+                        <th scope="col">CourseName</th>
+                        <th scope="col">progress</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td scope="row"> Total Questions:</td>
+                        <td>{totalQuestion}</td>
+                      </tr>
+                      <tr>
+                        <td scope="row"> Total correct Answer</td>
+                        <td>{props.result.no_correct_answer}</td>
+                      </tr>
+                      <tr>
+                        <td scope="row"> Total wrong Answer</td>
+                        <td>{props.result.no_wrong_answer}</td>
+                      </tr>
+                      <tr>
+                        <td scope="row"> Total Accumulated Point</td>
+                        <td>
+                          {props.result.total}/{totalQuestion * 5}
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
               </div>
             </div>
-          </div>
-        </DialogContent> */}
-        <DialogActions>
-          <Button color="primary" onClick={handleClose} variant="contained">
-            Close
-          </Button>
-        </DialogActions>
-      </Dialog>
-
-      {props.question &&
-        (props.question.length > 0
-          ? props.question.map((quiz, key) => (
-              <>
-                <Typography variant="body1">
-                  Take a quiz on {props.moduleToPlay.title}
-                </Typography>
-                <Card gutterBottom className={classes.root}>
-                  <CardActionArea>
-                    <CardContent>
-                      <Typography variant="h6" className="question">
-                        {quiz.question}
-                      </Typography>
-                    </CardContent>
-                  </CardActionArea>
-                  <CardActions>
-                    <FormControl component="fieldset">
-                      <FormLabel component="legend">
-                        Choose either options
-                      </FormLabel>
-                      <RadioGroup
-                        aria-label="options"
-                        name="options"
-                        // value={value}
-                        aria-disabled
-                        onChange={(e) =>
-                          handleSelectAnswer(key, quiz.answer, e.target.value)
-                        }
-                      >
-                        <FormControlLabel
-                          name="A"
-                          value="A"
-                          disabled={showAnswer}
-                          control={<Radio />}
-                          label={quiz.optionA}
-                        />
-                        <FormControlLabel
-                          value="B"
-                          disabled={showAnswer}
-                          control={<Radio />}
-                          label={quiz.optionB}
-                        />
-                        <FormControlLabel
-                          value="C"
-                          disabled={showAnswer}
-                          control={<Radio />}
-                          label={quiz.optionC}
-                        />
-                        <FormControlLabel
-                          value="D"
-                          disabled={showAnswer}
-                          control={<Radio />}
-                          label={quiz.optionD}
-                        />
-                      </RadioGroup>
-                    </FormControl>
-                    {showAnswer && (
-                      <Typography
-                        variant="caption"
-                        color="textSecondary"
-                        component="p"
-                      >
-                        Correct answer: {quiz.answer}
-                      </Typography>
-                    )}
-                  </CardActions>
-                </Card>
-                <Button
-                  color="primary"
-                  onClick={handleAnswer}
-                  disabled={submitDisabled}
-                  style={{ margin: 15 }}
-                >
-                  Submit Answer
-                </Button>
-              </>
-            ))
-          : "This module has no quiz")}
+          </Segment>
+        ) : (
+          props.question.map((quiz, key) => (
+            <>
+              <Typography variant="body1">
+                Take a quiz on {props.moduleToPlay.title}
+              </Typography>
+              <Card gutterBottom className={classes.root}>
+                <CardActionArea>
+                  <CardContent>
+                    <Typography variant="h6" className="question">
+                      {quiz.question}
+                    </Typography>
+                  </CardContent>
+                </CardActionArea>
+                <CardActions>
+                  <FormControl component="fieldset">
+                    <FormLabel component="legend">
+                      Choose either options
+                    </FormLabel>
+                    <RadioGroup
+                      aria-label="options"
+                      name="options"
+                      // value={value}
+                      aria-disabled
+                      onChange={(e) =>
+                        handleSelectAnswer(key, quiz.answer, e.target.value)
+                      }
+                    >
+                      <FormControlLabel
+                        name="A"
+                        value="A"
+                        disabled={showAnswer}
+                        control={<Radio />}
+                        label={quiz.optionA}
+                      />
+                      <FormControlLabel
+                        value="B"
+                        disabled={showAnswer}
+                        control={<Radio />}
+                        label={quiz.optionB}
+                      />
+                      <FormControlLabel
+                        value="C"
+                        disabled={showAnswer}
+                        control={<Radio />}
+                        label={quiz.optionC}
+                      />
+                      <FormControlLabel
+                        value="D"
+                        disabled={showAnswer}
+                        control={<Radio />}
+                        label={quiz.optionD}
+                      />
+                    </RadioGroup>
+                  </FormControl>
+                  {showAnswer && (
+                    <Typography
+                      variant="caption"
+                      color="textSecondary"
+                      component="p"
+                    >
+                      Correct answer: {quiz.answer}
+                    </Typography>
+                  )}
+                </CardActions>
+              </Card>
+              <Button
+                color="primary"
+                onClick={handleAnswer}
+                disabled={submitDisabled}
+                style={{ margin: 15 }}
+              >
+                Submit Answer
+              </Button>
+            </>
+          ))
+        )
+      ) : (
+        <Message info>This module has no quiz</Message>
+      )}
     </Container>
   );
 };
@@ -286,10 +294,11 @@ Question.propTypes = {
 const mapStateToProps = (state) => ({
   moduleToPlay: state.course.modulePlaying,
   appIsBusy: state.loading.appIsBusy,
-  questions: state.module.showQuestions,
+  showQuestions: state.module.showQuestions,
   showResult: state.module.showResult,
+  result: state.module.result,
 });
 
-const mapDispatchToProps = { storeQuestionResult };
+const mapDispatchToProps = { storeQuestionResult, userHasTakenQuiz };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Question);
