@@ -10,13 +10,16 @@ import {
     ACCOUNT_TYPE,
     TOGGLE_LOGIN_FORM,
     NULL_AUTH_ERRORS,
+    MENTEE
 } from "../Actions/types";
 
 const initialState = {
     user: {},
+    mentee: {},
     token: '',
     error: '',
     AuthError: null,
+    loginError: null,
     errors: {},
     account_type: '',
     showLogin: true,
@@ -29,6 +32,12 @@ export default function(state = initialState, action) {
                 ...state,
                 user: action.payload
             };
+        case MENTEE:
+            return {
+                ...state,
+                mentee: action.payload
+            };
+
         case GET_USER_FROM_RESPONSE:
             return {
                 ...state,
@@ -42,7 +51,7 @@ export default function(state = initialState, action) {
         case ERR_LOGIN_USER:
             return {
                 ...state,
-                AuthError: action.payload
+                loginError: action.payload
             }
         case VERIFY_USER:
             return {
@@ -69,6 +78,7 @@ export default function(state = initialState, action) {
             return {
                 ...state,
                 AuthError: null,
+                loginError: null,
             }
         case ACCOUNT_TYPE:
             return {

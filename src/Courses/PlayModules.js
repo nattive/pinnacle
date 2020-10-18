@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import { useHistory, Switch, Route, useRouteMatch } from "react-router-dom";
+import { useHistory, Switch, BrowserRouter as Route, useRouteMatch } from "react-router-dom";
 import { useSelector } from "react-redux";
-import VideoPlayer from "../VideoPlayer/VideoPlayer";
+import VideoPlayer from "../General Components/VideoPlayer/VideoPlayer";
 import { Alert, AlertTitle, Skeleton } from "@material-ui/lab";
 import HeadBar from "./HeadBar";
 import {
@@ -18,32 +18,32 @@ import SideTab from "./SideTab";
 import ReactPlaceholder from "react-placeholder/lib";
 import Footer from "../Layout/Footer";
 import PlaySavedModules from "./PlaySavedModules";
+import { connect } from "react-redux";
+
 var parse = require("html-react-parser");
 
-export default function PlayModules() {
+function PlayModules(props) {
   let history = useHistory();
   const [moduleIndex, setModuleIndex] = useState(0);
-  const playing = useSelector((state) => state.course.playCourse);
-  const modules = useSelector((state) => state.course.playModuleQueue);
-  const error = useSelector((state) => state.course.playError);
   const [Disable, setDisable] = useState(false);
   const [value, setValue] = React.useState(2);
   const [backDisable, setBackDisable] = useState(true);
   const [HasQuiz, setHasQuiz] = useState(false);
   const { url, path } = useRouteMatch();
+  const { playing, modules, error, playModuleQueue } = props;
   const [nextBtn, setNextBtn] = useState(
-    useSelector((state) => state.course.playModuleQueue)
+    playModuleQueue
       ? modules[moduleIndex]
         ? modules[moduleIndex].title
         : "Play Course"
       : "Finish"
   );
   const [backBtn, setbackBtn] = useState(
-    useSelector((state) => state.course.playModuleQueue)
-      ? modules[moduleIndex - 1]
-        ? modules[moduleIndex - 1].title
-        : "Play Course"
-      : ""
+    // useSelector((state) => state.course.playModuleQueue)
+    //   ? modules[moduleIndex - 1]
+    //     ? modules[moduleIndex - 1].title
+    //     : "Play Course"
+    //   : ""
   );
 
   const handleChange = (event, newValue) => {
@@ -52,30 +52,30 @@ export default function PlayModules() {
 
   const nextModule = () => {
     const length = modules.length;
-    if (moduleIndex >= length) {
-      setDisable(false);
-    } else {
-      // setBackDisable(false);
-      setModuleIndex((prev) => prev + 1);
-      console.log(modules[moduleIndex]);
-      setNextBtn(
-        modules[moduleIndex + 1]
-          ? `Next: ${modules[moduleIndex + 1].title}`
-          : "Finish Course"
-      );
-      setbackBtn(
-        modules[moduleIndex - 1]
-          ? modules[moduleIndex - 1].title
-          : "No more modules"
-      );
-      setBackDisable(modules[moduleIndex - 1] ? false : true);
+    // if (moduleIndex >= length) {
+    //   setDisable(false);
+    // } else {
+    //   // setBackDisable(false);
+    //   setModuleIndex((prev) => prev + 1);
+    //   console.log(modules[moduleIndex]);
+    //   setNextBtn(
+    //     modules[moduleIndex + 1]
+    //       ? `Next: ${modules[moduleIndex + 1].title}`
+    //       : "Finish Course"
+    //   );
+    //   setbackBtn(
+    //     modules[moduleIndex - 1]
+    //       ? modules[moduleIndex - 1].title
+    //       : "No more modules"
+    //   );
+    //   setBackDisable(modules[moduleIndex - 1] ? false : true);
 
-      history.push({
-        pathname: `${url}/modules`,
-        state: modules[moduleIndex],
-      });
-    }
-    console.log(length);
+    //   history.push({
+    //     pathname: `${url}/modules`,
+    //     state: modules[moduleIndex],
+    //   });
+    // }
+    // console.log(length);
   };
 
   const prevModule = () => {
@@ -99,11 +99,58 @@ export default function PlayModules() {
     <div className="container-fluid bg-light">
       <div className="mt-2">
         {error === "" ? (
-          playing.id !== undefined ? (
+          props.playing.id !== undefined ? (
             <>
               <div className="row no-gutters">
                 <div className="col-sm-12 col-md-8">
-                  <Modules />
+                  <div>
+                    <div
+                      className={moduleIndex === -1 ? "d-block " : " d-none"}
+                    >
+                      <VideoPlayer course={playing} />
+                      <Typography
+                        variant="h5"
+                        className="mb-4 mt-4"
+                        style={{ fontVariant: "capitalize" }}
+                      >
+                        {playing.title}
+                      </Typography>
+                      <div
+                        className="d-flex mb-4"
+                        style={{ alignItems: "center" }}
+                      >
+                        <Avatar style={{ width: "1.5em", height: "1.5em" }} />
+                        <Typography variant="subtitle1" className="ml-2">
+                          Tutor Name
+                        </Typography>
+                      </div>
+                      {playing.objective && (
+                        <>
+                          <Divider />
+                          <Alert severity="info">
+                            <AlertTitle> Objective </AlertTitle>{" "}
+                            {parse(playing.objective)}
+                          </Alert>
+                        </>
+                      )}
+                      {playing.description && (
+                        <>
+                          <Divider />
+                          <Typography variant="h5" className="p-2">
+                            Description
+                          </Typography>
+                          <Divider />
+                          <Typography
+                            variant="body1"
+                            className="mt-2 mb-4 p-2"
+                            style={{ textJustify: "justify" }}
+                          >
+                            {parse(playing.description)}
+                          </Typography>
+                        </>
+                      )}
+                    </div>
+                  </div>
                   <div className="row">
                     <Button
                       variant="contained"
@@ -129,7 +176,7 @@ export default function PlayModules() {
                       // disabled={!modules[moduleIndex - 1]}
                     >
                       {nextBtn}
-                    </Button>{" "}
+                    </Button>
                   </div>
                 </div>
                 <div className="col-sm-12 col-md-4 ">
@@ -150,7 +197,7 @@ export default function PlayModules() {
             </>
           )
         ) : (
-          <Alert severity="error">{error}</Alert>
+          <Alert severity="error"> {error} </Alert>
         )}
       </div>
       <Footer />
@@ -158,67 +205,16 @@ export default function PlayModules() {
   );
 }
 
-function CourseIntro() {
-  const [moduleIndex, setModuleIndex] = useState(-1);
 
-  const playing = useSelector((state) => state.course.playCourse);
-  return (
-    <div>
-      <div className={moduleIndex === -1 ? "d-block " : " d-none"}>
-        <VideoPlayer course={playing} />
-        <Typography
-          variant="h5"
-          className="mb-4 mt-4"
-          style={{ fontVariant: "capitalize" }}
-        >
-          {playing.title}
-        </Typography>
-        <div className="d-flex mb-4" style={{ alignItems: "center" }}>
-          <Avatar style={{ width: "1.5em", height: "1.5em" }} />
-          <Typography variant="subtitle1" className="ml-2">
-            Tutor Name
-          </Typography>
-        </div>
-        {playing.objective && (
-          <>
-            <Divider />
-            <Alert severity="info">
-              <AlertTitle>Objective</AlertTitle>
-              {parse(playing.objective)}
-            </Alert>
-          </>
-        )}
-        {playing.description && (
-          <>
-            <Divider />
-            <Typography variant="h5" className="p-2">
-              Description
-            </Typography>
-            <Divider />
-            <Typography
-              variant="body1"
-              className="mt-2 mb-4 p-2"
-              style={{ textJustify: "justify" }}
-            >
-              {parse(playing.description)}
-            </Typography>
-          </>
-        )}
-      </div>
-    </div>
-  );
-}
-
-const Modules = () => {
+const Modules = (props) => {
   const { path } = useRouteMatch();
   return (
     <Switch>
       <Route exact path={`${path}`}>
-        <CourseIntro />
+      {'  <CourseIntro  />'}
       </Route>
       <Route path={`${path}/modules`}>
-        {/* <p>play</p> */}
-        <PlaySavedModules />
+        {/* <p>play</p> */} <PlaySavedModules />
       </Route>
       <Route path={`${path}/play/:course`}>
         <PlayModules />
@@ -226,3 +222,13 @@ const Modules = () => {
     </Switch>
   );
 };
+
+const mapStateToProps = (state) => ({
+  playing: state.course.playCourse,
+  modules: state.course.playModuleQueue,
+  error: state.course.playError,
+});
+
+const mapDispatchToProps = {};
+
+export default connect(mapStateToProps, null)(PlayModules);

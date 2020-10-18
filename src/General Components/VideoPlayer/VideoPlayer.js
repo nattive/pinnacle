@@ -1,15 +1,16 @@
 import React, { Component } from "react";
 import videojs from "video.js";
 import YouTube from "react-youtube";
-
 import { Player, BigPlayButton } from "video-react";
 import "video-react/dist/video-react.css";
-import { BaseUrl } from "../Patials/BaseUrl";
+import { BaseUrl } from "../../Patials/BaseUrl";
 import { IconButton } from "@material-ui/core";
 import ReplayIcon from "@material-ui/icons/Replay";
 import ControlBar from "video-react/lib/components/control-bar/ControlBar";
 import GetAppIcon from "@material-ui/icons/GetApp";
 import ReplayControl from "video-react/lib/components/control-bar/ReplayControl";
+import PropTypes from 'prop-types';
+
 const opts = {
   height: "500",
   width: "750",
@@ -18,7 +19,8 @@ const opts = {
     autoplay: 0,
   },
 };
-export default class VideoPlayer extends Component {
+
+class VideoPlayer extends Component {
   constructor() {
     super();
     this.state = {};
@@ -33,7 +35,7 @@ export default class VideoPlayer extends Component {
 
   componentWillReceiveProps() {
     // this.player.subscribeToStateChange(this.handleStateChange.bind(this));
-this.load()
+    this.load()
   }
 
   handleStateChange(state) {
@@ -43,14 +45,14 @@ this.load()
     });
   }
 
-  load(){
+  load() {
     this.player.load();
 
   }
   componentDidMount() {
     // alert("ok");
     this.state = {
-      source: `${BaseUrl}/stream/${this.props.course.videoPath}`,
+      source: this.props.videoUrl,
     };
     this.player.subscribeToStateChange(this.handleStateChange.bind(this));
   }
@@ -63,51 +65,33 @@ this.load()
   pause() {
     this.player.pause();
   }
-
   render() {
-    return (
-      <>
-        <Player
-          ref={(player) => {
-            this.player = player;
-          }}
-          poster={`${BaseUrl}/${this.props.course.banner}`}
-          fluid
-          height={500}
-        >
-          <ControlBar autoHide={false}>
-            <ReplayControl seconds={10} order={2.2} />
+    const { videoUrl, banner } = this.props
+  return (
+    <>
+      <Player
+        ref={(player) => {
+          this.player = player;
+        }}
+        poster={banner}
+        fluid
+      >
+        <ControlBar autoHide={false}>
+          <ReplayControl seconds={10} order={2.2} />
 
-            <ReplayIcon onClick={() => this.load()} order={7} />
-            <GetAppIcon order={7} />
-          </ControlBar>
-          <BigPlayButton position="center" />
-          <source
-            src={
-              !this.state.source &&
-              `${BaseUrl}stream/${this.props.course.videoPath}`
-            }
-          />
-        </Player>
-      </>
-    );
-  }
+          {/* <ReplayIcon onClick={() => this.load()} order={7} /> */}
+          {/* <GetAppIcon order={7} /> */}
+        </ControlBar>
+        <BigPlayButton position="center" />
+        <source src={videoUrl} />
+      </Player>
+    </>
+  );
 }
+}
+VideoPlayer.propTypes = {
+  videoUrl: PropTypes.string.isRequired,
+  banner: PropTypes.string.isRequired,
+};
 
-{
-  /* <YouTube
-  videoId={props.course.introVideo} // defaults -> null
-  // id={string} // defaults -> null
-  // className={string} // defaults -> null
-  containerClassName="w-100" // defaults -> ''
-  opts={opts} // defaults -> {}
-  // onReady={func} // defaults -> noop
-  // onPlay={func} // defaults -> noop
-  // onPause={func} // defaults -> noop
-  // onEnd={func} // defaults -> noop
-  // onError={func} // defaults -> noop
-  // onStateChange={func} // defaults -> noop
-  // onPlaybackRateChange={func} // defaults -> noop
-  // onPlaybackQualityChange={func} // defaults -> noop
-/> */
-}
+export default VideoPlayer

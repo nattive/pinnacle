@@ -1,26 +1,102 @@
-import React from "react";
-import { fade, makeStyles } from "@material-ui/core/styles";
+import React, { useEffect } from "react";
+import { fade, makeStyles, useTheme } from "@material-ui/core/styles";
+import clsx from "clsx";
+import Drawer from "@material-ui/core/Drawer";
+import CssBaseline from "@material-ui/core/CssBaseline";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
-import IconButton from "@material-ui/core/IconButton";
+import List from "@material-ui/core/List";
 import Typography from "@material-ui/core/Typography";
-import InputBase from "@material-ui/core/InputBase";
-import Badge from "@material-ui/core/Badge";
-import MenuItem from "@material-ui/core/MenuItem";
-import Menu from "@material-ui/core/Menu";
+import Divider from "@material-ui/core/Divider";
+import IconButton from "@material-ui/core/IconButton";
 import MenuIcon from "@material-ui/icons/Menu";
-import SearchIcon from "@material-ui/icons/Search";
-import AccountCircle from "@material-ui/icons/AccountCircle";
+import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
+import ChevronRightIcon from "@material-ui/icons/ChevronRight";
+import ListItem from "@material-ui/core/ListItem";
+import ListItemIcon from "@material-ui/core/ListItemIcon";
+import ListItemText from "@material-ui/core/ListItemText";
+import ArrowRightIcon from '@material-ui/icons/ArrowRight';
 import MailIcon from "@material-ui/icons/Mail";
-import NotificationsIcon from "@material-ui/icons/Notifications";
-import MoreIcon from "@material-ui/icons/MoreVert";
+import AccountCircle from "@material-ui/icons/AccountCircle";
 import { Link, useHistory } from "react-router-dom";
 import { connect, useDispatch } from "react-redux";
-import { VERIFY_USER } from "../Actions/types";
+import { VERIFY_USER, LOAD_SUB, LOGIN_USER } from "../Actions/types";
 import { useSelector } from "react-redux";
-import { logout } from "../Actions/loginAction";
+import { logout, getUser } from "../Actions/loginAction";
+import { getEnrolledCourse, fetchMainCategory } from "../Actions/courseAction";
+import {
+  MenuItem, Badge, Menu, LinearProgress,
+  Popper, Grow, Paper, ClickAwayListener,
+  MenuList, Button
+} from "@material-ui/core";
+import { Skeleton } from "@material-ui/lab";
+import ListItemAvatar from '@material-ui/core/ListItemAvatar';
+import Avatar from '@material-ui/core/Avatar';
+import ImageIcon from '@material-ui/icons/Image';
+import Search from "../General Components/SearchCourse";
+import { Icon } from "semantic-ui-react";
+import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
+import AccountBoxIcon from '@material-ui/icons/AccountBox';
+import FavoriteIcon from '@material-ui/icons/Favorite';
+import logo_white from '../Assets/img/Pinnacle/drafts.png'
+import { blue } from "@material-ui/core/colors";
+const drawerWidth = 240;
 
 const useStyles = makeStyles((theme) => ({
+  root: {
+    display: "flex",
+  },
+  appBar: {
+    transition: theme.transitions.create(["margin", "width"], {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.leavingScreen,
+    }),
+  },
+  appBarShift: {
+    width: `calc(100% - ${drawerWidth}px)`,
+    marginLeft: drawerWidth,
+    transition: theme.transitions.create(["margin", "width"], {
+      easing: theme.transitions.easing.easeOut,
+      duration: theme.transitions.duration.enteringScreen,
+    }),
+  },
+  menuButton: {
+    marginRight: theme.spacing(2),
+  },
+  hide: {
+    display: "none",
+  },
+  drawer: {
+    width: drawerWidth,
+    flexShrink: 0,
+  },
+  drawerPaper: {
+    width: drawerWidth,
+  },
+  drawerHeader: {
+    display: "flex",
+    alignItems: "center",
+    padding: theme.spacing(0, 1),
+    // necessary for content to be below app bar
+    ...theme.mixins.toolbar,
+    justifyContent: "flex-end",
+  },
+  content: {
+    flexGrow: 1,
+    padding: theme.spacing(3),
+    transition: theme.transitions.create("margin", {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.leavingScreen,
+    }),
+    marginLeft: -drawerWidth,
+  },
+  contentShift: {
+    transition: theme.transitions.create("margin", {
+      easing: theme.transitions.easing.easeOut,
+      duration: theme.transitions.duration.enteringScreen,
+    }),
+    marginLeft: 0,
+  },
   grow: {
     flexGrow: 1,
   },
@@ -61,7 +137,7 @@ const useStyles = makeStyles((theme) => ({
     color: "inherit",
   },
   textBrandColor: {
-    color: "#fff",
+    color: blue[800],
   },
   inputInput: {
     padding: theme.spacing(1, 1, 1, 0),
@@ -91,14 +167,36 @@ function HeadBar(props) {
   const dispatch = useDispatch();
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
+  const [courseAnchorEl, setCourseAnchorEl] = React.useState(null);
+  const [categoryAnchorEl, setCategoryAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
   const user = useSelector((state) => state.auth.user);
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
   const history = useHistory();
+  const theme = useTheme();
+  const [open, setOpen] = React.useState(false);
+  useEffect(() => {
+    props.allCourses()
+    props.fetchMainCategory()
 
+  }, [])
+  const handleDrawerOpen = () => {
+    setOpen(true);
+  };
+
+  const handleDrawerClose = () => {
+    setOpen(false);
+  };
   const handleProfileMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
+  };
+  const handleCourseMenuOpen = (event) => {
+    console.log(event.currentTarget);
+    setCourseAnchorEl(event.currentTarget);
+  };
+  const handleCategoryMenuOpen = (event) => {
+    setCategoryAnchorEl(event.currentTarget);
   };
 
   const handleMobileMenuClose = () => {
@@ -110,10 +208,20 @@ function HeadBar(props) {
     handleMobileMenuClose();
   };
 
+  const handleCourseMenuClose = () => {
+    setCourseAnchorEl(null);
+    handleMobileMenuClose();
+  };
+
+  const handleCategoryMenuClose = () => {
+    setCategoryAnchorEl(null);
+    handleMobileMenuClose();
+  };
+
   const handleUserLogout = () => {
+    localStorage.removeItem("P_access_token");
+    dispatch({ type: LOGIN_USER, payload: ''})
     props.logout();
-    localStorage.removeItem("PO_user_token");
-    localStorage.removeItem("user_as_token");
     history.push("/");
   };
 
@@ -134,18 +242,160 @@ function HeadBar(props) {
     >
       <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
       <MenuItem onClick={handleMenuClose}>My account</MenuItem>
-      <MenuItem
-        onClick={() => {
-          props.logout();
-
-          localStorage.removeItem("PO_user_token");
-          localStorage.removeItem("user_as_token");
-          history.push("/");
-        }}
-      >
+      <MenuItem   onClick={handleUserLogout}  >
         Logout
       </MenuItem>
     </Menu>
+  );
+  const myCourses = (
+    <Popper
+      open={Boolean(courseAnchorEl)}
+      anchorEl={courseAnchorEl}
+      role={undefined}
+      transition
+      disablePortal
+    >
+      {({ TransitionProps, placement }) => (
+        <Grow
+          {...TransitionProps}
+          style={{
+            transformOrigin:
+              placement === "bottom" ? "center top" : "center bottom",
+          }}
+        >
+          <Paper>
+            <ClickAwayListener onClickAway={handleCourseMenuClose}>
+              <MenuList
+                autoFocusItem={Boolean(courseAnchorEl)}
+                id="menu-list-grow"
+              >
+                {props.ENROLLED_courses.map 
+                ? props.ENROLLED_courses.map(course => 
+                <>
+                <MenuItem>
+                  <ListItemIcon>
+                    <Avatar variant="square" src={course.banner} />
+                  </ListItemIcon>
+                  <ListItemText
+                    primary={course.title}
+                    secondary={course.subtitle}
+                  />
+                </MenuItem>
+
+                </>) :
+                <MenuItem>
+                  <ListItemText
+                    primary={'You are Yet to Enroll in any course'}
+                  />
+                </MenuItem>
+                
+                
+                 }
+                <Divider />
+                <MenuItem>
+                  <Button
+                    variant="contained"
+                    fullWidth
+                    disableElevation
+                    color="primary"
+                  >
+                    See Enrolled Courses
+                  </Button>
+                </MenuItem>
+              </MenuList>
+            </ClickAwayListener>
+          </Paper>
+        </Grow>
+      )}
+    </Popper>
+  );
+  const category = (
+    <>
+      <Menu
+        id="long-menu"
+        anchorEl={categoryAnchorEl}
+        keepMounted
+        elevation={0}
+        open={Boolean(categoryAnchorEl)}
+        onClose={handleCategoryMenuClose}
+        PaperProps={{
+          style: {
+            maxHeight: 120 * 4.5,
+            // width: '20ch',
+          },
+        }}
+      >
+        <Paper>
+          <ClickAwayListener >
+            <div style={{ display: 'flex' }}>
+              <MenuList autoFocusItem={Boolean(categoryAnchorEl)} id="menu-list-grow"  >
+                {
+                  props.mainCategories && props.mainCategories.length > 0 ? props.mainCategories.map(course =>
+                    <React.Fragment key={course.id}>
+                      <MenuItem onClick={() => dispatch({ type: LOAD_SUB, payload: course.sub_categories })}   onMouseEnter={() => dispatch({ type: LOAD_SUB, payload: course.sub_categories})} >
+                        <ListItemText primary={course.name} />
+                        <ListItemIcon>
+                          <ArrowRightIcon />
+                        </ListItemIcon>
+                      </MenuItem>
+                      <Divider />
+                    </React.Fragment>
+                  ) : (<>
+                      loading...
+                  </>)
+                }
+
+              </MenuList>
+              <MenuList hidden={props.loadSub.length < 0} autoFocusItem={Boolean(categoryAnchorEl)} id="menu-list-grow"  >
+                {
+                  props.loadSub && props.loadSub.length > 0 ? props.loadSub.map(sub =>
+                    <React.Fragment key={sub.id}>
+                      <MenuItem >
+                        <ListItemText primary={sub.name} />
+                      </MenuItem>
+                      <Divider />
+                    </React.Fragment>
+                  ) : (<>
+                        loading...
+                  </>)
+                }
+
+              </MenuList>
+            </div>
+          </ClickAwayListener>
+        </Paper>
+      </Menu>
+    </>
+  );
+
+  const menu = (
+    <>
+      <MenuItem>
+        <Typography variant="button" className={classes.title}>
+          <Link to="/" className={classes.textBrandColor}>
+            Home
+          </Link>
+        </Typography>
+      </MenuItem>
+      <MenuItem>
+        <Typography variant="button" className={classes.title}>
+          <Link to="/learn/dashboard" className={classes.textBrandColor}>
+            Dashboard
+          </Link>
+        </Typography>
+      </MenuItem>
+      <MenuItem button onClick={handleCourseMenuOpen}>
+        <Typography variant="button" className={classes.title}>
+          My Courses
+        </Typography>
+      </MenuItem>
+      <MenuItem button onClick={handleCategoryMenuOpen} >
+        <Typography variant="button" className={classes.title}>
+          Category
+        </Typography>
+      </MenuItem>
+
+    </>
   );
 
   const mobileMenuId = "primary-search-account-menu-mobile";
@@ -159,33 +409,7 @@ function HeadBar(props) {
       open={isMobileMenuOpen}
       onClose={handleMobileMenuClose}
     >
-      <MenuItem>
-        <IconButton aria-label="show 4 new mails" color="inherit">
-          <Badge badgeContent={4} color="secondary">
-            <MailIcon />
-          </Badge>
-        </IconButton>
-        <p>Messages</p>
-      </MenuItem>
-      <MenuItem>
-        <IconButton aria-label="show 11 new notifications" color="inherit">
-          <Badge badgeContent={11} color="secondary">
-            <NotificationsIcon />
-          </Badge>
-        </IconButton>
-        <p>Notifications</p>
-      </MenuItem>
-      <MenuItem onClick={handleProfileMenuOpen}>
-        <IconButton
-          aria-label="account of current user"
-          aria-controls="primary-search-account-menu"
-          aria-haspopup="true"
-          color="inherit"
-        >
-          <AccountCircle />
-        </IconButton>
-        <p>Profile</p>
-      </MenuItem>
+
       <MenuItem onClick={handleUserLogout}>
         <IconButton
           aria-label="logout current user"
@@ -193,49 +417,50 @@ function HeadBar(props) {
           aria-haspopup="true"
           color="inherit"
         >
-          <AccountCircle />
+          <Avatar />
         </IconButton>
         <p>Logout</p>
       </MenuItem>
     </Menu>
   );
 
+  useEffect(() => {
+    props.getUser();
+    props.getEnrolledCourse();
+  }, []);
+
   return (
     <div className={classes.grow}>
-      <AppBar position="static" elevation={0}>
+      <AppBar
+        // position="fixed"
+        variant="outlined"
+        color="default"
+        className={clsx(classes.appBar, {
+          [classes.appBarShift]: open,
+        })}
+      >
         <Toolbar>
+          <img src={logo_white} alt="pinnacle logo" style={{ width: 100 }} />
           <IconButton
-            edge="start"
-            className={classes.menuButton}
             color="inherit"
             aria-label="open drawer"
+            onClick={handleDrawerOpen}
+            edge="start"
+            className={clsx(
+              classes.menuButton,
+              classes.sectionMobile,
+              open && classes.hide
+            )}
           >
             <MenuIcon />
           </IconButton>
-          <MenuItem>
-            <Typography variant="button" className={classes.title}>
-              <Link to="/" className={classes.textBrandColor}>
-                Home
-              </Link>
-            </Typography>
-          </MenuItem>
-          <MenuItem>
-            <Typography variant="button" className={classes.title}>
-              <Link
-                to="/e-learning/courses/"
-                className={classes.textBrandColor}
-              >
-                Your Courses
-              </Link>
-            </Typography>
-          </MenuItem>
-          <div className={classes.grow} />
+          {menu}
+          {myCourses}
+          {category}
+          <di className={classes.grow} />
           <div className={classes.sectionDesktop}>
-            {/* <IconButton aria-label="show 17 new notifications" color="inherit">
-              <Badge badgeContent={17} color="secondary">
-                <NotificationsIcon />
-              </Badge>
-            </IconButton> */}
+            <Search />
+
             <IconButton
               edge="end"
               aria-label="account of current user"
@@ -244,32 +469,78 @@ function HeadBar(props) {
               onClick={handleProfileMenuOpen}
               color="inherit"
             >
-              <AccountCircle />
-              <Typography className="ml-2 text-light">Account</Typography>
+              <ShoppingCartIcon />
             </IconButton>
-          </div>
-          <div className={classes.sectionMobile}>
             <IconButton
-              aria-label="show more"
-              aria-controls={mobileMenuId}
+              edge="end"
+              aria-label="account of current user"
+              aria-controls={menuId}
               aria-haspopup="true"
-              onClick={handleMobileMenuOpen}
+              onClick={handleProfileMenuOpen}
               color="inherit"
             >
-              <MoreIcon />
+              <FavoriteIcon />
+            </IconButton>
+            <IconButton
+              edge="end"
+              aria-label="account of current user"
+              aria-controls={menuId}
+              aria-haspopup="true"
+              onClick={handleProfileMenuOpen}
+              color="inherit"
+            >
+              <Avatar
+                style={{
+                  backgroundColor: "#fff",
+                  border: `1px solid #2c2c6b`,
+                  color: "#2c2c6b",
+                }}
+                alt={props.user.name}
+                src="/static/images/avatar/1.jpg"
+              />
             </IconButton>
           </div>
         </Toolbar>
+        {props.busy && <LinearProgress />}
       </AppBar>
+      <Drawer
+        className={classes.drawer}
+        variant="persistent"
+        anchor="left"
+        open={open}
+        classes={{
+          paper: classes.drawerPaper,
+        }}
+      >
+        <div className={classes.drawerHeader}>
+          <IconButton onClick={handleDrawerClose}>
+            {theme.direction === "ltr" ? (
+              <ChevronLeftIcon />
+            ) : (
+              <ChevronRightIcon />
+            )}
+          </IconButton>
+        </div>
+        <Divider />
+      </Drawer>
       {renderMobileMenu}
       {renderMenu}
     </div>
   );
 }
-const mapStateToProps = (state) => ({});
+const mapStateToProps = (state) => ({
+  user: state.auth.user,
+  mainCategories: state.course.mainCategories,
+  loadSub: state.course.loadSub,
+  busy: state.loading.busy,
+  ENROLLED_courses: state.course.ENROLLED_courses,
+});
 
 const mapDispatchToProps = {
   logout,
+  getUser,
+  fetchMainCategory,
+  getEnrolledCourse,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(HeadBar);

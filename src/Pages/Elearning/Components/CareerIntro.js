@@ -10,24 +10,23 @@ export default function CareerIntro() {
           <div className="col-md-7">
             <div className="about-desc">
               <div
-                className="about-img-1"
-                style={{ backgroundImage: `url(${imgClass2})` }}
-              ></div>
-              <div
-                className="about-img-2"
-                style={{ backgroundImage: `url(${imgClass2})` }}
+                className="w-100 p-4"
+                style={{
+                  backgroundImage: `url(${imgClass2})`,
+                  height: "350px",
+                  backgroundSize: "cover",
+                }}
               ></div>
             </div>
           </div>
           <div className="col-md-5">
             <div className="row">
               <div className="col-md-12 colorlib-heading">
-                <h1 className="heading-big">Careers of the Future</h1>
-                <h2>Careers of the Future</h2>
+                <h3 className="course-heading">Careers of the Future</h3>
               </div>
             </div>
             <div className="row">
-              <div className="col-md-12">
+              <div className="col-md-12 mb-3">
                 <p>
                   <strong>Build your Career for the Future</strong>
                 </p>
@@ -38,66 +37,15 @@ export default function CareerIntro() {
                   for a younger audience.
                 </p>
               </div>
-              <div className="col-md-6 col-sm-6">
-                <div className="counter-entry">
-                  <div className="desc">
-                    <span
-                      className="colorlib-counter js-counter"
-                      data-from="0"
-                      data-to="1539"
-                      data-speed="5000"
-                      data-refresh-interval="50"
-                    ></span>
-                    <span className="colorlib-counter-label">Courses</span>
-                  </div>
-                </div>
-              </div>
-              <div className="col-md-6 col-sm-6">
-                <div className="counter-entry">
-                  <div className="desc">
-                    <span
-                      className="colorlib-counter js-counter"
-                      data-from="0"
-                      data-to="3653"
-                      data-speed="5000"
-                      data-refresh-interval="50"
-                    ></span>
-                    <span className="colorlib-counter-label">Students</span>
-                  </div>
-                </div>
-              </div>
-              <div className="col-md-6 col-sm-6">
-                <div className="counter-entry">
-                  <div className="desc">
-                    <span
-                      className="colorlib-counter js-counter"
-                      data-from="0"
-                      data-to="2300"
-                      data-speed="5000"
-                      data-refresh-interval="50"
-                    ></span>
-                    <span className="colorlib-counter-label">
-                      Teachers online
-                    </span>
-                  </div>
-                </div>
-              </div>
-              <div className="col-md-6 col-sm-6">
-                <div className="counter-entry">
-                  <div className="desc">
-                    <span
-                      className="colorlib-counter js-counter"
-                      data-from="0"
-                      data-to="200"
-                      data-speed="5000"
-                      data-refresh-interval="50"
-                    ></span>
-                    <span className="colorlib-counter-label">Countries</span>
-                  </div>
-                </div>
-              </div>
             </div>
-            <Button variant='contained' color='primary'> Sign Up </Button>
+            <Button
+              variant="contained"
+              className="btn btn-primary btn-outline btn-lg btn-discover popup-vimeo"
+              color="primary"
+            >
+              {" "}
+              Sign Up{" "}
+            </Button>
           </div>
         </div>
       </div>

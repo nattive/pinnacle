@@ -1,9 +1,10 @@
 import React, { Component } from "react";
 import { getCourses } from "../Patials/patials";
-import { CircularProgress, Container, Divider } from "@material-ui/core";
+import { CircularProgress, Container, Divider, Grid } from "@material-ui/core";
 import SingleCourseItem from "./SingleCourseItem";
 import ReactPlaceholder from "react-placeholder/lib";
 import "react-placeholder/lib/reactPlaceholder.css";
+import {getUser} from '../Actions/loginAction'
 import { connect } from "react-redux";
 import {
   fetchPOCourses,
@@ -20,60 +21,72 @@ class ListCourses extends Component {
       course: {},
       ready: false,
     };
+    // this.getDerivedStateFromProps = this.getDerivedStateFromProps.bind(this);
   }
-  async componentDidMount() {
-    var course = await getCourses(10);
-    this.setState({ course: course.data, ready: true });
+  UNSAFE_componentWillMount(){
+    this.props.getUser();
+
+  }
+  componentDidMount() {
+    switch (this.props.user.account_type) {
+      case "isPO":
+        this.props.fetchPOCourses(12);
+        this.setState({ course: this.props.PO_courses.data, ready: true });
+        break;
+      case "isCareer":
+        this.props.fetchCOTFCourses(12);
+        this.setState({ course: this.props.COTF_courses.data, ready: true });
+        break;
+      default:
+        break;
+    }
+  }
+  UNSAFE_componentWillReceiveProps(props) {
+    if (props.user.account_type) {
+      switch (props.user.account_type) {
+        case "isPO":
+          this.setState({
+            course: props.PO_courses.data,
+            ready: true,
+          });
+          break;
+        case "isCareer":
+          this.setState({
+            course: props.PO_courses.data,
+            ready: true,
+          });
+
+          break;
+        default:
+          break;
+      }
+    }
   }
 
   render() {
     return (
       <Container>
-        <div className="row mt-4">
-          <CourseRow />
-        </div>
-        <h3 className="pt-2 pb-2">Top Courses</h3>
-        <Divider />
-        <div className="row mt-4">
-          {this.state.course.length < 0 ? (
+        <h3 className="pt-2 pb-2"> Top Courses </h3> <Divider />
+        <Grid container>
+          {this.state.course && this.state.course.length < 0 ? (
             <div className="mx-auto">
               <CircularProgress />
             </div>
           ) : this.state.ready ? (
+            this.state.course &&
             this.state.course.map((item, key) => (
-              <div key={key} className="col-xs-6 col-md-4">
-                <SingleCourseItem course={item} />
-              </div>
+              <Grid>
+                <SingleCourseItem course={item} />{" "}
+              </Grid>
             ))
           ) : (
             <>
               <div className="mx-auto text-center mt-4">
                 <CircularProgress />
-              </div>
+              </div>{" "}
             </>
-          )}
-        </div>
-        <h3 className="pt-2 pb-2">Recommended For You</h3>
-        <Divider />
-        <div className="row mt-4">
-          {this.state.course.length < 0 ? (
-            <div className="mx-auto">
-              <CircularProgress />
-            </div>
-          ) : this.state.ready ? (
-            this.state.course.map((item, key) => (
-              <div key={key} className="col-xs-6 col-md-4">
-                <SingleCourseItem course={item} />
-              </div>
-            ))
-          ) : (
-            <>
-              <div className="mx-auto text-center mt-4">
-                <CircularProgress />
-              </div>
-            </>
-          )}
-        </div>
+          )}{" "}
+        </Grid>
       </Container>
     );
   }
@@ -83,6 +96,7 @@ const mapStateToProps = (state) => ({
   PO_courses: state.course.PO_courses,
   FREE_courses: state.course.FREE_courses,
   COTF_courses: state.course.COTF_courses,
+  user: state.auth.user,
   ENROLLED_courses: state.course.ENROLLED_courses,
 });
 
@@ -92,5 +106,6 @@ const mapDispatchToProps = {
   fetchFREECourses,
   getEnrolledCourse,
   enrollCourse,
+  getUser,
 };
 export default connect(mapStateToProps, mapDispatchToProps)(ListCourses);

@@ -1,0 +1,25 @@
+.action-center {
+    margin-top: 3em;
+}
+
+.action-center>h4 {
+    padding: .3em 1em;
+}
+
+.menu-list {
+    border-right: 1px solid #00006675;
+}
+
+.menu-list>li {
+    color: #000066;
+    font-size: medium;
+    cursor: pointer;
+    padding: 1em;
+}
+
+.menu-list>li:hover {
+    background-color: #a6a6f611;
+    margin-left: 2em;
+    transition: .8s;
+    border-bottom: 1px solid #00006618;
+}

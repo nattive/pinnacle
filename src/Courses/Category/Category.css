@@ -1,10 +1,13 @@
     .category-list {
         list-style-type: none;
         display: flex;
+        overflow-y: auto;
     }
     
     .category-list li {
         padding: 10px;
+        margin-right: 5px;
         font-size: 12px;
-        border-right: 1px solid rgba(180, 180, 180, 0.075);
+        text-transform: capitalize;
+        border-right: 1px solid rgba(104, 101, 101, 0.075);
     }

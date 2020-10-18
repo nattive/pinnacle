@@ -14,7 +14,7 @@ export const fetchReview = course_id => dispatch => {
         type: START_SHOW_COURSE_REVIEW
     })
 
-    const url = `${BaseUrl}api/courses/review/${course_id}`;
+    const url = `${BaseUrl}user/course/review/${course_id}`;
     Axios.get(url).then((comments) => {
         console.log(comments);
 
@@ -36,7 +36,7 @@ export const postReview = ({ data }) => dispatch => {
         type: START_COURSE_REVIEW
     })
 
-    Axios.post(`${BaseUrl}api/courses/review`, {
+    Axios.post(`${BaseUrl}user/course/review`, {
             review: data.review,
             rating: data.rating,
             user_name: data.user_name,
@@ -64,12 +64,14 @@ export const postReview = ({ data }) => dispatch => {
 
 export const deleteReview = (id, course_id) => dispatch => {
 
-
+    /**
+     * TODO: Add swal popup
+     */
     dispatch({
         type: START_DELETE_REVIEW
     })
 
-    Axios.delete(`${BaseUrl}api/courses/review/${id}`)
+    Axios.delete(`${BaseUrl}user/course/review/${id}`)
         .then(response => {
             console.log(response);
             dispatch(fetchReview(course_id))

@@ -23,17 +23,18 @@ export const register = credentials => dispatch => {
         payload: false
     })
 
-    Axios.post(`${BaseUrl}api/register`, credentials)
+    Axios.post(`${BaseUrl}register`, credentials)
         .then(data => {
-            var token = jwt.sign({...data.data }, 'gk0ra6IcLrAmexlr4tZip9bmRXvRoXtDNNsEQnF1HIT0dI4tNaVbyg6ZhFvffqga');
             const { user } = data.data;
-            // console.log();
+            dispatch({
+                type: AUTH_LOADING_STATE,
+                payload: false
+            })
+            localStorage.removeItem('P_access_token')
+            localStorage.setItem('P_access_token', data.data.access_token)
             switch (user.account_type) {
                 case 'isPO':
-                    localStorage.removeItem('user_as_token')
-                    localStorage.removeItem('PO_user_token')
-                    localStorage.setItem('PO_user_token', user.access_token)
-                    localStorage.setItem('user_as_token', token)
+
                     dispatch({
                         type: GET_USER_FROM_RESPONSE,
                         payload: user
@@ -44,10 +45,7 @@ export const register = credentials => dispatch => {
                     })
                     break;
                 case 'isCareer':
-                    localStorage.removeItem('user_as_token')
-                    localStorage.removeItem('Career_user_token')
-                    localStorage.setItem('user_as_token', token)
-                    localStorage.setItem('Career_user_token', data.data.access_token)
+
                     dispatch({
                         type: GET_USER_FROM_RESPONSE,
                         payload: data.data.user

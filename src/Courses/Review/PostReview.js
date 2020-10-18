@@ -1,12 +1,12 @@
-import React, { Component } from "react";
+import React from 'react'
+import { Button, Comment, Form, Label, Rating } from 'semantic-ui-react'
 import {
-  Box,
-  Typography,
-  makeStyles,
-  Paper,
-  Button,
   Divider,
   CircularProgress,
+  Card,
+  CardActionArea,
+  CardHeader,
+  Avatar,
 } from "@material-ui/core";
 import ReactStars from "react-rating-stars-component";
 import TextField from "@material-ui/core/TextField";
@@ -18,21 +18,34 @@ import {
   showCourse,
 } from "../../Actions/courseAction";
 import { postReview, fetchReview } from "../../Actions/ReviewAction";
-import { verifyUserTokenAction } from "../../Actions/verifyUserTokenAction";
+import PropTypes from 'prop-types';
+import { Link } from "react-router-dom";
+import SignInForm from "../../Pages/User/SignInForm";
+import SignUp from "../../Pages/User/SignUp";
+import CreateIcon from "@material-ui/icons/Create";
+import ShowRating from '../../General Components/ShowRating';
 
-class PostReview extends Component {
-  constructor() {
+/**
+ *  constructor() {
     super();
     this.state = {
       rating: 0,
       ratingBody: "",
+      showAuth: false,
     };
     this.handlePostReview = this.handlePostReview.bind(this);
     this.reviewText = this.reviewText.bind(this);
   }
-  componentDidMount() {
-    this.props.verifyUserTokenAction();
-  }
+ <div className="w-100">
+                  <ReactStars
+                    size={30}
+                    half={false}
+                    value={this.state.rating}
+                    onChange={(newRating) => {
+                      this.setState({ rating: newRating });
+                    }}
+                  />
+                </div>
 
   reviewText() {
     switch (this.state.rating) {
@@ -53,84 +66,69 @@ class PostReview extends Component {
         break;
     }
   }
+  
+  */
 
-  async handlePostReview() {
-    const data = {
-      review: this.state.ratingBody,
-      rating: this.state.rating,
-      user_name: this.props.user.user.name,
-      user_id: this.props.user.user.id,
-      course_id: this.props.course.id,
-    };
+const PostReview = (props) => {
+  const [rating, setRating] = React.useState(0)
+  const [ratingBody, setRatingBody] = React.useState('')
+  const [error, setError] = React.useState(null)
+  const handlePostReview = () => {
+    if (ratingBody !== '') {
+      const data = {
+        review: ratingBody,
+        rating: rating,
+        user_name: props.user.name,
+        user_id: props.user.id,
+        course_id: props.course.id,
+      };
 
-    this.props.postReview({ data });
-    this.setState({
-      rating: 0,
-      ratingBody: "",
-    });
+      props.postReview({ data });
+      setRating(0)
+      setRating('')
+
+    } else {
+      setError('Rating cannot be empty')
+    }
   }
 
-  render() {
-    return (
-      <div className="card mt-3">
-        <div className="card-header">
-          <Typography component="legend" variant="h5">
-            Write a review
-          </Typography>
-        </div>
-        <div className="card-body">
-          <p className="text-muted">{ this.reviewText()}</p>
-          <div className="w-100">
+  return (
+  <>
+      {
+        props.courseIsEnrolled &&
+        <Form reply onSubmit={handlePostReview}>
+        <Label>You enrolled into this course, Add a review</Label>
+          <div className="w-100 m-3">
             <ReactStars
               size={30}
               half={false}
-              value={this.state.rating}
+              value={rating}
               onChange={(newRating) => {
-                this.setState({ rating: newRating });
+                setRating(newRating)
               }}
             />
           </div>
-
-          <TextField
-            id="standard-multiline-static"
-            label="Your review about the course"
-            multiline
-            className="w-100"
-            rows={4}
-            variant="outlined"
-            value={this.state.ratingBody}
-            onChange={(event) =>
-              this.setState({ ratingBody: event.target.value })
-            }
-          />
-          <br />
-          <Button
-            variant="contained"
-            color="primary"
-            className="m-2"
-            onClick={this.handlePostReview}
-          >
-            {this.props.isSendingReview ? (
-              <CircularProgress size={30} color="#fff" />
-            ) : (
-              " Post Review"
-            )}
-          </Button>
-        </div>
-      </div>
-    );
-  }
+          <Form.TextArea required onChange={e => setRatingBody(e.target.value)} />
+          <Button loading={props.isSendingReview} content='Add Review'  labelPosition='left' icon='edit' primary />
+        </Form>
+      }
+      </>
+  )
 }
 
 const mapStateToProps = (state) => ({
   user: state.auth.user,
   isEnrolled: state.course.isEnrolled,
+  courseIsEnrolled: state.course.courseIsEnrolled,
   isSendingReview: state.loading.isSendingReview,
 });
 
+PostReview.propTypes = {
+  course: PropTypes.object
+};
 const mapDispatchToProps = {
   enrollCourse,
-  verifyUserTokenAction,
+  // verifyUserTokenAction,
   isCourseEnrolled,
   playCourse,
   fetchReview,

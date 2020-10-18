@@ -25,20 +25,15 @@ export default function UlearnIntro() {
           <div className="col-md-7">
             <div className="about-desc">
               <div
-                className="about-img-1"
-                style={{ backgroundImage: `url(${imgClass2})` }}
-              ></div>
-              <div
-                className="about-img-2"
-                style={{ backgroundImage: `url(${imgClass2})` }}
-              ></div>
+                className="w-100 p-4"
+                style={{ backgroundImage: `url(${imgClass2})`, height: '300px', backgroundSize: 'cover' }}
+              />
             </div>
           </div>
           <div className="col-md-5">
             <div className="row">
               <div className="col-md-12 colorlib-heading">
-                <h1 className={classes.bigText}>Pinnacle ULearn</h1>
-                <h2>Pinnacle ULearn</h2>
+                <h3 className="course-heading">Pinnacle Ulearn</h3>
               </div>
             </div>
             <div className="row">
@@ -58,10 +53,9 @@ export default function UlearnIntro() {
               to="/auth/signin"
               variant="contained"
               color="primary"
-              className="mt-4 px-4 py-2"
+              className="btn btn-primary mt-4 btn-outline btn-lg btn-discover popup-vimeo"
             >
-              {" "}
-              Sign Up{" "}
+              Sign Up
             </Button>
           </div>
         </div>

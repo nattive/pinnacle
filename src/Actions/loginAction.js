@@ -9,7 +9,10 @@ import {
     ASYNC_ERROR,
     NULL_ERRORS,
     TOGGLE_LOGIN_FORM,
-    ACCOUNT_TYPE
+    ACCOUNT_TYPE,
+    WORKING,
+    STOPPED_WORKING,
+    MENTEE
 } from "./types"
 import { verifyToken } from "./verifyTokenAction"
 var jwt = require('jsonwebtoken');
@@ -22,49 +25,46 @@ export const login = credentials => dispatch => {
     dispatch({
         type: NULL_ERRORS
     })
+    dispatch({
+        type: WORKING
+    })
 
-    Axios.post(`${BaseUrl}api/login`, credentials)
+    Axios.post(`${BaseUrl}login`, credentials)
         .then(data => {
-            var token = jwt.sign({...data.data }, 'gk0ra6IcLrAmexlr4tZip9bmRXvRoXtDNNsEQnF1HIT0dI4tNaVbyg6ZhFvffqga');
-            const { user } = data.data;
-            // console.log();
-            localStorage.setItem('access_token', user.access_token)
-            switch (user.account_type) {
-                case 'isPO':
-                    localStorage.removeItem('user_as_token')
-                    localStorage.setItem('user_as_token', token)
-                    dispatch({
-                        type: GET_USER_FROM_RESPONSE,
-                        payload: user
-                    })
-                    dispatch({
-                        type: ACCOUNT_TYPE,
-                        payload: 'isPO'
-                    })
-                    break;
-                case 'isCareer':
-                    localStorage.removeItem('user_as_token')
-                    localStorage.setItem('user_as_token', token)
-                    localStorage.setItem('access_token', data.data.access_token)
-                    dispatch({
-                        type: GET_USER_FROM_RESPONSE,
-                        payload: data.data.user
-                    })
-                    dispatch({
-                        type: ACCOUNT_TYPE,
-                        payload: 'isCareer'
-                    })
-                    break;
+            dispatch({
+                type: STOPPED_WORKING
+            })
+            dispatch({
+                type: AUTH_LOADING_STATE,
+                payload: false
+            })
+            const { user, mentee } = data.data;
+            console.log(data);
+            localStorage.removeItem('P_access_token')
+            localStorage.setItem('P_access_token', data.data.access_token)
+            dispatch({
+                type: GET_USER_FROM_RESPONSE,
+                payload: user
+            })
+            dispatch({
+                type: MENTEE,
+                payload: mentee
+            })
 
-                default:
-                    break;
-            }
         })
         .catch(err => {
-            // const err
+            // const 
+            console.log(err);
             dispatch({
-                type: ASYNC_ERRORS,
-                payload: err
+                type: STOPPED_WORKING
+            })
+            dispatch({
+                type: AUTH_LOADING_STATE,
+                payload: false
+            })
+            dispatch({
+                type: ERR_LOGIN_USER,
+                payload: err.response ? err.response.data.error : JSON.stringify(err.message)
             })
             dispatch({
                 type: AUTH_LOADING_STATE,
@@ -80,15 +80,19 @@ export const logout = () => dispatch => {
         type: AUTH_LOADING_STATE,
         payload: true
     })
-
+    dispatch({
+        type: WORKING
+    })
     dispatch({
         type: NULL_ERRORS
     })
-
-    Axios.post(`${BaseUrl}api/logout`)
+    const token_to_verify = localStorage.getItem('P_access_token')
+    Axios.get(`${BaseUrl}logout`, { headers: { Authorization: `Bearer ${token_to_verify}` } })
         .then(data => {
-            localStorage.remove('user_as_token')
-            localStorage.remove('PO_user_token')
+            localStorage.removeItem("P_access_token");
+            dispatch({
+                type: STOPPED_WORKING
+            })
             dispatch({
                 type: GET_USER_FROM_RESPONSE,
                 payload: {}
@@ -108,6 +112,9 @@ export const logout = () => dispatch => {
                 type: AUTH_LOADING_STATE,
                 payload: false
             })
+            dispatch({
+                type: STOPPED_WORKING
+            })
         })
 }
 
@@ -118,4 +125,44 @@ export const toggleForm = (value) => dispatch => {
         payload: value
     })
 
+}
+
+export const getUser = () => dispatch => {
+    const token_to_verify = localStorage.getItem('P_access_token')
+    dispatch({
+        type: WORKING
+    })
+    dispatch({
+        type: AUTH_LOADING_STATE,
+        payload: false
+    })
+    if (token_to_verify) {
+
+        Axios.get(`${BaseUrl}me`, { headers: { Authorization: `Bearer ${token_to_verify}` } })
+            .then(res => {
+                dispatch({
+                    type: GET_USER_FROM_RESPONSE,
+                    payload: res.data.user
+                })
+                dispatch({
+                    type: AUTH_LOADING_STATE,
+                    payload: false
+                })
+                dispatch({
+                    type: MENTEE,
+                    payload: res.data.mentee
+                })
+
+            })
+            .catch(err => {
+                alert(err.response.data)
+                dispatch({
+                    type: AUTH_LOADING_STATE,
+                    payload: false
+                })
+            })
+    } else {
+        console.log('no in');
+
+    }
 }

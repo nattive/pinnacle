@@ -16,10 +16,12 @@ import { connect } from "react-redux";
 import { fetchCourses } from "../../Actions/courseAction";
 import { Snackbar } from "@material-ui/core";
 import { Alert } from "@material-ui/lab";
+import NavBarHeader from "./NavBarHeader";
+import SingleBanner from "../../General Components/SingleBanner";
 
 class Index extends Component {
   async componentDidMount() {
-    await this.props.fetchCourses(3);
+    await this.props.fetchCourses();
   }
   render() {
     return (
@@ -31,18 +33,20 @@ class Index extends Component {
           onClose
         >
           <Alert onClose severity="error">
-            {this.props.fetchCourseError}
+            {JSON.stringify(this.props.fetchCourseError)}
           </Alert>
         </Snackbar>
         <Header />
-        <Slider />
+        <NavBarHeader />
+        <SingleBanner />
         <AuthSection />
         <More />
         <Services />
         <FeaturedCourses />
-        <Countdown /> {/* <CoachingSection /> */} <Testimonial />
+        <Countdown />
+        <CoachingSection />
+        <Testimonial location="Homepage" />
         <BlogSection />
-        <Footer />
       </>
     );
   }

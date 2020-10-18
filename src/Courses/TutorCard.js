@@ -15,17 +15,17 @@ import {
   CardHeader,
   IconButton,
   Paper,
+  CardMedia,
 } from "@material-ui/core";
 import { Skeleton } from "@material-ui/lab";
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    display: "flex",
-    "& > *": {
-      margin: theme.spacing(1),
-    },
+    maxWidth: 345,
   },
-
+  media: {
+    height: 140,
+  },
   large: {
     width: theme.spacing(10),
     height: theme.spacing(10),
@@ -39,46 +39,38 @@ export default function TutorCard(props) {
   const { tutor } = props;
   return (
     <div className={classes.root}>
-      <Paper className="w-100 mx-auto text-center" variant="outlined">
-        <Typography variant="h5" component="h5" className="m-2 text-success">
-          Tutor
-        </Typography>
+      <Card elevation={0} className={classes.root}>
         <CardActionArea>
-          <Avatar
-            // alt="Remy Sharp"
-            src="/static/images/avatar/1.jpg"
-            className={classes.large}
+          <CardMedia
+            className={classes.media}
+            image="/static/images/cards/contemplative-reptile.jpg"
+            title="Contemplative Reptile"
           />
           <CardContent>
-            <Typography variant="h5" component="h2">
+            <Typography gutterBottom variant="h5" component="h5">
               {tutor ? tutor.name : <Skeleton />}
+            </Typography>
+            <Typography variant="body2" color="textSecondary" component="p">
+              {tutor ? tutor.about : <Skeleton />}
             </Typography>
             <Typography color="textSecondary">Ratings</Typography>
           </CardContent>
-          <CardActions>
-            <IconButton
-              color="primary"
-              aria-label="facebook"
-              component="button"
-            >
-              <FacebookIcon />
-            </IconButton>
-            <IconButton color="primary" aria-label="Twitter" component="button">
-              <TwitterIcon />
-            </IconButton>
-            <IconButton color="primary" aria-label="Youtube" component="button">
-              <YouTubeIcon />
-            </IconButton>
-            <IconButton
-              color="primary"
-              aria-label="LinkedIn"
-              component="button"
-            >
-              <LinkedInIcon />
-            </IconButton>
-          </CardActions>
         </CardActionArea>
-      </Paper>
+        <CardActions>
+          <IconButton color="primary" aria-label="facebook" component="button">
+            <FacebookIcon />
+          </IconButton>
+          <IconButton color="primary" aria-label="Twitter" component="button">
+            <TwitterIcon />
+          </IconButton>
+          <IconButton color="primary" aria-label="Youtube" component="button">
+            <YouTubeIcon />
+          </IconButton>
+          <IconButton color="primary" aria-label="LinkedIn" component="button">
+            <LinkedInIcon />
+          </IconButton>
+        </CardActions>
+      </Card>
     </div>
   );
 }

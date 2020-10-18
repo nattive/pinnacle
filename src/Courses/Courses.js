@@ -25,10 +25,12 @@ import { BaseUrl } from "../Patials/BaseUrl";
 import SideDrawer from "./SideDrawer";
 import { Alert, AlertTitle } from "@material-ui/lab";
 import { NULL_ERRORS } from "../Actions/types";
-import { verifyUserTokenAction } from "../Actions/verifyUserTokenAction";
+// import { verifyUserTokenAction } from "../Actions/verifyUserTokenAction";
 
 const drawerWidth = 240;
-
+/**
+ * to delete
+ */
 const useStyles = makeStyles((theme) => ({
   root: {
     display: "flex",
@@ -92,7 +94,6 @@ function Courses(props) {
   let history = useHistory();
   return (
     <>
-      {console.log(path)}
       <Switch>
         <Route exact path={`${path}`}>
           <CourseComponent />
@@ -117,7 +118,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = {
-  verifyUserToken: verifyUserTokenAction,
+  // verifyUserToken: verifyUserTokenAction,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Courses);

@@ -16,7 +16,6 @@ import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { register } from "../../Actions/registerAction";
 import { toggleForm } from "../../Actions/loginAction";
-import { verifyUserTokenAction } from "../../Actions/verifyUserTokenAction";
 import { Alert } from "@material-ui/lab";
 class SignUpForm extends Component {
   constructor() {
@@ -42,9 +41,7 @@ class SignUpForm extends Component {
     console.log(e);
   }
 
-  componentWillMount() {
-    this.props.verifyUserTokenAction();
-  }
+  
 
   componentWillReceiveProps(newProps) {
     const { path, history } = this.props;
@@ -64,7 +61,7 @@ class SignUpForm extends Component {
         if (newProps.user.id === undefined) {
           this.setState({ error: "Registration failed" });
         } else {
-          history.push(this.props.path + "/courses");
+          history.push("/learn/dashboard");
         }
       }
       console.log(newProps);
@@ -160,7 +157,6 @@ class SignUpForm extends Component {
                 <MenuItem value="isCareer">
                   Sign up to Career of the future Portal
                 </MenuItem>
-                <MenuItem value="isTutor"> Be a tutor </MenuItem>
               </Select>
             </FormControl>
           </div>
@@ -174,10 +170,13 @@ class SignUpForm extends Component {
           </Button>
           <Typography variant="subtitle1" className-="mt-4">
             Do you have an account?{" "}
-            <Button onClick={() => this.props.toggleForm(true)} variant="text">
-              {" "}
+            <a
+              href="#"
+              onClick={() => this.props.toggleForm(true)}
+              className="btn-link p-2"
+            >
               Sign In
-            </Button>
+            </a>
           </Typography>
         </form>
       </div>
@@ -198,7 +197,6 @@ SignUpForm.propTypes = {
 };
 
 export default connect(mapStateToProps, {
-  verifyUserTokenAction,
   register,
   toggleForm,
 })(SignUpForm);
