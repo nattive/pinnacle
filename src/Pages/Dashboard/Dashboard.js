@@ -12,6 +12,7 @@ import Banner from "../Elearning/LandingPage/Banner"
 import { connect } from "react-redux";
 import DashboardBanner from "./DashboardBanner";
 import { Container } from "@material-ui/core";
+import NavBarHeader from "../Home/NavBarHeader";
 class Dashboard extends Component {
   componentDidMount() {
     this.props.getUserProgress();
@@ -19,10 +20,11 @@ class Dashboard extends Component {
   render() {
     return (
       <>
+      <NavBarHeader />
         <DashboardBanner />
         {/* <Container> */}
-          <CourseRow />
           <ProgressTable />
+          <CourseRow />
           <RecommendedCourses />
         {/* </Container> */}
       </>

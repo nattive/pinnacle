@@ -17,6 +17,7 @@ import { fetchCourses } from "../../Actions/courseAction";
 import { Snackbar } from "@material-ui/core";
 import { Alert } from "@material-ui/lab";
 import NavBarHeader from "./NavBarHeader";
+import SingleBanner from "../../General Components/SingleBanner";
 
 class Index extends Component {
   async componentDidMount() {
@@ -37,14 +38,15 @@ class Index extends Component {
         </Snackbar>
         <Header />
         <NavBarHeader />
-        <Slider />
+        <SingleBanner />
         <AuthSection />
         <More />
         <Services />
         <FeaturedCourses />
-        <Countdown /> {/* <CoachingSection /> */} <Testimonial />
+        <Countdown />
+        <CoachingSection />
+        <Testimonial location="Homepage" />
         <BlogSection />
-        <Footer />
       </>
     );
   }

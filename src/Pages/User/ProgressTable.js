@@ -34,7 +34,7 @@ const ProgressTable = (props) => {
 
   return (
     <div className="table-responsive m-4">
-      <table className="table table-hover">
+      <table className="table table-hover bg-success text-light">
         <thead>
           <tr>
             <th scope="col">Course</th>
@@ -66,7 +66,7 @@ const ProgressTable = (props) => {
               ))
             ) : (
               <tr>
-                <td colSpan={4}>No data</td>
+                <td colSpan={4}>You haven't start any course</td>
               </tr>
             )
           ) : (

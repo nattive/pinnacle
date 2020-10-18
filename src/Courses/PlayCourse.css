@@ -4,3 +4,25 @@
     padding: "5em 3em";
     align-content: 'center';
 }
+
+.course-text {
+    margin-top: -20em;
+}
+
+@media (max-width:576px) {
+    .course-text {
+        margin: -20em 0px 10px 0px;
+    }
+    .course-container {
+        -webkit-box-orient: vertical!important;
+        -webkit-box-direction: reverse!important;
+        -ms-flex-direction: column-reverse!important;
+        flex-direction: column-reverse!important
+    }
+}
+
+@media (min-width:768px) {
+    .course-card {
+        margin-top: -20em;
+    }
+}

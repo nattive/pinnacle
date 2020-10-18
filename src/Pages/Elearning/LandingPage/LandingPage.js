@@ -18,6 +18,8 @@ import Slider from "../../Home/Slider";
 import NavBarHeader from "../../Home/NavBarHeader";
 import Banner from "./Banner";
 import Search from "./Search";
+import RecommendedCourses from "../../../Courses/RecommendedCourses/RecommendedCourses";
+import Testimonial from "../../Home/Testimonial";
 export default function LandingPage() {
   let { path, url } = useRouteMatch();
   return (
@@ -27,13 +29,28 @@ export default function LandingPage() {
         <Banner />
         <Search />
         <CategoryList />
+         <div className="col-md-12 text-center">
+            <p>
+              <Link
+                to="/courses"
+                className="btn btn-primary btn-outline btn-lg btn-discover popup-vimeo"
+              >
+                <span className="icon">
+                  <i className="icon-play3"></i>
+                </span>
+                Discover Courses
+              </Link>
+            </p>
+          </div>
         <CourseSlide />
         <Divider className="m-4" />
-        <CareerIntro />
+        <UlearnIntro />
+        <Testimonial location ="Ulearn" />
         <Divider className="m-4" />
         <OtherCoursesServices />
+        <CareerIntro />
+        <RecommendedCourses />
         {/* <Divider className="m-4" /> */}
-        <UlearnIntro />
       </div>
     </>
   );

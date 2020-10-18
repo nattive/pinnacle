@@ -2059,6 +2059,7 @@ h3 {
 
 /* line 8, ../../Arafath/CL/CL October/216. Consulting/HTML/scss/_slider.scss */
 
+.banner,
 .slider_area .single_slider {
     height: 500px;
     background-size: cover;
@@ -2075,6 +2076,14 @@ h3 {
 
 
 /* line 17, ../../Arafath/CL/CL October/216. Consulting/HTML/scss/_slider.scss */
+
+.banner-text {
+    font-size: 20px;
+    font-weight: 400;
+    color: #D5D5D5;
+    margin-bottom: 24px;
+    margin-top: 10px;
+}
 
 .slider_area .single_slider .slider_text h3 {
     font-family: "Poppins", sans-serif;
@@ -2119,7 +2128,8 @@ h3 {
 
 /* line 41, ../../Arafath/CL/CL October/216. Consulting/HTML/scss/_slider.scss */
 
-.slider_area .single_slider .slider_text p {
+.slider_area .single_slider .slider_text p,
+.banner-text {
     font-size: 20px;
     font-weight: 400;
     color: #D5D5D5;
@@ -2136,7 +2146,8 @@ h3 {
 
 @media (max-width: 767px) {
     /* line 41, ../../Arafath/CL/CL October/216. Consulting/HTML/scss/_slider.scss */
-    .slider_area .single_slider .slider_text p {
+    .slider_area .single_slider .slider_text p,
+    .banner-text {
         font-size: 16px;
     }
 }
@@ -2714,9 +2725,9 @@ h3 {
 .testimonial_area .single_testmonial p {
     color: #14142e;
     font-weight: 400;
-    font-size: 20px;
+    font-size: 15px;
     line-height: 32px;
-    margin: 34px 0;
+    margin: 34px 10px;
 }
 
 @media (min-width: 320px) and (max-width: 1500px) {
@@ -4288,9 +4299,10 @@ h3 {
 /* line 6, ../../Arafath/CL/CL October/216. Consulting/HTML/scss/_footer.scss */
 
 .footer .footer_top {
-    padding-top: 145px;
+    padding-top: 100px;
+    margin-top: 15px;
     padding-bottom: 129px;
-    background: #000066;
+    background: #2d2d94;
 }
 
 @media (max-width: 767px) {
@@ -8922,7 +8934,7 @@ h6 {
 /* line 1341, ../../Arafath/CL/CL October/216. Consulting/HTML/scss/_blog.scss */
 
 .comments-area .comment-list {
-    padding-bottom: 48px;
+    padding-bottom: 28px;
 }
 
 

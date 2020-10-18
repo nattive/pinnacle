@@ -3,7 +3,7 @@ import React from "react";
 import logo from "../Assets/img/Pinnacle/logoWhite.png";
 export default function Footer() {
   return (
-    <footer className="footer" style={{marginTop: '35em'}}>
+    <footer className="footer" style={{marginTop: '5em'}} >
       <div className="footer_top">
         <div className="container">
           <div className="row">

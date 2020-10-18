@@ -16,7 +16,7 @@ import {
   fetchPOCourses,
   fetchCOTFCourses,
   fetchFREECourses,
-  allCourses,
+  topRatedCourses,
   getEnrolledCourse,
   enrollCourse,
 } from "../../Actions/courseAction";
@@ -93,14 +93,13 @@ function CourseRow(props) {
             value={value}
             onChange={handleChange}
             indicatorColor="primary"
-            textColor="primary"
+            textColor="secondary"
             variant="fullWidth"
             className="w-100"
           >
             <Tab label="Courses you are following" {...a11yProps(0)} />
-            <Tab label="Top Rated Courses" {...a11yProps(1)} />
-            <Tab label="WishList" {...a11yProps(2)} />
-            <Tab label="All Courses" {...a11yProps(3)} />
+            <Tab label="WishList" {...a11yProps(1)} />
+            <Tab label="Top Rated Courses" {...a11yProps(2)} />
           </Tabs>
           <SwipeableViews
             axis={theme.direction === "rtl" ? "x-reverse" : "x"}
@@ -114,76 +113,79 @@ function CourseRow(props) {
               <div className="row">
                 {props.user.account_type === "isPO" ? (
                   props.PO_courses !== undefined &&
-                    props.PO_courses.length > 0 ? (
-                      props.PO_courses.map((item, key) => (
-                        <div key={key} className="col-xs-4 col-md-2">
-                          <SingleCourseItem course={item} />{" "}
-                        </div>
-                      ))
-                    ) : (
-                      <>
-                        <div className="mx-auto text-center mt-4">
-                          {/* <CircularProgress /> */}
-                          <p>No Courses Here...</p>
-                        </div>
-                      </>
-                    )
+                  props.PO_courses.length > 0 ? (
+                    props.PO_courses.map((item, key) => (
+                      <div key={key} className="col-xs-4 col-md-2">
+                        <SingleCourseItem course={item} />{" "}
+                      </div>
+                    ))
+                  ) : (
+                    <>
+                      <div className="mx-auto text-center mt-4">
+                        {/* <CircularProgress /> */}
+                        <p>No Courses Here...</p>
+                      </div>
+                    </>
+                  )
                 ) : props.user.account_type === "isCareer" ? (
                   props.COTF_courses !== undefined &&
-                    props.COTF_courses.length !== 0 ? (
-                      props.COTF_courses.map((item, key) => (
-                        <div key={key} className="col-xs-4 col-md-2">
-                          <SingleCourseItem course={item} />{" "}
-                        </div>
-                      ))
-                    ) : (
-                      <>
-                        <div className="mx-auto text-center mt-4">
-                          {/* <CircularProgress /> */}
-                          <p>No Courses Here...</p>
-                        </div>
-                      </>
-                    )
+                  props.COTF_courses.length !== 0 ? (
+                    props.COTF_courses.map((item, key) => (
+                      <div key={key} className="col-xs-4 col-md-2">
+                        <SingleCourseItem course={item} />{" "}
+                      </div>
+                    ))
+                  ) : (
+                    <>
+                      <div className="mx-auto text-center mt-4">
+                        {/* <CircularProgress /> */}
+                        <p>No Courses Here...</p>
+                      </div>
+                    </>
+                  )
                 ) : null}
               </div>
             </TabPanel>
             <TabPanel value={value} index={2} dir={theme.direction}>
-              <p>No Courses Here...</p>
-            </TabPanel>
-            <TabPanel value={value} index={3} dir={theme.direction}>
               <div className="row">
-                {props.fetchCourseError ?
-                  (
-                    <>
-                      <Segment placeholder>
-                        <Header icon>
-                          <Icon color='red' name='warning sign' />
-                          {JSON.stringify(props.fetchCourseError)}
-                        </Header>
-                        <Button primary onClick={props.allCourses}>Retry</Button>
-                      </Segment>
-                    </>)
-                  : props.ALL_courses && props.ALL_courses.length > 0 ? props.ALL_courses.map(course => (
-                    <div key={course.id} className="col-xs-4 col-md-3 col-sm-6 col-xs-12 no-gutters">
+                {props.fetchCourseError ? (
+                  <>
+                    <Segment placeholder>
+                      <Header icon>
+                        <Icon color="red" name="warning sign" />
+                        {JSON.stringify(props.fetchCourseError)}
+                      </Header>
+                      <Button primary onClick={props.allCourses}>
+                        Retry
+                      </Button>
+                    </Segment>
+                  </>
+                ) : props.ALL_courses && props.ALL_courses.length > 0 ? (
+                  props.ALL_courses.map((course) => (
+                    <div
+                      key={course.id}
+                      className="col-xs-4 col-md-3 col-sm-6 col-xs-12 no-gutters"
+                    >
                       <SingleCourseItem course={course} />
                     </div>
-                  )) : (
-                      <div className="row">
-                        <div className="col-xs-4 col-md-3 col-sm-6 col-xs-12">
-                          <Skeleton variant='rect' height={300} />
-                        </div>
-                        <div className="col-xs-4 col-md-3 col-sm-6 col-xs-12">
-                          <Skeleton variant='rect' height={300} />
-                        </div>
-                        <div className="col-xs-4 col-md-3 col-sm-6 col-xs-12">
-                          <Skeleton variant='rect' height={300} />
-                        </div>
-                        <div className="col-xs-4 col-md-3 col-sm-6 col-xs-12">
-                          <Skeleton variant='rect' height={300} />
-                        </div>
-
-                      </div>
-                    )}</div>
+                  ))
+                ) : (
+                  <div className="row">
+                    <div className="col-xs-4 col-md-3 col-sm-6 col-xs-12">
+                      <Skeleton variant="rect" height={300} />
+                    </div>
+                    <div className="col-xs-4 col-md-3 col-sm-6 col-xs-12">
+                      <Skeleton variant="rect" height={300} />
+                    </div>
+                    <div className="col-xs-4 col-md-3 col-sm-6 col-xs-12">
+                      <Skeleton variant="rect" height={300} />
+                    </div>
+                    <div className="col-xs-4 col-md-3 col-sm-6 col-xs-12">
+                      <Skeleton variant="rect" height={300} />
+                    </div>
+                  </div>
+                )}
+              </div>
             </TabPanel>
           </SwipeableViews>
         </>
@@ -196,7 +198,7 @@ const mapStateToProps = (state) => ({
   user: state.auth.user,
   PO_courses: state.course.PO_courses.data,
   FREE_courses: state.course.FREE_courses.data,
-  ALL_courses: state.course.ALL_courses.data,
+  ALL_courses: state.course.ALL_courses,
   fetchCourseError: state.course.fetchCourseError,
   COTF_courses: state.course.COTF_courses.data,
   account_type: state.auth.account_type,
@@ -208,6 +210,6 @@ const mapDispatchToProps = {
   fetchFREECourses,
   getEnrolledCourse,
   enrollCourse,
-  allCourses,
+  topRatedCourses,
 };
 export default connect(mapStateToProps, mapDispatchToProps)(CourseRow);

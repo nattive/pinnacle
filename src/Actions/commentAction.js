@@ -18,15 +18,15 @@ export const postComment = (data) => dispatch => {
 
 
     const token = localStorage.getItem('P_access_token')
-    const { body, course_id } = data
 
     dispatch({
         type: POST_COMMENT
     })
 
     Axios.post(`${BaseUrl}user/course/comment`, {
-            body,
-            course_id
+            body: data.body,
+            course_id: data.course_id,
+            blog_posts_id: data.blog_posts_id,
         }, { headers: { Authorization: `Bearer ${token}` } })
         .then(response => {
             console.log(response);
@@ -35,8 +35,6 @@ export const postComment = (data) => dispatch => {
                 payload: response.data
             })
             dispatch(getComment(data.course_id))
-
-
         })
         .catch(err => {
             console.log(err.response)

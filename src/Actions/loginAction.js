@@ -11,7 +11,8 @@ import {
     TOGGLE_LOGIN_FORM,
     ACCOUNT_TYPE,
     WORKING,
-    STOPPED_WORKING
+    STOPPED_WORKING,
+    MENTEE
 } from "./types"
 import { verifyToken } from "./verifyTokenAction"
 var jwt = require('jsonwebtoken');
@@ -31,43 +32,35 @@ export const login = credentials => dispatch => {
     Axios.post(`${BaseUrl}login`, credentials)
         .then(data => {
             dispatch({
-                    type: STOPPED_WORKING
-                })
-                // var token = jwt.sign({...data.data }, 'gk0ra6IcLrAmexlr4tZip9bmRXvRoXtDNNsEQnF1HIT0dI4tNaVbyg6ZhFvffqga');
-            const { user } = data.data;
+                type: STOPPED_WORKING
+            })
+            dispatch({
+                type: AUTH_LOADING_STATE,
+                payload: false
+            })
+            const { user, mentee } = data.data;
             console.log(data);
             localStorage.removeItem('P_access_token')
             localStorage.setItem('P_access_token', data.data.access_token)
-            switch (user.account_type) {
-                case 'isPO':
-                    dispatch({
-                        type: GET_USER_FROM_RESPONSE,
-                        payload: user
-                    })
-                    dispatch({
-                        type: ACCOUNT_TYPE,
-                        payload: 'isPO'
-                    })
-                    break;
-                    dispatch({
-                        type: GET_USER_FROM_RESPONSE,
-                        payload: data.data.user
-                    })
-                    dispatch({
-                        type: ACCOUNT_TYPE,
-                        payload: 'isCareer'
-                    })
-                    break;
+            dispatch({
+                type: GET_USER_FROM_RESPONSE,
+                payload: user
+            })
+            dispatch({
+                type: MENTEE,
+                payload: mentee
+            })
 
-                default:
-                    break;
-            }
         })
         .catch(err => {
             // const 
             console.log(err);
             dispatch({
                 type: STOPPED_WORKING
+            })
+            dispatch({
+                type: AUTH_LOADING_STATE,
+                payload: false
             })
             dispatch({
                 type: ERR_LOGIN_USER,
@@ -93,8 +86,8 @@ export const logout = () => dispatch => {
     dispatch({
         type: NULL_ERRORS
     })
-
-    Axios.post(`${BaseUrl}logout`)
+    const token_to_verify = localStorage.getItem('P_access_token')
+    Axios.get(`${BaseUrl}logout`, { headers: { Authorization: `Bearer ${token_to_verify}` } })
         .then(data => {
             localStorage.removeItem("P_access_token");
             dispatch({
@@ -139,6 +132,10 @@ export const getUser = () => dispatch => {
     dispatch({
         type: WORKING
     })
+    dispatch({
+        type: AUTH_LOADING_STATE,
+        payload: false
+    })
     if (token_to_verify) {
 
         Axios.get(`${BaseUrl}me`, { headers: { Authorization: `Bearer ${token_to_verify}` } })
@@ -148,12 +145,22 @@ export const getUser = () => dispatch => {
                     payload: res.data.user
                 })
                 dispatch({
-                    type: res.data.user && res.data.user.account_type,
-                    payload: 'isPO'
+                    type: AUTH_LOADING_STATE,
+                    payload: false
                 })
-                console.log(res)
+                dispatch({
+                    type: MENTEE,
+                    payload: res.data.mentee
+                })
+
             })
-            .catch(err => console.log(err))
+            .catch(err => {
+                alert(err.response.data)
+                dispatch({
+                    type: AUTH_LOADING_STATE,
+                    payload: false
+                })
+            })
     } else {
         console.log('no in');
 

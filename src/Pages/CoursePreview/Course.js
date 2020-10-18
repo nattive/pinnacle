@@ -8,6 +8,7 @@ import { useRouteMatch, Switch, BrowserRouter, Route } from "react-router-dom";
 import HeadBar from "../../Courses/HeadBar";
 import Footer from "../../Layout/Footer";
 import { Container } from "@material-ui/core";
+import RecommendedCourses from "../../Courses/RecommendedCourses/RecommendedCourses";
 class Course extends Component {
   constructor() {
     super();
@@ -41,11 +42,12 @@ function PreviewFunc(props) {
           <Route exact path={path}>
             <Preview {...props} url={url} />
           </Route>
-          <Route
+          {/* <Route
             path={`${path}/:id`}
             render={({ match }) => <Modules match={match} />}
-          />
+          /> */}
         </Switch>
+        <RecommendedCourses />
       {/* </Container> */}
     </>
   );

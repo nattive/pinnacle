@@ -8,6 +8,7 @@ import Banner from "../Elearning/LandingPage/Banner";
 import Search from "../Elearning/LandingPage/Search";
 import CategoryList from '../Elearning/Components/CategoryList';
 import SearchResults from './SearchResults';
+import CourseList from './CourseList';
 
 class Courses extends React.Component {
     constructor(props, context) {
@@ -17,14 +18,15 @@ class Courses extends React.Component {
 
     render() {
         return (
-            <>
+          <>
             <NavBarHeader />
             <Banner />
             <Search />
-            <CategoryList />
             <SearchResults />
+            <CategoryList />
+            <CourseList />
             <RecommendedCourses />
-            </>
+          </>
         );
     }
 }

@@ -12,6 +12,8 @@ import "react-multi-carousel/lib/styles.css";
 import { fetchSubCategory } from "../../../Actions/courseAction";
 import { useEffect } from "react";
 import { connect } from "react-redux";
+import { Link } from "react-router-dom";
+import Divider from "@material-ui/core/Divider";
 
 function CategoryList(props) {
   useEffect(() => {
@@ -41,9 +43,10 @@ function CategoryList(props) {
   return (
     <div id="colorlib-services">
       <div className="container">
-        <div className="col-md-12 colorlib-heading center-heading text-center">
+        <div className="col-md-12 mt-1 mb-2 colorlib-heading center-heading text-center">
           {/* <h1 className="heading-big">Categories</h1> */}
           <h2>Top Topics For you</h2>
+          <Divider className="p-1 m-3" variant="middle" color="primary" />
         </div>
         <div className="row">
           <div className="col-md-12 services-wrap">
@@ -67,19 +70,6 @@ function CategoryList(props) {
                   ))
                 : "...loading"}
             </Carousel>
-          </div>
-          <div className="col-md-12 text-center">
-            <p>
-              <a
-                href="https://vimeo.com/channels/staffpicks/93951774"
-                className="btn btn-primary btn-outline btn-lg btn-discover popup-vimeo"
-              >
-                <span className="icon">
-                  <i className="icon-play3"></i>
-                </span>
-                Discover Courses
-              </a>
-            </p>
           </div>
         </div>
       </div>

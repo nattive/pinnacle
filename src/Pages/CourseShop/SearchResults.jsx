@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import SingleCourseItem from "../../Courses/SingleCourseItem";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
+import Divider from "@material-ui/core/Divider";
 
 function SearchResults(props) {
   const responsive = {
@@ -26,7 +27,7 @@ function SearchResults(props) {
   };
 
   return (
-    <div className="container">
+    <div className="container-fluid">
       {props.result.length > 0 && (
         <>
           <div className="row mb-3">
@@ -35,24 +36,27 @@ function SearchResults(props) {
               <h2> Related Courses on search result</h2>
             </div>
           </div>
-          <div className="row mb-2">
-            <Carousel responsive={responsive}>
-              {props.result.length > 0
-                ? props.result.map((query) =>
-                    query.type === "courses" ? (
+          <div className="row mb-2 no-gutters">
+            {/* <Carousel responsive={responsive}> */}
+            {props.result.length > 0
+              ? props.result.map((query) =>
+                  query.type === "courses" ? (
+                    <div className="col-xs-12 col-md-3 p-1">
                       <SingleCourseItem course={query.searchable} />
-                    ) : null
-                  )
-                : "No search result"}
-            </Carousel>
+                    </div>
+                  ) : null
+                )
+              : "No search result"}
+            {/* </Carousel> */}
           </div>
-          <div className="row mb-3">
+          <div className="row m-1">
             <div className="col-md-12 colorlib-heading center-heading text-center">
               {/* <h1 className="heading-big">Categories</h1> */}
               <h2> Related Topics on search result</h2>
+              <Divider className="p-1" />
             </div>
           </div>
-          <div className="row mb-2">
+          <div className="row mt-2 mb-2">
             <Carousel responsive={responsive}>
               {props.result.length > 0
                 ? props.result.map((query) =>

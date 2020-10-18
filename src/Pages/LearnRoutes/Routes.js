@@ -13,6 +13,7 @@ import Footer from "../../Layout/Footer";
 import PlayCourse from "../../Courses/PlayCourse";
 import PlaySavedModules from "../../Courses/PlaySavedModules";
 import Play from "../../Courses/PlayArena";
+import NavBarHeader from "../Home/NavBarHeader";
 function Routes(props) {
   let { path, url } = useRouteMatch();
 
@@ -20,8 +21,8 @@ function Routes(props) {
     props.getUser();
   }, []);
   return (
-    <>
-      <HeadBar />
+    <div >
+      <NavBarHeader />
       <Switch>
         <Route exact path={path}>
           <Elearning />
@@ -38,7 +39,7 @@ function Routes(props) {
           render={(props) => <Play {...props} url={url} />}
         ></Route>
       </Switch>
-    </>
+    </div>
   );
 }
 

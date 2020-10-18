@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import {
-  Button,
   CircularProgress,
   ButtonGroup,
   Snackbar,
@@ -19,6 +18,7 @@ import { verifyUserTokenAction } from "../../Actions/verifyUserTokenAction";
 import { Alert } from "@material-ui/lab";
 import { login } from "../../Actions/loginAction";
 import { toggleForm } from "../../Actions/loginAction";
+import { Button } from "semantic-ui-react";
 class SignInForm extends Component {
   constructor() {
     super();
@@ -40,7 +40,7 @@ class SignInForm extends Component {
     console.log(e);
   }
 
-  componentWillReceiveProps(newProps) {
+  UNSAFE_componentWillReceiveProps(newProps) {
     const { path, history } = this.props;
 
     this.setState({ error: newProps.loginError });
@@ -57,8 +57,8 @@ class SignInForm extends Component {
     } else {
       this.setState({ error: "", hasError: {} });
       if (newProps.user) {
-        if (newProps.user.id !== undefined) {
-          this.props.history.push("/learn/dashboard");
+        if (newProps.user.id) {
+          this.props.history.goBack();
         }
       }
       console.log(newProps);
@@ -73,7 +73,7 @@ class SignInForm extends Component {
       password: this.state.password,
       email: this.state.email,
     };
-    await this.props.login(credentials);
+    this.props.login(credentials);
     // console.log(this.props);
   }
 
@@ -100,15 +100,7 @@ class SignInForm extends Component {
         >
           <Alert severity="error"> {this.props.error} </Alert>
         </Snackbar>
-        <form
-          action=""
-          method="post"
-          className="form-box"
-          onSubmit={this.handleSubmit}
-        >
-          {/* {this.props.error !== "" ? (
-                                                            <Alert severity="error">{this.props.error}</Alert>
-                                                          ) : null} */}
+        <>
           <h3 className="h4 text-black mb-4"> Sign Up </h3>
           {this.props.loginError && (
             <p className="alert alert-danger mb-4">{this.props.loginError}</p>
@@ -128,22 +120,23 @@ class SignInForm extends Component {
             </div>
           ))}
           <Button
-            variant="contained"
-            color="primary"
             className="mt-4 p-1 w-100"
+            fluid
+            color="blue"
+            loading={this.props.loading}
             onClick={this.handleSubmit}
-          >
-            {this.props.loading ? <CircularProgress size={20} color="#fff" /> : "Sign In"}
-          </Button>
+            content="Sign In"
+          />
           <Typography variant="subtitle1" className-="mt-4">
-            You dont have an account?
-            <Button onClick={() => this.props.toggleForm(false)} variant="text">
-              {" "}
-              Sign up
-            </Button>
+            You don't have an account?
+            <a
+            href='#'
+              onClick={() => this.props.toggleForm(false)}
+              className="btn-link p-2"
+            >Create One</a>
           </Typography>
           ;
-        </form>
+        </>
       </div>
     );
   }

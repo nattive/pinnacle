@@ -5,8 +5,8 @@ import Header from "../../Layout/Header";
 import NavBarHeader from "../Home/NavBarHeader";
 import Service from "./Service";
 import HelpSection from "./HelpSection";
-import Testimonial from "./Testimonial";
 import CTAsection from "./CTAsection";
+import Testimonial from "../Home/Testimonial";
 
 export const Home = () => {
   return (
@@ -14,7 +14,7 @@ export const Home = () => {
       <BannerSlider />
       <Service />
       <HelpSection />
-      <Testimonial />
+      <Testimonial location="Tutor" />
       <CTAsection />
     </>
   );

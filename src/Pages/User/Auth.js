@@ -94,13 +94,13 @@ export default class Auth extends Component {
                   </OwlCarousel>
                 </div>
               </div>
-              <div className="col-xs-12 col-sm-12 col-md-4 col-md-offset-1 bg-light p-4 mb-4">
+              <div className="col-xs-12 col-sm-12 col-md-4 col-md-offset-1 bg-light p-4 mb-4 mt-4">
                 <SignUp />
               </div>
             </div>
           </div>
         </div>
-        <Footer />
+        {/* <Footer /> */}
       </>
     );
   }

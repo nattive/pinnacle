@@ -10,6 +10,7 @@ import {
     GET_COMMENT,
     GET_COMMENT_ERROR,
     COMMENT,
+    IS_REPLY,
 } from "../Actions/types";
 
 const initialState = {
@@ -21,10 +22,16 @@ const initialState = {
     comments: [],
     commentError: null,
     errorDeletingComment: null,
+    replyData: {}
 }
 
 export default function(state = initialState, action) {
     switch (action.type) {
+        case IS_REPLY:
+            return {
+                ...state,
+                replyData: action.payload,
+            }
         case POST_COMMENT:
             return {
                 ...state,

@@ -170,10 +170,13 @@ class SignUpForm extends Component {
           </Button>
           <Typography variant="subtitle1" className-="mt-4">
             Do you have an account?{" "}
-            <Button onClick={() => this.props.toggleForm(true)} variant="text">
-              {" "}
+            <a
+              href="#"
+              onClick={() => this.props.toggleForm(true)}
+              className="btn-link p-2"
+            >
               Sign In
-            </Button>
+            </a>
           </Typography>
         </form>
       </div>

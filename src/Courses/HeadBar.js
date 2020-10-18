@@ -23,7 +23,7 @@ import { connect, useDispatch } from "react-redux";
 import { VERIFY_USER, LOAD_SUB, LOGIN_USER } from "../Actions/types";
 import { useSelector } from "react-redux";
 import { logout, getUser } from "../Actions/loginAction";
-import { allCourses, fetchMainCategory } from "../Actions/courseAction";
+import { getEnrolledCourse, fetchMainCategory } from "../Actions/courseAction";
 import {
   MenuItem, Badge, Menu, LinearProgress,
   Popper, Grow, Paper, ClickAwayListener,
@@ -38,7 +38,8 @@ import { Icon } from "semantic-ui-react";
 import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
 import AccountBoxIcon from '@material-ui/icons/AccountBox';
 import FavoriteIcon from '@material-ui/icons/Favorite';
-import logo_white from '../Assets/img/Pinnacle/logoWhite.png'
+import logo_white from '../Assets/img/Pinnacle/drafts.png'
+import { blue } from "@material-ui/core/colors";
 const drawerWidth = 240;
 
 const useStyles = makeStyles((theme) => ({
@@ -136,7 +137,7 @@ const useStyles = makeStyles((theme) => ({
     color: "inherit",
   },
   textBrandColor: {
-    color: "#fff",
+    color: blue[800],
   },
   inputInput: {
     padding: theme.spacing(1, 1, 1, 0),
@@ -425,6 +426,7 @@ function HeadBar(props) {
 
   useEffect(() => {
     props.getUser();
+    props.getEnrolledCourse();
   }, []);
 
   return (
@@ -432,7 +434,7 @@ function HeadBar(props) {
       <AppBar
         // position="fixed"
         variant="outlined"
-        color="primary"
+        color="default"
         className={clsx(classes.appBar, {
           [classes.appBarShift]: open,
         })}
@@ -537,8 +539,8 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = {
   logout,
   getUser,
-  allCourses,
   fetchMainCategory,
+  getEnrolledCourse,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(HeadBar);

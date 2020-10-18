@@ -1,10 +1,10 @@
 import React, { Component, useEffect } from "react";
 import {
-    Redirect,
-    Route,
-    useRouteMatch,
-    Switch,
-    useHistory,
+  Redirect,
+  Route,
+  useRouteMatch,
+  Switch,
+  useHistory,
 } from "react-router-dom";
 import { connect, useSelector, useDispatch } from "react-redux";
 import ViewCourse from "./ViewCourse";
@@ -32,100 +32,93 @@ const drawerWidth = 240;
  * to delete
  */
 const useStyles = makeStyles((theme) => ({
-    root: {
-        display: "flex",
+  root: {
+    display: "flex",
+  },
+  drawer: {
+    [theme.breakpoints.up("sm")]: {
+      width: drawerWidth,
+      flexShrink: 0,
     },
-    drawer: {
-        [theme.breakpoints.up("sm")]: {
-            width: drawerWidth,
-            flexShrink: 0,
-        },
+  },
+  appBar: {
+    [theme.breakpoints.up("sm")]: {
+      width: `calc(100% - ${drawerWidth}px)`,
+      marginLeft: drawerWidth,
     },
-    appBar: {
-        [theme.breakpoints.up("sm")]: {
-            width: `calc(100% - ${drawerWidth}px)`,
-            marginLeft: drawerWidth,
-        },
+  },
+  menuButton: {
+    marginRight: theme.spacing(2),
+    [theme.breakpoints.up("sm")]: {
+      display: "none",
     },
-    menuButton: {
-        marginRight: theme.spacing(2),
-        [theme.breakpoints.up("sm")]: {
-            display: "none",
-        },
-    },
-    // necessary for content to be below app bar
-    toolbar: theme.mixins.toolbar,
-    drawerPaper: {
-        width: drawerWidth,
-    },
-    content: {
-        flexGrow: 1,
-        padding: theme.spacing(0),
-    },
-    listText: {
-        fontSize: 12,
-        padding: theme.spacing(1),
-    },
+  },
+  // necessary for content to be below app bar
+  toolbar: theme.mixins.toolbar,
+  drawerPaper: {
+    width: drawerWidth,
+  },
+  content: {
+    flexGrow: 1,
+    padding: theme.spacing(0),
+  },
+  listText: {
+    fontSize: 12,
+    padding: theme.spacing(1),
+  },
 }));
 
 function Courses(props) {
-    const dispatch = useDispatch();
-    const {
-        window,
-        PO_courses,
-        FREE_courses,
-        isEnrolledError,
-        playError,
-        AuthError,
-        verifyUserToken,
-    } = props;
-    const classes = useStyles();
-    const theme = useTheme();
-    const [mobileOpen, setMobileOpen] = React.useState(false);
+  const dispatch = useDispatch();
+  const {
+    window,
+    PO_courses,
+    FREE_courses,
+    isEnrolledError,
+    playError,
+    AuthError,
+    verifyUserToken,
+  } = props;
+  const classes = useStyles();
+  const theme = useTheme();
+  const [mobileOpen, setMobileOpen] = React.useState(false);
 
-    const handleDrawerToggle = () => {
-        setMobileOpen(!mobileOpen);
-    };
+  const handleDrawerToggle = () => {
+    setMobileOpen(!mobileOpen);
+  };
 
-    const container =
-        window !== undefined ? () => window().document.body : undefined;
+  const container =
+    window !== undefined ? () => window().document.body : undefined;
 
-    let { path, url } = useRouteMatch();
-    let history = useHistory();
-    return ( <
-        > { console.log(path) } <
-        Switch >
-        <
-        Route exact path = { `${path}` } >
-        <
-        CourseComponent / >
-        <
-        /Route> <
-        Route path = { `${path}/course-id/:id` } >
-        <
-        ViewCourse / >
-        <
-        /Route> <
-        Route path = { `${path}/play` } >
-        <
-        PlayModules / >
-        <
-        /Route> <
-        /Switch> <
-        />
-    );
+  let { path, url } = useRouteMatch();
+  let history = useHistory();
+  return (
+    <>
+      <Switch>
+        <Route exact path={`${path}`}>
+          <CourseComponent />
+        </Route>
+        <Route path={`${path}/course-id/:id`}>
+          <ViewCourse />
+        </Route>
+        <Route path={`${path}/play`}>
+          <PlayModules />
+        </Route>
+      </Switch>
+    </>
+  );
 }
 
 const mapStateToProps = (state) => ({
-    PO_courses: state.course.PO_courses.data,
-    FREE_courses: state.course.FREE_courses.data,
-    isEnrolledError: state.course.isEnrolledError,
-    playError: state.course.playError,
-    AuthError: state.auth.AuthError,
+  PO_courses: state.course.PO_courses.data,
+  FREE_courses: state.course.FREE_courses.data,
+  isEnrolledError: state.course.isEnrolledError,
+  playError: state.course.playError,
+  AuthError: state.auth.AuthError,
 });
 
 const mapDispatchToProps = {
-    // verifyUserToken: verifyUserTokenAction,
+  // verifyUserToken: verifyUserTokenAction,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Courses);

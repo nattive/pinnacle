@@ -10,10 +10,12 @@ import {
     ACCOUNT_TYPE,
     TOGGLE_LOGIN_FORM,
     NULL_AUTH_ERRORS,
+    MENTEE
 } from "../Actions/types";
 
 const initialState = {
     user: {},
+    mentee: {},
     token: '',
     error: '',
     AuthError: null,
@@ -30,6 +32,12 @@ export default function(state = initialState, action) {
                 ...state,
                 user: action.payload
             };
+        case MENTEE:
+            return {
+                ...state,
+                mentee: action.payload
+            };
+
         case GET_USER_FROM_RESPONSE:
             return {
                 ...state,

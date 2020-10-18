@@ -25,13 +25,9 @@ export default function UlearnIntro() {
           <div className="col-md-7">
             <div className="about-desc">
               <div
-                className="about-img-1"
-                style={{ backgroundImage: `url(${imgClass2})` }}
-              ></div>
-              <div
-                className="about-img-2"
-                style={{ backgroundImage: `url(${imgClass2})` }}
-              ></div>
+                className="w-100 p-4"
+                style={{ backgroundImage: `url(${imgClass2})`, height: '300px', backgroundSize: 'cover' }}
+              />
             </div>
           </div>
           <div className="col-md-5">

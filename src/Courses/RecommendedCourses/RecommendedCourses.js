@@ -7,6 +7,7 @@ import { Skeleton } from "@material-ui/lab";
 import { Container, Divider } from "@material-ui/core";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
+import { blue } from "@material-ui/core/colors";
 
 const RecommendedCourses = (props) => {
   useEffect(() => {
@@ -32,13 +33,22 @@ const RecommendedCourses = (props) => {
     },
   };
   return (
-    <Container>
+    <Container style={{ margin: "2em 0" }}>
       {props.recommendedCourses.Title && (
         <>
-          <h3 className="pt-2 pb-2">
-            Because you checked {props.recommendedCourses.Title}
-          </h3>
-          <Divider className="mb-4 mt-4" />
+          <div className="col-md-12 mt-1 mb-2 colorlib-heading center-heading">
+            {/* <h1 className="heading-big">Categories</h1> */}
+            <Divider className=" mt-3" color="primary" />
+            <h2 style={{ fontSize: "1.1em" }}>
+              {" "}
+              Because you checked{" "}
+              <span style={{ textTransform: "capitalize", color: blue[800] }}>
+                {props.recommendedCourses.Title}
+              </span>
+            </h2>
+            <Divider className="mb-4" color="primary" />
+          </div>
+          <div className="container">
           <Carousel responsive={responsive}>
             {props.recommendedCourses.Course &&
             props.recommendedCourses.Course.length > 0
@@ -47,6 +57,7 @@ const RecommendedCourses = (props) => {
                 ))
               : null}
           </Carousel>
+          </div>
         </>
       )}
     </Container>

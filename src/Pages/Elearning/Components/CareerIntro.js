@@ -10,12 +10,12 @@ export default function CareerIntro() {
           <div className="col-md-7">
             <div className="about-desc">
               <div
-                className="about-img-1"
-                style={{ backgroundImage: `url(${imgClass2})` }}
-              ></div>
-              <div
-                className="about-img-2"
-                style={{ backgroundImage: `url(${imgClass2})` }}
+                className="w-100 p-4"
+                style={{
+                  backgroundImage: `url(${imgClass2})`,
+                  height: "350px",
+                  backgroundSize: "cover",
+                }}
               ></div>
             </div>
           </div>
@@ -36,64 +36,6 @@ export default function CareerIntro() {
                   wide range of hard and soft skills all specifically designed
                   for a younger audience.
                 </p>
-              </div>
-              <div className="col-md-6 col-sm-6 mt-2">
-                <div className="counter-entry">
-                  <div className="desc">
-                    <span
-                      className="colorlib-counter js-counter"
-                      data-from="0"
-                      data-to="1539"
-                      data-speed="5000"
-                      data-refresh-interval="50"
-                    ></span>
-                    <span className="colorlib-counter-label">Courses</span>
-                  </div>
-                </div>
-              </div>
-              <div className="col-md-6 col-sm-6 mt-2">
-                <div className="counter-entry">
-                  <div className="desc">
-                    <span
-                      className="colorlib-counter js-counter"
-                      data-from="0"
-                      data-to="3653"
-                      data-speed="5000"
-                      data-refresh-interval="50"
-                    ></span>
-                    <span className="colorlib-counter-label">Students</span>
-                  </div>
-                </div>
-              </div>
-              <div className="col-md-6 col-sm-6 mt-2">
-                <div className="counter-entry">
-                  <div className="desc">
-                    <span
-                      className="colorlib-counter js-counter"
-                      data-from="0"
-                      data-to="2300"
-                      data-speed="5000"
-                      data-refresh-interval="50"
-                    ></span>
-                    <span className="colorlib-counter-label">
-                      Teachers online
-                    </span>
-                  </div>
-                </div>
-              </div>
-              <div className="col-md-6 col-sm-6 mt-2">
-                <div className="counter-entry">
-                  <div className="desc">
-                    <span
-                      className="colorlib-counter js-counter"
-                      data-from="0"
-                      data-to="200"
-                      data-speed="5000"
-                      data-refresh-interval="50"
-                    ></span>
-                    <span className="colorlib-counter-label">Countries</span>
-                  </div>
-                </div>
               </div>
             </div>
             <Button

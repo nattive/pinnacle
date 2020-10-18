@@ -109,6 +109,7 @@ export const COMMENT_DELETED = 'COMMENT_DELETED'
 export const GET_COMMENT = 'GET_COMMENT'
 export const GET_COMMENT_ERROR = 'GET_COMMENT_ERROR'
 export const COMMENT = 'COMMENT'
+export const IS_REPLY = 'IS_REPLY'
 
 /**
  * Course Search/ Filter
@@ -117,3 +118,60 @@ export const COMMENT = 'COMMENT'
 export const SEARCH_RESULT = 'SEARCH_RESULT'
 export const START_SEARCH = 'START_SEARCH'
 export const SEARCH_RESULT_ERROR = 'SEARCH_RESULT_ERROR'
+
+/**
+ * Volunteer 
+ */
+export const SENDING_VOLUNTEER_FORM = 'SENDING_VOLUNTEER_FORM'
+export const VOLUNTEER_FORM_ERROR = 'VOLUNTEER_FORM_ERROR'
+export const VOLUNTEER_FORM_SUCCESS = 'VOLUNTEER_FORM_SUCCESS'
+
+/**
+ * Coachee 
+ */
+
+export const SENDING_COACHEE_FORM = 'SENDING_COACHEE_FORM'
+export const COACHEE_FORM_ERROR = 'COACHEE_FORM_ERROR'
+export const COACHEE_FORM_SUCCESS = 'COACHEE_FORM_SUCCESS'
+export const MENTEE = 'MENTEE'
+
+/**
+ * Notification
+ */
+export const GET_NOTIFICATION = 'GET_NOTIFICATION'
+export const NOTIFICATION = 'NOTIFICATION'
+export const ERR_GETTING_NOTIFICATION = 'ERR_GETTING_NOTIFICATION'
+
+/**
+ * Cart
+ */
+export const ADD_TO_CART = 'ADD_TO_CART'
+export const ADDED_TO_CART = 'ADDED_TO_CART'
+export const ERROR_ADDING_TO_CART = 'ERROR_ADDING_TO_CART'
+    //get
+export const GET_CART_ITEMS = 'GET_CART_ITEMS'
+export const CART_ITEMS = 'CART_ITEMS'
+export const ERROR_GETTING_CART = 'ERROR_GETTING_CART'
+
+/**
+ * BLOG
+ */
+
+export const GET_BLOG_POSTS = 'GET_BLOG_POSTS'
+export const BLOG_POSTS = 'BLOG_POSTS'
+export const ERR_GETTING_BLOG_POST = 'ERR_GETTING_BLOG_POST'
+export const ERR_GETTING_BLOG_POSTS = 'ERR_GETTING_BLOG_POSTS'
+export const GET_BLOG_POST = 'GET_BLOG_POST'
+export const BLOG_POST = 'BLOG_POST'
+
+export const GET_BLOG_CATEGORIES = 'GET_BLOG_CATEGORIES'
+export const BLOG_CATEGORIES = 'BLOG_CATEGORIES'
+export const ERR_GETTING_BLOG_CATEGORIES = 'ERR_GETTING_BLOG_CATEGORIES'
+
+/**
+ * Testimonial
+ */
+
+export const GET_TESTIMONIALS = 'GET_TESTIMONIALS'
+export const TESTIMONIALS = 'TESTIMONIALS'
+export const TESTIMONIALS_ERRORS = 'TESTIMONIALS_ERRORS'

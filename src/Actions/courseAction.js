@@ -113,7 +113,79 @@ export const allCourses = () => dispatch => {
         .then(response => {
             dispatch({
                 type: ALL_COURSES,
-                payload: response.data
+                payload: response.data.data
+            })
+            dispatch({
+                type: STOPPED_WORKING
+            })
+        })
+        .catch(err => {
+            console.log(err.message);
+            dispatch({
+                type: STOPPED_WORKING
+            })
+            dispatch({
+                type: ERR_FETCH_COURSES,
+                payload: err.response ? err.response.data &&
+                    err.response.data.message : err.message ?
+                    JSON.stringify(err.message) : 'error occurred'
+            })
+        })
+
+
+}
+
+export const getCourses = () => dispatch => {
+
+    dispatch({
+        type: NULL_ERR_FETCH_COURSES
+    })
+    dispatch({
+        type: WORKING
+    })
+    Axios.get(`${BaseUrl}course`)
+        .then(response => {
+            dispatch({
+                type: ALL_COURSES,
+                payload: response.data.data
+            })
+            dispatch({
+                type: STOPPED_WORKING
+            })
+        })
+        .catch(err => {
+            console.log(err.message);
+            dispatch({
+                type: STOPPED_WORKING
+            })
+            dispatch({
+                type: ERR_FETCH_COURSES,
+                payload: err.response ? err.response.data &&
+                    err.response.data.message : err.message ?
+                    JSON.stringify(err.message) : 'error occurred'
+            })
+        })
+
+
+}
+
+
+export const topRatedCourses = () => dispatch => {
+    const token = localStorage.getItem('P_access_token')
+
+    dispatch({
+        type: NULL_ERR_FETCH_COURSES
+    })
+    dispatch({
+        type: WORKING
+    })
+    Axios.get(`${BaseUrl}user/course/top-rated`, {
+            headers: { Authorization: `Bearer ${token}` },
+        })
+        .then(response => {
+            dispatch({
+                type: ALL_COURSES,
+                payload: response.data.data
             })
             dispatch({
                 type: STOPPED_WORKING

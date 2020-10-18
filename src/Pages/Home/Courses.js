@@ -11,14 +11,18 @@ import { CircularProgress, Divider } from "@material-ui/core";
 import { useSelector } from "react-redux";
 import ShowRating from "../../General Components/ShowRating";
 import SingleCourseItem from "../../Courses/SingleCourseItem";
-// import { getCourses } from "../Patials/patials";
+import { getCourses } from "../../Actions/courseAction";
+import { connect } from "react-redux";
+import { useEffect } from "react";
 
 /*************Ebd of Import *********** */
 
-export default function Courses() {
-  const course = useSelector((state) => state.course.items.data);
-  console.log(course);
+function Courses(props) {
+  useEffect(() => {
+    props.getCourses();
+  }, []);
 
+  const { course } = props;
   return (
     <>
       <div className="container">
@@ -44,3 +48,12 @@ export default function Courses() {
     </>
   );
 }
+const mapStateToProps = (state) => ({
+  course: state.course.ALL_courses,
+});
+
+const mapDispatchToProps = {
+  getCourses,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Courses);
