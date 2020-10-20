@@ -45,10 +45,10 @@ export default function LandingPage() {
         <CourseSlide />
         <Divider className="m-4" />
         <UlearnIntro />
-        <Testimonial location ="Ulearn" />
         <Divider className="m-4" />
         <OtherCoursesServices />
         <CareerIntro />
+        <Testimonial location ="Ulearn" />
         <RecommendedCourses />
         {/* <Divider className="m-4" /> */}
       </div>

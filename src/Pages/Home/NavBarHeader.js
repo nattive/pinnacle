@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   fade,
   makeStyles,
@@ -36,11 +36,14 @@ import Divider from "@material-ui/core/Divider";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import Hidden from "@material-ui/core/Hidden";
-import {logout} from '../../Actions/loginAction';
+import { logout, getUser } from "../../Actions/loginAction";
+import "./NavBarHeader.css";
 
 const StyledMenu = withStyles({
   paper: {
     border: "1px solid #d3d4d5",
+    maxWidth: "30em",
+    wordWrap: "break-word",
   },
 })((props) => (
   <Menu
@@ -151,6 +154,9 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function NavBarHeader(props) {
+  useEffect(() => {
+   props.getUser()
+  }, [!props.user.id])
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [profileEl, setProfileEl] = React.useState(null);
@@ -202,9 +208,9 @@ function NavBarHeader(props) {
         <ListItemText
           primary={props.user && props.user.name}
           secondary={`${
-            props.user && props.user.account_type === 'isPO'
+            props.user && props.user.account_type === "isPO"
               ? "Pinnacle Ulearn"
-              : props.user && props.user.account_type === 'isCareer'
+              : props.user && props.user.account_type === "isCareer"
               ? "CotF Learners"
               : props.user && props.user.account_type
           } Account`}
@@ -231,19 +237,40 @@ function NavBarHeader(props) {
   const exploreMenu = (
     <>
       <StyledMenuItem component={Link} to="/learn">
-        <ListItemText primary="Pinnacle eLearn" />
+        <ListItemText
+          primary="Pinnacle eLearn"
+          secondary="An e-learning and training platform offering live and video classes"
+        />
       </StyledMenuItem>
       <StyledMenuItem component={Link} to="/teach">
-        <ListItemText primary="Become an instructor" />
+        <ListItemText
+          primary="Create with Pinnacle"
+          secondary="Join us as an instructor and turn your skills into an avenue"
+        />
       </StyledMenuItem>
-      {/* <StyledMenuItem>
-        <ListItemText primary="Join CotF Program" />
-      </StyledMenuItem> */}
+      <StyledMenuItem>
+        <ListItemText
+          primary="Content Library"
+          secondary="Free access to thousands of free educative contents"
+        />
+      </StyledMenuItem>
       <StyledMenuItem component={Link} to="/Volunteer">
-        <ListItemText primary="Volunteer with Us" />
+        <ListItemText
+          primary="Volunteer with Us"
+          secondary="Apply for our volunteer program"
+        />
       </StyledMenuItem>
       <StyledMenuItem component={Link} to="/Coach">
-        <ListItemText primary="Our Coaching & Trainings" />
+        <ListItemText
+          primary="Our Coaching & Trainings"
+          secondary=" Receive one-on-one personal training and coaching"
+        />
+      </StyledMenuItem>
+      <StyledMenuItem component={Link} to="/Coach">
+        <ListItemText
+          primary="Join our internship"
+          secondary="Be a part of something great"
+        />
       </StyledMenuItem>
     </>
   );
@@ -265,6 +292,17 @@ function NavBarHeader(props) {
       <ListItem button onClick={handleClick} button>
         <ListItemText primary="Our Products & Services" />
       </ListItem>
+      {/* <ListItem button onClick={handleClick} button> */}
+        <StyledMenu
+          id="customized-menu"
+          anchorEl={anchorEl}
+          keepMounted
+          open={Boolean(anchorEl)}
+          onClose={handleClose}
+        >
+          {exploreMenu}
+        </StyledMenu>
+      {/* </ListItem> */}
     </List>
   );
   const mobileMenuId = "primary-search-account-menu-mobile";
@@ -350,13 +388,13 @@ function NavBarHeader(props) {
           </div>
           <div className={classes.grow} />
           <Hidden mdDown>
-            <Button component={Link} to="/">
+            <Button component={Link} to="/" className="menu-btn">
               Home
             </Button>
-            <Button component={Link} to="/about">
+            <Button component={Link} to="/about" className="menu-btn">
               About us
             </Button>
-            <Button component={Link} to="/blog">
+            <Button component={Link} to="/blog" className="menu-btn">
               Blog
             </Button>
 
@@ -366,13 +404,17 @@ function NavBarHeader(props) {
                 aria-haspopup="true"
                 variant="contained"
                 color="primary"
-
+                component={Link}
+                to="/courses"
+                disableElevation
                 // onMouseLeave={handleClose}
               >
                 Our Courses
               </Button>
             </div>
-            <Button onClick={handleClick}>Our Product/Services</Button>
+            <Button onClick={handleClick} className="menu-btn">
+              Our Product/Services
+            </Button>
             <StyledMenu
               id="customized-menu"
               anchorEl={anchorEl}
@@ -419,7 +461,7 @@ function NavBarHeader(props) {
                   content={props.user.name}
                   onClick={handleProfileMenuOpen}
                   basic
-                  style={{border: 'none'}}
+                  style={{ border: "none" }}
                 />
                 <StyledMenu
                   id="customized-menu"
@@ -454,12 +496,28 @@ function NavBarHeader(props) {
           </IconButton>
         </div>
         <Divider />
+        {!props.user.id ? (
+          <List>
+            <ListItem button component={Link} to="/auth/signin">
+              <ListItemText primary="Login/Sign up" />
+            </ListItem>
+          </List>
+        ) : (
+          <>
+            <h4 className="text-muted ml-2 mb-2">Your Account</h4>
+            <List> {ProfileMenu}</List>
+          </>
+        )}
+        <Divider />
         <h4 className="text-muted ml-2 mb-2">Navigate Pinnacle</h4>
-        <Divider />
         {mobileMenuList}
-        <h4 className="text-muted ml-2 mb-2">Coaching</h4>
-        <Divider />
-        {coachMenu}
+        {props.user.mentee && props.user.mentee.id && (
+          <>
+            <h4 className="text-muted ml-2 mb-2">Coaching</h4>
+            <Divider />
+            {coachMenu}
+          </>
+        )}
         <Divider />
       </Drawer>
     </div>
@@ -469,4 +527,4 @@ function NavBarHeader(props) {
 const mapStateToProps = (state) => ({
   user: state.auth.user,
 });
-export default connect(mapStateToProps, { logout })(NavBarHeader);
+export default connect(mapStateToProps, { logout, getUser })(NavBarHeader);

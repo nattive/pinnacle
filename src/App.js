@@ -29,6 +29,7 @@ import Volunteer from "./Pages/Vulunteer";
 // import { Routes as ElearningRoutes } from "./Pages/LearnRoutes";
 import "semantic-ui-css/semantic.min.css";
 import Footer from "./Layout/Footer";
+import Content from "./Pages/Content";
 function App() {
   return (
     <Provider store={store} className="super_container">
@@ -43,6 +44,9 @@ function App() {
             </Route>
             <Route path="/blog">
               <Blog />
+            </Route>
+            <Route path="/content">
+              <Content />
             </Route>
             <Route path="/teach">
               <Tutor />

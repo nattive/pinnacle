@@ -7,6 +7,7 @@ import reviewReducers from './reviewReducers'
 import commentReducer from './commentReducer'
 import generalReducers from './generalReducers'
 import blogReducers from './blogReducers'
+import resourceReducers from './resourceReducers'
 
 
 export default combineReducers({
@@ -17,5 +18,6 @@ export default combineReducers({
     module: moduleReducers,
     reviews: reviewReducers,
     general: generalReducers,
-    comment: commentReducer
+    comment: commentReducer,
+    resource: resourceReducers,
 })
