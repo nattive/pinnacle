@@ -44,7 +44,7 @@ class Index extends Component {
         <Services />
         <FeaturedCourses />
         <Countdown />
-        <CoachingSection />
+        {/* <CoachingSection /> */}
         <Testimonial location="Homepage" />
         <BlogSection />
       </>

@@ -12,6 +12,7 @@ import {
   getEnrolledCourse,
   enrollCourse,
   fetchCourses,
+  allCourses,
 } from "../../../Actions/courseAction";
 import { BaseUrl } from "../../../Patials/BaseUrl";
 import SingleCourseItem from "../../../Courses/SingleCourseItem";
@@ -25,6 +26,7 @@ class CourseSlide extends Component {
   }
 
   componentDidMount(){
+      this.props.allCourses();
       this.props.fetchCourses(5)
       this.props.fetchFREECourses(5);
       this.props.fetchPOCourses(5);
@@ -84,7 +86,7 @@ class CourseSlide extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  courses: state.course.ALL_courses.data,
+  courses: state.course.ALL_courses,
   PO_courses: state.course.PO_courses,
   FREE_courses: state.course.FREE_courses,
   COTF_courses: state.course.COTF_courses,
@@ -93,6 +95,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = {
   fetchPOCourses,
+  allCourses,
   fetchCOTFCourses,
   fetchFREECourses,
   getEnrolledCourse,

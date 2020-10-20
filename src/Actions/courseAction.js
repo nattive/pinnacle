@@ -52,7 +52,7 @@ export const fetchCourses = (number) => dispatch => {
     dispatch({
         type: WORKING
     })
-    Axios.get(`${BaseUrl}courses/get/${number}`)
+    Axios.get(`${BaseUrl}course/get/${number}`)
         .then(response => {
             dispatch({
                 type: FETCH_COURSES,
@@ -211,7 +211,7 @@ export const fetchPOCourses = (number) => dispatch => {
     console.log(number);
 
     dispatch({ type: WORKING })
-    Axios.get(`${BaseUrl}courses/get/PO/${number}`)
+    Axios.get(`${BaseUrl}course/get/PO/${number}`)
         .then(response => {
             dispatch({ type: STOPPED_WORKING })
             dispatch({
@@ -235,7 +235,7 @@ export const fetchCOTFCourses = (number) => dispatch => {
     console.log(number);
 
     dispatch({ type: WORKING })
-    Axios.get(`${BaseUrl}courses/get/COTF/${number}`)
+    Axios.get(`${BaseUrl}course/get/COTF/${number}`)
         .then(response => {
             dispatch({ type: STOPPED_WORKING })
             dispatch({
@@ -259,7 +259,7 @@ export const fetchFREECourses = (number) => dispatch => {
     dispatch({
         type: NULL_ERR_FETCH_COURSES
     })
-    Axios.get(`${BaseUrl}courses/get/FREE/${number}`)
+    Axios.get(`${BaseUrl}course/get/FREE/${number}`)
         .then(response => dispatch({
             type: FETCH_FREE_COURSES,
             payload: response.data
@@ -394,7 +394,7 @@ export const checkCourseProgress = (user, course, module) => dispatch => {
     // dispatch({
     //     type: NULL_ERR_PLAY_COURSE
     // })
-    Axios.post(`${BaseUrl}courses/check_progress`, {
+    Axios.post(`${BaseUrl}course/check_progress`, {
             user_id: user,
             course_id: course,
             module_id: module,
@@ -420,7 +420,7 @@ export const showCourse = (course) => dispatch => {
     dispatch({
         type: LOADING_SHOW_COURSE
     })
-    Axios.get(`${BaseUrl}courses/` + course)
+    Axios.get(`${BaseUrl}course/` + course)
         .then(response => {
             console.log(response);
             dispatch({
@@ -460,7 +460,7 @@ export const showNodule = (courseId) => dispatch => {
 
     if (token_to_verify) {
 
-        Axios.get(`${BaseUrl}courses/material/show/` + courseId, { headers: { Authorization: `Bearer ${token_to_verify}` } })
+        Axios.get(`${BaseUrl}course/material/show/` + courseId, { headers: { Authorization: `Bearer ${token_to_verify}` } })
             .then(response => {
                 dispatch({ type: WORKING })
                 dispatch({ type: STOPPED_WORKING })
@@ -572,7 +572,7 @@ export const getRecommendation = () => dispatch => {
     dispatch({
         type: NULL_ERR_MAIN_CATEGORIES
     })
-    Axios.post(`${BaseUrl}courses/recommendations`, {
+    Axios.post(`${BaseUrl}course/recommendations`, {
             slugArray: JSON.parse(slugArray)
         })
         .then(response => {

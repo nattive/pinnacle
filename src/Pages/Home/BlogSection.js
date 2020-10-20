@@ -6,6 +6,7 @@ import { getPosts, getCategories } from "../../Actions/blogAction";
 import { useEffect } from "react";
 import { connect } from "react-redux";
 import { Link, useRouteMatch } from "react-router-dom";
+import { getResources } from "../../Actions/resourceAction";
 import Parse from "html-react-parser";
 
 function BlogSection(props) {
@@ -13,6 +14,7 @@ function BlogSection(props) {
   useEffect(() => {
     props.getPosts();
     props.getCategories();
+    props.getResources();
   }, []);
   return (
     <div class="grouped_sections">
@@ -103,90 +105,37 @@ function BlogSection(props) {
         <div class="row">
           <div class="col-lg-4 grouped_col">
             <div class="grouped_title mb-2">Free available Resources</div>
-            <ScrollAnimation
-              delay={300}
-              animateOnce
-              animateIn="animate__fadeInUp"
-            >
-              <div class="news_post d-flex flex-row align-items-start justify-content-start">
-                <div>
-                  <div class="news_post_image">
-                    <img src={blogImage} alt="blog image" />
-                  </div>
-                </div>
-                <div class="news_post_body">
-                  <div class="news_post_title">
-                    <a href="news.html">Why Choose online education?</a>
-                  </div>
-                  <div class="news_post_author">
-                    By <a href="#">William Smith</a>
-                  </div>
-                </div>
-              </div>
-            </ScrollAnimation>
-            <ScrollAnimation
-              delay={600}
-              animateOnce
-              animateIn="animate__fadeInUp"
-            >
-              <div class="news_post mt-4 d-flex flex-row align-items-start justify-content-start">
-                <div>
-                  <div class="news_post_image">
-                    <img src={blogImage} alt="blog image" />
-                  </div>
-                </div>
-                <div class="news_post_body">
-                  <div class="news_post_title">
-                    <a href="news.html">Why Choose online education?</a>
-                  </div>
-                  <div class="news_post_author">
-                    By <a href="#">William Smith</a>
-                  </div>
-                </div>
-              </div>
-            </ScrollAnimation>
-            <ScrollAnimation
-              delay={900}
-              animateOnce
-              animateIn="animate__fadeInUp"
-            >
-              <div class="news_post d-flex flex-row align-items-start justify-content-start">
-                <div>
-                  <div class="news_post_image">
-                    <img src={blogImage} alt="blog image" />
-                  </div>
-                </div>
-                <div class="news_post_body">
-                  <div class="news_post_title">
-                    <a href="news.html">Why Choose online education?</a>
-                  </div>
-                  <div class="news_post_author">
-                    By <a href="#">William Smith</a>
-                  </div>
-                </div>
-              </div>
-            </ScrollAnimation>
-            <ScrollAnimation
-              delay={1200}
-              animateOnce
-              animateIn="animate__fadeInUp"
-            >
-              <div class="news_post d-flex flex-row align-items-start justify-content-start">
-                <div>
-                  <div class="news_post_image">
-                    <img src={blogImage} alt="blog image" />
-                  </div>
-                </div>
-                <div class="news_post_body">
-                  <div class="news_post_title">
-                    <a href="news.html">Why Choose online education?</a>
-                  </div>
-                  <div class="news_post_author">
-                    By <a href="#">William Smith</a>
-                  </div>
-                </div>
-              </div>
-            </ScrollAnimation>
+            <div className="events">
+              {props.FRs &&
+                props.FRs.map((resource) => (
+                  <ScrollAnimation
+                    delay={300}
+                    key={resource.id}
+                    animateOnce
+                    animateIn="animate__fadeInUp"
+                  >
+                    <div class="news_post d-flex flex-row align-items-start justify-content-start">
+                      <div>
+                        <div class="news_post_image">
+                          <img src={resource.banner} alt="blog image" />
+                        </div>
+                      </div>
+                      <div class="news_post_body">
+                        <div class="news_post_title">
+                          <a href="news.html">{resource.title}</a>
+                        </div>
+                        <div class="news_post_author">
+                          By{" "}
+                          <a href="#">
+                            {(resource.user && resource.user.name) ||
+                              (resource.admin && resource.admin.name)}
+                          </a>
+                        </div>
+                      </div>
+                    </div>
+                  </ScrollAnimation>
+                ))}
+            </div>
           </div>
 
           <div class="col-lg-4 grouped_col">
@@ -198,7 +147,7 @@ function BlogSection(props) {
                   <ScrollAnimation
                     delay={300}
                     animateOnce
-                    animateIn="animate__fadeInUp mt-2 mb-2"
+                    animateIn="animate__fadeInUp "
                   >
                     <div class="news_post d-flex flex-row align-items-start justify-content-start">
                       <div>
@@ -209,11 +158,15 @@ function BlogSection(props) {
                       <div class="news_post_body">
                         <div class="news_post_date">{course.updated}</div>
                         <div class="news_post_title">
-                          <a href="news.html">{course.title}</a>
+                          <Link to={`/learn/course/${course.slug}`}>
+                            {course.title}
+                          </Link>
                         </div>
                         <div class="news_post_author">
                           By{" "}
-                          <a href="#">{course.tutor && course.tutor.user.name}</a>
+                          <a href="#">
+                            {course.tutor && course.tutor.user.name}
+                          </a>
                         </div>
                       </div>
                     </div>
@@ -243,7 +196,7 @@ function BlogSection(props) {
                       <div class="news_post_body">
                         <div class="news_post_date">{post.created}</div>
                         <div class="news_post_title">
-                          <a href="news.html">{post.title}</a>
+                          <Link to={`/blog/${post.slug}`}>{post.title}</Link>
                         </div>
                         <div class="news_post_author">
                           By <a href="#">Admin</a>
@@ -269,11 +222,20 @@ const mapStateToProps = (state) => ({
   categories: state.blog.categories,
   catErrors: state.blog.catErrors,
   courses: state.course.ALL_courses,
+  isGettingFRs: state.resource.isGettingFRs,
+  isGettingFR: state.resource.isGettingFR,
+  FRs: state.resource.FRs,
+  FR: state.resource.FR,
+  FR_Error: state.resource.FR_Error,
+  gettingFRCat: state.resource.gettingCat,
+  FRCategories: state.resource.categories,
+  FRCatErrors: state.resource.catErrors,
 });
 
 const mapDispatchToProps = {
   getPosts,
   getCategories,
+  getResources,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(BlogSection);
