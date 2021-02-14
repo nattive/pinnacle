@@ -7,6 +7,7 @@ import SvgIcon from "@material-ui/core/SvgIcon";
 import { ReactSVG } from "react-svg";
 import "../../Assets/fonts/flaticon.css";
 import welfare from '../../Assets/fonts/font/svg/030-welfare.svg'
+import coach from "../../Assets/img/tutor/undraw_teacher_35j2.png";
 import volunteer from "../../Assets/fonts/font/svg/029-volunteer.svg";
 import idea from "../../Assets/fonts/font/svgIcon/048-idea.svg";
 import instructor from "../../Assets/fonts/font/svgIcon/023-instructor.svg";
@@ -58,7 +59,7 @@ export default function More() {
             </div>
             <div className="col-xl-4 col-md-6 col-lg-4">
               <div className="single_service text-center">
-                <img src={instructor} style={{ width: 70 }} alt="" />
+                <img src={coach} style={{ width: 70 }} alt="" />
                 <h3>Pinnacle Personalized Coaching and Trainings</h3>
                 <p>
                   Receive one-on-one personal training and coaching from our

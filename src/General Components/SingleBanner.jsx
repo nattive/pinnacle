@@ -11,27 +11,19 @@ import PropTypes from "prop-types";
 function SingleBanner() {
   const bg1 = {
     backgroundImage: `url(${banner1})`,
+    height: '400px'
   };
 
   return (
-    <div className="slider_area" style={{ marginBottom: "-60px" }}>
-      <OwlCarousel items={1} className="slider_active owl-carousel" loop nav>
+    <div className="slider_area" style={{ marginBottom: "-140px" }}>
+      <OwlCarousel items={1} className="slider_active owl-carousel" loop nav autoPlay>
         <div className="single_slider  d-flex align-items-center " style={bg1}>
           <div className="container">
             <div className="row">
               <Grid container>
                 <Grid md={5}>
-                  <div className="slider_text ">
-                    <Typography
-                      variant="h4"
-                      style={{
-                        color: "#000066",
-                        fontWeight: "bold",
-                        fontSize: "2em",
-                      }}
-                    >
-                      Create with Pinnacle
-                    </Typography>
+                  <div className="slider_text card card-body">
+                    <h2>Up your skills!</h2>
                     <Typography
                       variant="body1"
                       style={{
@@ -39,8 +31,7 @@ function SingleBanner() {
                         fontSize: "1.4em",
                       }}
                     >
-                      Join us as an instructor and turn your skills into an
-                      avenue to reach learners in Africa.
+                     Join thousands of learner accross africa
                     </Typography>
                     <div className="video_service_btn">
                       <Button

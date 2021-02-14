@@ -42,26 +42,25 @@ function CategoryList(props) {
 
   return (
     <div id="colorlib-services">
-      <div className="container">
-        <div className="col-md-12 mt-1 mb-2 colorlib-heading center-heading text-center">
-          {/* <h1 className="heading-big">Categories</h1> */}
-          <h2>Top Topics For you</h2>
-          <Divider className="p-1 m-3" variant="middle" color="primary" />
+      <div className="container-fluid">
+        <div className="section_title text-left m-4 w-75 mt-5">
+          <h3>Top categories</h3>
+          <Divider className="m-3" variant="middle" color="primary" />
         </div>
         <div className="row">
           <div className="col-md-12 services-wrap">
-            <Carousel responsive={responsive}>
+            <div className="row">
               {props.subCategories &&
               props.subCategories.data &&
               props.subCategories.data.length > 0
                 ? props.subCategories.data.map((sub) => (
-                    <div className=" text-center">
-                      <a href="services.html" className="services">
-                        {/* <span className="icon">
-                    <i>
-                      <BusinessIcon fontSize="large" />
-                    </i>
-                  </span> */}
+                    <div className=" col-md-3 text-center">
+                      <a href="" className="services">
+                        <span className="icon">
+                          <i>
+                            <BusinessIcon fontSize="large" />
+                          </i>
+                        </span>
                         <div className="desc">
                           <h3>{sub.name}</h3>
                         </div>
@@ -69,7 +68,7 @@ function CategoryList(props) {
                     </div>
                   ))
                 : "...loading"}
-            </Carousel>
+            </div>
           </div>
         </div>
       </div>

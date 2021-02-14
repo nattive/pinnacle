@@ -34,6 +34,10 @@ import {
     SEARCH_RESULT,
     START_SEARCH,
     SEARCH_RESULT_ERROR,
+    GET_RANDOM_CATEGORIES,
+    RANDOM_CATEGORIES,
+    GET_RANDOM_CATEGORIES_ERROR,
+    RECOMMENDED_COURSES,
 } from "../Actions/types";
 
 const initialState = {
@@ -62,14 +66,20 @@ const initialState = {
     items: {},
     item: {},
     loadSub: {},
+    /****Recommended***/
     recommendedCourses: {},
     recommendedCoursesFetchError: null,
+    isGettingrecommendedCourses: false,
+    /****Recommended***/
     showingCourse: false,
     errShowingCourse: {},
     isEnrollingCourse: false,
     enrollCourseError: null,
     courseIsEnrolled: false,
-
+    /**Random category course */
+    gettingRCCourse: false,
+    RCCourse: [],
+    errorGettingRCCourse: null
 }
 
 export default function(state = initialState, action) {
@@ -223,15 +233,42 @@ export default function(state = initialState, action) {
             }
         case GET_RECOMMENDED_COURSES:
             return {...state,
-                recommendedCourses: action.payload
+                recommendedCoursesFetchError: null,
+                isGettingrecommendedCourses: true
             }
+        case RECOMMENDED_COURSES:
+            return {...state,
+                recommendedCoursesFetchError: null,
+                isGettingrecommendedCourses: false,
+                recommendedCourses: action.payload,
+            }
+
         case ERR_GET_RECOMMENDED_COURSES:
             return {...state,
-                recommendedCoursesFetchError: action.payload
+                recommendedCoursesFetchError: action.payload,
+                isGettingrecommendedCourses: false
             }
         case ALL_COURSES:
             return {...state,
                 ALL_courses: action.payload
+            }
+        case GET_RANDOM_CATEGORIES:
+            return {
+                ...state,
+                gettingRCCourse: true,
+                errorGettingRCCourse: null
+            }
+        case RANDOM_CATEGORIES:
+            return {
+                ...state,
+                gettingRCCourse: false,
+                RCCourse: action.payload,
+                errorGettingRCCourse: null
+            }
+        case GET_RANDOM_CATEGORIES_ERROR:
+            return {...state,
+                gettingRCCourse: false,
+                errorGettingRCCourse: action.payload,
             }
 
         default:

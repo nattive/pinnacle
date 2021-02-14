@@ -11,7 +11,7 @@ export default function Services() {
       <Container>
         <Grid container>
           <Grid item xs="hidden" md={6}>
-            <img src={student} className="w-75 img-responsive" alt="learn with pinnacle" />
+            <img  src={student} className="w-50 img-responsive rounded" alt="learn with pinnacle" />
           </Grid>
           <Grid
             item

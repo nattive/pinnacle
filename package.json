@@ -25,6 +25,7 @@
     "react-bootstrap": "^1.0.1",
     "react-cart-components": "^2.1.0",
     "react-dom": "^16.13.1",
+    "react-icons": "^4.2.0",
     "react-multi-carousel": "^2.5.5",
     "react-owl-carousel": "^2.3.1",
     "react-placeholder": "^4.0.1",
@@ -32,6 +33,7 @@
     "react-redux": "^7.2.0",
     "react-router-dom": "^5.2.0",
     "react-scripts": "3.4.1",
+    "react-slick": "^0.28.0",
     "react-svg": "^11.0.31",
     "react-swipeable-views": "^0.13.9",
     "react-youtube": "^7.11.2",
@@ -40,6 +42,7 @@
     "redux-thunk": "^2.3.0",
     "semantic-ui-css": "^2.4.1",
     "semantic-ui-react": "^1.2.1",
+    "slick-carousel": "^1.8.1",
     "tubular-react": "^4.2.9",
     "video-react": "^0.14.1",
     "videojs-youtube": "^2.6.1"

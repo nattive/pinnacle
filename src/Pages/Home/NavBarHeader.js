@@ -387,7 +387,7 @@ function NavBarHeader(props) {
             </a>
           </div>
           <div className={classes.grow} />
-          <Hidden mdDown>
+          <Hidden smDown>
             <Button component={Link} to="/" className="menu-btn">
               Home
             </Button>

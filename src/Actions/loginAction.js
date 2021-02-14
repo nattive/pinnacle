@@ -155,7 +155,7 @@ export const getUser = () => dispatch => {
 
             })
             .catch(err => {
-                alert(err.response && err.response.message || err.response.data || JSON.stringify(err))
+                alert(err.response ? err.response.message || err.response.data : JSON.stringify(err))
                 dispatch({
                     type: AUTH_LOADING_STATE,
                     payload: false

@@ -41,6 +41,10 @@ import {
     START_SEARCH,
     SEARCH_RESULT,
     SEARCH_RESULT_ERROR,
+    GET_RANDOM_CATEGORIES,
+    GET_RANDOM_CATEGORIES_ERROR,
+    RANDOM_CATEGORIES,
+    RECOMMENDED_COURSES,
 } from '../Actions/types'
 import { recommended } from "../Patials/constant";
 
@@ -570,7 +574,7 @@ export const userHasTakenQuiz = (id) => dispatch => {
 export const getRecommendation = () => dispatch => {
     const slugArray = localStorage.getItem(recommended)
     dispatch({
-        type: NULL_ERR_MAIN_CATEGORIES
+        type: GET_RECOMMENDED_COURSES
     })
     Axios.post(`${BaseUrl}course/recommendations`, {
             slugArray: JSON.parse(slugArray)
@@ -578,12 +582,36 @@ export const getRecommendation = () => dispatch => {
         .then(response => {
             console.log(response);
             dispatch({
-                type: GET_RECOMMENDED_COURSES,
+                type: RECOMMENDED_COURSES,
                 payload: response.data
             })
         })
         .catch(err => dispatch({
             type: ERR_GET_RECOMMENDED_COURSES,
+            payload: err.message
+        }))
+}
+
+/**
+ * Fetch random categories and rekated courses
+ */
+export const fetchRandomCoursesByCategory = () => dispatch => {
+    const token = localStorage.getItem('P_access_token')
+    dispatch({
+        type: GET_RANDOM_CATEGORIES
+    })
+    Axios.get(`${BaseUrl}course/random/category`, {
+            headers: { Authorization: `Bearer ${token}` }
+        })
+        .then(response => {
+            console.log(response);
+            dispatch({
+                type: RANDOM_CATEGORIES,
+                payload: response.data
+            })
+        })
+        .catch(err => dispatch({
+            type: GET_RANDOM_CATEGORIES_ERROR,
             payload: err.message
         }))
 }

@@ -2,3 +2,23 @@
     background-color: #fff;
     border: 1px solid #000066;
 }
+
+.MuiInputBase-input {
+    border: 1px solid rgb(107, 106, 106) !important;
+    border-radius: 50px !important;
+    height: 50% !important;
+}
+
+.MuiButton-containedPrimary {
+    border-radius: 0 !important;
+}
+
+.MuiButtonBase-root>span {
+    text-transform: capitalize !important;
+}
+
+.MuiButtonBase-root:hover {
+    border: none !important;
+    background-color: transparent !important;
+    color: #000066 !important;
+}

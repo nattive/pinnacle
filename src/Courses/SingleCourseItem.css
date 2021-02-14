@@ -1,0 +1,30 @@
+.course-card-title {
+    margin: 2px 0;
+    padding: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 1em;
+    font-size: .9em;
+    text-transform: capitalize;
+}
+
+.course-tutor {
+    line-height: .5em;
+    font-size: .9em;
+}
+
+.course_price {
+    font-size: 1em;
+    color: rgb(184, 49, 49);
+    font-weight: bold;
+}
+
+.single-course-card {
+    margin-left: 10px;
+    cursor: pointer;
+}
+
+.single-course-card:hover {
+    box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.1);
+    transition: .4s all;
+}
