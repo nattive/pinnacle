@@ -11,6 +11,7 @@ import { Container, Typography, Divider, Paper } from "@material-ui/core";
 import { connect } from "react-redux";
 import { volunteerSignup } from "../../Actions/generalAction";
 import { useEffect } from "react";
+import volunteer from "../../Assets/img/banner/6660.jpg";
 
 function SignupForm(props) {
   const [name, setName] = useState("");
@@ -134,44 +135,50 @@ function SignupForm(props) {
       );
   }, [props.hasSentVF]);
   return (
-    <Container
-      className="mt-4"
-      style={{ overflowX: "auto", height: height - 100 }}
-    >
-      <Paper className="p-3">
-        {success === null ? (
-          <Form className="m-3" onSubmit={handleSubmit}>
-            <Typography variant="h4" className="mt-4 mb-4">
-              Let's get to meet you!
+    <div className="container-fluid">
+      <div className="row" style={{ marginTop: '7em' }}>
+        <div className="col-sm-12 col-md-6" >
+          <img src={volunteer} className="w-100 mx-auto" />
+
+        </div>
+
+        <div className="col-sm-12 col-md-6">
+          <Paper className="card p-3">
+            {success === null ? (
+              <Form className="m-3" onSubmit={handleSubmit}>
+                <Typography variant="h4" className="mt-4 mb-4">
+                  Let's get to meet you!
             </Typography>
-            <Divider className="my-4" />
-            <Message info>
-              Note: This is not a paid role, however we offer allowances for
-              internet and a working space (if necessary).
+                <Divider className="my-4" />
+                <Message info>
+                  Note: This is not a paid role, however we offer allowances for
+                  internet and a working space (if necessary).
             </Message>
-            {field.map((item) => (
-              <Form.Field
-                label={item.placeHolder}
-                control={item.component}
-                type={item.type}
-                options={item.option}
-                required={item.required}
-                onChange={item.onChange}
-              />
-            ))}
-            <Form.Button
-              loading={props.isSendingVF}
-              className="btn-flat"
-              content="Submit"
-              color="blue"
-              fluid
-            />
-          </Form>
-        ) : (
-          <Message success>{success}</Message>
-        )}
-      </Paper>
-    </Container>
+                {field.map((item) => (
+                  <Form.Field
+                    label={item.placeHolder}
+                    control={item.component}
+                    type={item.type}
+                    options={item.option}
+                    required={item.required}
+                    onChange={item.onChange}
+                  />
+                ))}
+                <Form.Button
+                  loading={props.isSendingVF}
+                  className="btn-flat"
+                  content="Submit"
+                  color="blue"
+                  fluid
+                />
+              </Form>
+            ) : (
+                <Message success>{success}</Message>
+              )}
+          </Paper>
+        </div>
+      </div>
+    </div>
   );
 }
 

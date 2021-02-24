@@ -333,6 +333,26 @@ h3 {
     padding-bottom: 100px;
 }
 
+.search {
+    background-color: #fff !important;
+    border-radius: 10 !important;
+}
+
+.search::placeholder {
+    color: #7c7b7b!important;
+}
+
+.search:focus {
+    background-color: #3f51b5 !important;
+    color: #fff !important;
+    border-color: #fff !important;
+}
+
+.btn-search:hover {
+    background-color: #3f51b5 !important;
+    color: #fff !important;
+}
+
 .grouped_title {
     font-size: 30px;
     font-weight: 600;

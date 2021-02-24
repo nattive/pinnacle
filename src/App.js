@@ -24,6 +24,7 @@ import SignUp from "./Pages/User/SignUp";
 import Auth from "./Pages/User/Auth";
 import Routes from "./Pages/LearnRoutes/Routes";
 import CourseShop from "./Pages/CourseShop";
+import CoursesByCategory from "./Pages/CoursesByCategory";
 import Coach from "./Pages/Coach";
 import Volunteer from "./Pages/Vulunteer";
 // import { Routes as ElearningRoutes } from "./Pages/LearnRoutes";
@@ -35,7 +36,7 @@ function App() {
     <Provider store={store} className="super_container">
       <Router>
         <Switch>
-          <div style={{marginBottom: '0em'}}>
+          <div style={{ marginBottom: "0em" }}>
             <Route exact path="/">
               <Index />
             </Route>
@@ -60,6 +61,10 @@ function App() {
             <Route path="/learn">
               <Routes />
             </Route>
+            <Route
+              path="/course/category/:category"
+              component={(props) => <CoursesByCategory {...props} />}
+            />
             <Route path="/courses">
               <CourseShop />
             </Route>

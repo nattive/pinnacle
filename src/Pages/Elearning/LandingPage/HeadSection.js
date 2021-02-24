@@ -1,26 +1,17 @@
 import React from "react";
-import OwlCarousel from "react-owl-carousel";
-import "owl.carousel/dist/assets/owl.carousel.css";
-import "owl.carousel/dist/assets/owl.theme.default.css";
 import { Link } from "react-router-dom";
 import bg1 from '../Assests/images/img_bg_1.jpg'
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 export default function HeadSection() {
   return (
     <div id="page">
-      <aside id="colorlib-hero">
+      {/* <aside id="colorlib-hero">
         <div className="flexslider">
           <ul className="slides">
-            <OwlCarousel
-              items={1}
-              className="slider_active owl-carousel"
-              loop
-              nav
-              autoplay
-            >
-              <li
-                style={{
-                  backgroundImage: `url(${bg1})`
-              >
+            <Slider>
+              <li style={{ backgroundImage: `url(${bg1})`>
                 <div className="overlay"></div>
                 <div className="container-fluid">
                   <div className="row">
@@ -46,10 +37,10 @@ export default function HeadSection() {
                   </div>
                 </div>
               </li>
-            </OwlCarousel>
+            </Slider>
           </ul>
         </div>
-      </aside>
+      </aside> */}
     </div>
   );
 }

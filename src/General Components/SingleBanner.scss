@@ -1,0 +1,13 @@
+.caption {
+    top: 40%;
+    left: 5%;
+    max-width: 40%;
+    position: absolute;
+    z-index: 900;
+    background-color: white;
+    padding: 3em 20px
+}
+
+.caption > h3{
+    font-size: 45px
+}

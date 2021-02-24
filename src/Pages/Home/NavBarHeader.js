@@ -236,12 +236,12 @@ function NavBarHeader(props) {
   );
   const exploreMenu = (
     <>
-      <StyledMenuItem component={Link} to="/learn">
+      {/* <StyledMenuItem component={Link} to="/learn">
         <ListItemText
           primary="Pinnacle eLearn"
           secondary="An e-learning and training platform offering live and video classes"
-        />
-      </StyledMenuItem>
+        /> 
+      </StyledMenuItem>*/}
       <StyledMenuItem component={Link} to="/teach">
         <ListItemText
           primary="Create with Pinnacle"
@@ -266,12 +266,12 @@ function NavBarHeader(props) {
           secondary=" Receive one-on-one personal training and coaching"
         />
       </StyledMenuItem>
-      <StyledMenuItem component={Link} to="/Coach">
+      {/* <StyledMenuItem component={Link} to="/Coach">
         <ListItemText
           primary="Join our internship"
           secondary="Be a part of something great"
         />
-      </StyledMenuItem>
+      </StyledMenuItem> */}
     </>
   );
 

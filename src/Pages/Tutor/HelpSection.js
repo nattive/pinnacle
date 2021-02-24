@@ -2,9 +2,6 @@ import React from "react";
 import { Container, Grid, Typography } from "@material-ui/core";
 import plan from "../../Assets/img/tutor/plan.svg";
 import Create from "../../Assets/img/tutor/undraw_sculpting_1c9p.png";
-import OwlCarousel from "react-owl-carousel";
-import "owl.carousel/dist/assets/owl.carousel.css";
-import "owl.carousel/dist/assets/owl.theme.default.css";
 export default function HelpSection() {
   return (
     <>
@@ -13,7 +10,7 @@ export default function HelpSection() {
           How we can help <span>you</span>
         </h3>
       </div>
-      <OwlCarousel
+      {/* <OwlCarousel
         items={1}
         className="slider_active owl-carousel"
         loop
@@ -66,7 +63,7 @@ export default function HelpSection() {
             </Grid>
           </Grid>
         </Container>
-      </OwlCarousel>
+      </OwlCarousel> */}
     </>
   );
 }

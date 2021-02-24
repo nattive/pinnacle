@@ -1,5 +1,5 @@
 import React from "react";
-
+import volunteer from "../../Assets/img/banner/6660.jpg";
 import {
   BrowserRouter as Router,
   Switch,
@@ -8,30 +8,79 @@ import {
   useParams,
   useRouteMatch,
 } from "react-router-dom";
-import VolunteerSignUp from "./VolunteerSignUp";
-import { Typography } from "@material-ui/core";
-
+import './volunteer.scss'
+import SingleBanner from "../../General Components/SingleBanner";
+import banner1 from "../../Assets/img/banner/teacher1.jpg";
+import { GoPerson, GoProject, GoBeaker, GoBriefcase, GoBookmark } from 'react-icons/go'
+import Testimonial from "../Tutor/Testimonial";
 export default function Intro() {
   let { path, url } = useRouteMatch();
   return (
     <>
-      <div
-        className="col-md-12 colorlib-heading center-heading text-center"
-      >
-        {/* <h1 className="heading-big">Categories</h1> */}
-        <h2>Volunteer at Pinnacle</h2>
+      <div style={{ margin: "4em 0" }}>
+        <SingleBanner title='Intern with Pinnacle' image={banner1} subText='Work with professionals. Create, brainstorm, manage project, research designs, with pinnacle.' />
+        <div
+          className="container-fluid banner-bottom-info"
+
+        >
+          <div className="container">
+            <div className="row p-4">
+              <div className="col-md-4 d-none d-md-block">
+                <div className="d-flex align-content-center">
+                  <GoBriefcase className='banner-bottom-icon' />
+                  <div className="ml-4">
+                    <h4> Work with professionals</h4>
+                    Expose yourself to working with top professionals, gain experience and learn.
+                  </div>
+                </div>
+              </div>
+              <div className="col-md-4 d-none d-md-block">
+                <div className="d-flex align-content-center">
+                  <GoProject className='banner-bottom-icon' />
+                  <div className="ml-4">
+                    <h4> Gain the experience </h4>
+                    You will be Collaaborating with the team in content
+                     creation, brainstorm jams, project management, research designs and many more.
+                  </div>
+                </div>
+              </div>
+              <div className="col-md-4 d-none d-md-block">
+                <div className="d-flex align-content-center">
+                  <GoBookmark className='banner-bottom-icon' />
+                  <div className="ml-4">
+                    <h4>  Exciting experience </h4>
+                    Working at Pinnacle launches you into an exciting experience of creating
+                    innovative learning and management solutions with a smart and fun team
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
       </div>
-      {/* <Typography variant="h3">Volunteer at Pinnacle</Typography> */}
-      <Typography variant="body1" className="align-self-center">
-        Working at Pinnacle launches you into an exciting experience of creating
-        innovative learning and management solutions with a smart and fun team.
-        Our team believes in design-thinking for learning, projects, and
-        advisory services. You will likely find our team busy with content
-        creation, brainstorm jams, project management, research designs,
-        infotechnology, eating chocolate cake, completing a fitness session,
-        doing karaoke, etc.
-      </Typography>
+      <div className="container-fluid" style={{ marginTop: "7em" }}>
+        <div className="row second-section">
+          <div className="col-za-12 col-md-5">
+            <img src={volunteer} className="w-100 mx-auto" />
+          </div>
+          <div className="col-xs-12 col-md-5  my-auto mx-auto">
+            <p>
+              Working at Pinnacle launches you into an exciting experience of creating
+                          innovative learning and management solutions with a smart and fun team.
+                          Our team believes in design-thinking for learning, projects, and
+                          advisory services. You will likely find our team busy with content
+                          creation, brainstorm jams, project management, research designs,
+                          infotechnology, eating chocolate cake, completing a fitness session,
+                      doing karaoke, etc.
+</p>
+          </div>
+        </div>
+      </div>
+      <Testimonial  />
       <div className="col-md-12 text-center mt-4">
+      <h1>Ready to start the awesime journey with us?</h1>
+
         <p>
           <Link
             to={`${url}/signup`}
