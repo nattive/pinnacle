@@ -39,44 +39,43 @@ function App() {
       <Router>
         <Switch>
           <div style={{ marginBottom: "0em" }}>
-            <Route exact path="/" component={(props) => <Index {...props} />} />
-            <Route
-              exact
-              path="/about"
-              component={(props) => <About {...props} />}
-            />
-            <Route path="/blog" component={(props) => <Blog {...props} />} />
-            <Route
-              path="/content"
-              component={(props) => <Content {...props} />}
-            />
-            <Route path="/teach" component={(props) => <Tutor {...props} />} />
-            <Route
-              path="/auth/signin"
-              component={(props) => <Auth {...props} />}
-            />
-            <Route
-              path="/auth/signup"
-              component={(props) => <SignUp {...props} />}
-            />
-            <Route path="/learn" component={(props) => <Routes {...props} />} />
+            <Route exact path="/">
+              <Index />
+            </Route>
+            <Route path="/about">
+              <About />
+            </Route>
+            <Route path="/blog">
+              <Blog />
+            </Route>
+            <Route path="/content">
+              <Content />
+            </Route>
+            <Route path="/teach">
+              <Tutor />
+            </Route>
+            <Route path="/auth/signin">
+              <Auth />
+            </Route>
+            <Route path="/auth/signup">
+              <SignUp />
+            </Route>
+            <Route path="/learn">
+              <Routes />
+            </Route>
             <Route
               path="/course/category/:category"
               component={(props) => <CoursesByCategory {...props} />}
             />
-            <Route
-              path="/courses"
-              component={(props) => <CourseShop {...props} />}
-            />
-            <Route
-              path="/course/preview/:course"
-              component={(props) => <ShowCourse {...props} />}
-            />
-            <Route path="/coach" component={(props) => <Coach {...props} />} />
-            <Route
-              path="/Volunteer"
-              component={(props) => <Volunteer {...props} />}
-            />
+            <Route path="/courses">
+              <CourseShop />
+            </Route>
+            <Route path="/coach">
+              <Coach />
+            </Route>
+            <Route path="/Volunteer">
+              <Volunteer />
+            </Route>
             {/* <Route path="*">
               <p> 404 </p>
             </Route> */}

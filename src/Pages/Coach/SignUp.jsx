@@ -189,8 +189,8 @@ const SignUp = (props) => {
         category === "Business Coaching"
           ? businessCoachingOption
           : category === "Career Coaching"
-          ? careerCoachingOption
-          : interestOption,
+            ? careerCoachingOption
+            : interestOption,
     },
 
     {
@@ -219,7 +219,7 @@ const SignUp = (props) => {
     },
   ];
   const history = useHistory()
-  const {path} = useRouteMatch()
+  const { path } = useRouteMatch()
   const handleSubmit = () => {
     let data = {
       name,
@@ -239,20 +239,17 @@ const SignUp = (props) => {
   return (
     <div>
       <NavBarHeader />
-      <div className="container">
-        <Grid container>
-          <Grid xs={12} md={7} className="p-4 justify-contents-center">
-            <img
+      <div className="container" style={{marginTop: '8em', }}>
+        <div className="row">
+          <div className="col-sm-12 col-md-6">
+          <img
               src={volunteer}
               alt=""
               className="w-75 img-responsive justify-self-center text-center"
             />
-            <Typography className="text-center m-3" variant="h5">
-              Fill the form and a correspondent will get in touch with you
-            </Typography>
-          </Grid>
-          <Grid xs={12} md={5}>
-            <Paper style={{ padding: 10 }}>
+          </div>
+          <div className="col-sm-12 col-md-6">
+            <div className="card card-body" style={{height: '500px', overflow: 'auto'}}>
               <Form onSubmit={handleSubmit} className="m-3">
                 <Typography variant="h4">
                   {" "}
@@ -283,9 +280,10 @@ const SignUp = (props) => {
                   disabled={!props.user.id}
                 />
               </Form>
-            </Paper>
-          </Grid>
-        </Grid>
+
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );

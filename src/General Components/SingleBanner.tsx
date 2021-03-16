@@ -1,19 +1,25 @@
 import React from "react";
-import { Link } from "react-router-dom";
 import { Typography, Grid, Button } from "@material-ui/core";
-import banner1 from "../Assets/img/banner/teacher1.jpg";
-import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import './SingleBanner.scss'
+import  Slider from "react-slick"
 
-function SingleBanner() {
+interface SliderProps {
+  image: ImageData;
+  title: Text,
+  subText: Text
+}
+
+export default function SingleBanner(props: SliderProps) {
   const bg1 = {
-    backgroundImage: `url(${banner1})`,
+    backgroundImage: `url(${props.image})`,
     backgroundSize: "cover",
-    height: "500px",
+    height: "550px",
+    // position: 'relative'
   };
+
   const settings = {
     dots: false,
     infinite: false,
@@ -26,19 +32,13 @@ function SingleBanner() {
     <div className="slider_area">
       <Slider {...settings}>
         <div className="cpntainer-fluid w-100">
+          <div className='caption'>
+            <h3>{props.title}</h3>
+            <p>{props.subText}</p>
+          </div>
           <div style={bg1} />
         </div>
       </Slider>
     </div>
   );
 }
-
-SingleBanner.propTypes = {
-  location: PropTypes.string.isRequired,
-};
-
-const mapStateToProps = (state) => ({});
-
-const mapDispatchToProps = {};
-
-export default connect(mapStateToProps, mapDispatchToProps)(SingleBanner);
