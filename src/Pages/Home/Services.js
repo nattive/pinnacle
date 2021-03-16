@@ -1,8 +1,5 @@
 import React from "react";
 import image1 from "../../Assets/img/case/1.png";
-import OwlCarousel from "react-owl-carousel";
-import "owl.carousel/dist/assets/owl.carousel.css";
-import "owl.carousel/dist/assets/owl.theme.default.css";
 import { Container, Grid, Typography, Button, Link } from "@material-ui/core";
 import student from "../../Assets/img/banner/student.png";
 export default function Services() {

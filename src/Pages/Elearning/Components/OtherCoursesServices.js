@@ -1,9 +1,8 @@
 import React from "react";
 import image1 from "../Assests/images/classes-3.jpg";
-import OwlCarousel from "react-owl-carousel";
-import "owl.carousel/dist/assets/owl.carousel.css";
-import "owl.carousel/dist/assets/owl.theme.default.css";
-
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 const Products = [
   {
     title: "Pinnacle Coaching & Trainings",
@@ -37,14 +36,8 @@ export default function OtherCoursesServices() {
           </div> */}
           <div className="row">
             <div className="col-xl-12">
-              <OwlCarousel
+              <Slider
                 classNameName="case_active owl-carousel"
-                loop
-                autoplay
-                margin={10}
-                items={1}
-                nav
-                dots
               >
                 {Products.map((item) => (
                   <div className="about_info_area">
@@ -68,7 +61,7 @@ export default function OtherCoursesServices() {
                     </div>
                   </div>
                 ))}
-              </OwlCarousel>
+              </Slider>
             </div>
           </div>
         </div>

@@ -1,7 +1,4 @@
 import React from "react";
-import OwlCarousel from "react-owl-carousel";
-import "owl.carousel/dist/assets/owl.carousel.css";
-import "owl.carousel/dist/assets/owl.theme.default.css";
 import { Link } from "react-router-dom";
 import { Typography, Grid, Button } from "@material-ui/core";
 import banner1 from '../../Assets/img/banner/teacher1.jpg'
@@ -12,7 +9,7 @@ export default function BannerSlider() {
     
   return (
     <div className="slider_area" style={{ marginBottom: "-60px" }}>
-      <OwlCarousel items={1} className="slider_active owl-carousel" loop nav>
+      {/* <OwlCarousel items={1} className="slider_active owl-carousel" loop nav> */}
         <div className="single_slider  d-flex align-items-center " style={bg1}>
           <div className="container">
             <div className="row">
@@ -131,7 +128,7 @@ export default function BannerSlider() {
             </div>
           </div>
         </div>
-      </OwlCarousel>
+      {/* </OwlCarousel> */}
     </div>
   );
 }

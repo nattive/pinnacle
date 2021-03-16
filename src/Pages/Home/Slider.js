@@ -1,7 +1,4 @@
 import React from "react";
-import OwlCarousel from "react-owl-carousel";
-import "owl.carousel/dist/assets/owl.carousel.css";
-import "owl.carousel/dist/assets/owl.theme.default.css";
 import { Link } from "react-router-dom";
 import { Typography, Grid, Button } from "@material-ui/core";
 import { blue } from "@material-ui/core/colors";
@@ -9,7 +6,7 @@ import { blue } from "@material-ui/core/colors";
 export default function Slider() {
   return (
     <div className="slider_area" style={{ marginBottom: "-60px" }}>
-      <OwlCarousel
+      {/* <OwlCarousel
         items={1}
         className="slider_active owl-carousel"
         loop
@@ -150,7 +147,7 @@ export default function Slider() {
             </div>
           </div>
         </div>
-      </OwlCarousel>
+      </OwlCarousel> */}
     </div>
   );
 }

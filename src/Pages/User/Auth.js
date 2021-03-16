@@ -8,9 +8,6 @@ import Header from "../../Layout/Header";
 import NavBarHeader from "../Home/NavBarHeader";
 import "./Auth.css";
 import Footer from "../../Layout/Footer";
-import OwlCarousel from "react-owl-carousel";
-import "owl.carousel/dist/assets/owl.carousel.css";
-import "owl.carousel/dist/assets/owl.theme.default.css";
 
 export default class Auth extends Component {
   render() {
@@ -25,13 +22,13 @@ export default class Auth extends Component {
             >
               <div className="col-xs-12 col-sm-12 col-md-8">
                 <div className="mx-auto ml-4">
-                  <OwlCarousel
+                  {/* <OwlCarousel
                     items={1}
                     className="slider_active owl-carousel"
                     loop
                     nav
                     autoplay
-                  >
+                  > */}
                     <div className="single_slider">
                       <Typography
                         variant="h4"
@@ -91,7 +88,7 @@ export default class Auth extends Component {
                         Nigerians for the 21st century workplace.
                       </Typography>
                     </div>
-                  </OwlCarousel>
+                  {/* </OwlCarousel> */}
                 </div>
               </div>
               <div className="col-xs-12 col-sm-12 col-md-4 col-md-offset-1 bg-light p-4 mb-4 mt-4">

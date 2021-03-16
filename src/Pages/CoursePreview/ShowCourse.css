@@ -1,0 +1,172 @@
+    @media (max-width: 576px) {
+        .head-body {
+            padding: 5em 20px !important
+        }
+        .head-body>.course-main-title {
+            font-size: 1.5rem;
+        }
+        .video-preview {
+            margin-top: 0;
+        }
+    }
+    
+    .head-section {
+        height: 380px;
+        background-color: rgb(53, 53, 143);
+    }
+    
+    .head-body {
+        padding: 5em 10em;
+    }
+    
+    .head-body>.course-main-title {
+        color: #fff;
+        font-size: 3.5rem;
+        font-family: Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    }
+    
+    .video-preview {
+        margin-top: 3em;
+    }
+    
+    .btn-intro:hover {
+        color: rgb(53, 53, 143);
+        background-color: #fff !important;
+    }
+    
+    .btn-intro {
+        cursor: pointer;
+        border: 1px solid #fff;
+        background-color: transparent !important;
+        padding: 1em 2.5rem;
+        font-family: roboto, poppins !important;
+        color: #fff;
+        font-size: 1.5rem;
+        border-radius: none !important;
+    }
+    
+    .tutor-time i {
+        font-size: 2.2em;
+        font-weight: 100;
+        color: rgb(136, 136, 136);
+    }
+    
+    .course-module-container {
+        border-right: 1px solid rgba(136, 136, 136, 0.411);
+    }
+    
+    .course-section-header {
+        color: rgb(155, 155, 187);
+        font-family: Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+        font-size: 1.4rem;
+    }
+    
+    .pre-box {
+        padding: 2em 1.5em;
+        background-color: #fcedc5;
+    }
+    
+    .tutor-meta p {
+        line-height: .3px !important;
+    }
+    
+    .tutor-meta p,
+    .tutor-meta h4 {
+        color: rgb(155, 155, 187);
+    }
+    
+    .tutor-time p,
+    .tutor-time i {
+        color: rgb(155, 155, 187);
+        padding: 0 5px
+    }
+    
+    .tutor-time p {
+        font-weight: 600;
+    }
+    
+    .course-sub-title {
+        color: rgb(155, 155, 187);
+        font-family: Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+        font-size: 1.5rem;
+        font-weight: 500;
+    }
+    
+    .video-preview {
+        position: absolute;
+        width: 450px;
+        bottom: -150%;
+        left: 65%;
+    }
+    
+    .module {
+        padding: 5px 0;
+    }
+    
+    .course-desc {
+        background-color: #fff;
+    }
+    
+    .meta-text p,
+    .learn-text p,
+    .learn-text i,
+    .learn-text,
+    .course-desc p {
+        font-family: Oswald, Helvetica Neue, Arial, sans-serif !important;
+        color: rgb(83, 83, 83) !important;
+        font-weight: 400;
+        font-size: 1.4 em;
+        line-height: 2rem
+    }
+    
+    .course-desc h4 {
+        color: rgb(155, 155, 187);
+        font-family: Oswald, Helvetica Neue, Arial, sans-serif;
+        font-size: 2rem;
+    }
+    
+    .learn-text p,
+    .learn-text i,
+    .learn-text {
+        line-height: 2rem;
+        margin-left: 2rem;
+    }
+    
+    .rating,
+    [dir=ltr] .rating__item {
+        display: flex;
+        align-items: center
+    }
+    
+    .learn-text i,
+    [dir=ltr] .rating__item {
+        color: #f9c32c
+    }
+    
+    [dir=ltr] .rating .material-icons {
+        font-size: 1rem
+    }
+    
+    [dir=ltr] .rating-24 .material-icons {
+        font-size: 1.5rem
+    }
+    
+    [dir=ltr] .rating-32 .material-icons {
+        font-size: 2rem
+    }
+    
+    [dir=ltr] .table tbody td,
+    [dir=ltr] .table thead th {
+        vertical-align: middle;
+        line-height: 1.2
+    }
+    
+    [dir=ltr] .table-nowrap td,
+    [dir=ltr] .table-nowrap th {
+        white-space: nowrap
+    }
+    
+    [dir=ltr] .table .sort {
+        color: inherit
+    }
+    /*  Media queries */

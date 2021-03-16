@@ -1,2 +1,2 @@
 export { default }
-from './Course'
+from './ShowCourse'

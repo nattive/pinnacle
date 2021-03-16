@@ -64,14 +64,6 @@ class PlayCourse extends Component {
 
   componentDidMount() {
     this.props.showCourse(this.props.match.params.course);
-    // this.props.isCourseEnrolled(this.props.user.id, this.props.courseId);
-    /**
-     * Get the course, course id was received from props
-     */
-    console.log(this.props);
-
-    // this.props.enrollCourse(5);
-    // this.props.verifyUserTokenAction();
   }
 
   componentWillReceiveProps(newProps) {
@@ -166,169 +158,120 @@ class PlayCourse extends Component {
             alignContent: "center",
           }}
         />
-        <div className="container row course-container">
-          <div className="course-text col-xs-12 col-md-7">
-            <Breadcrumbs aria-label="breadcrumb" className="ml-4">
-              <Link
-                color="inherit"
-                style={{ color: "#fff" }}
-                to="/"
-                component={RouterLink}
-              >
-                Home
-              </Link>
-              <Link
-                color="inherit"
-                style={{ color: "#fff" }}
-                to="/learn"
-                component={RouterLink}
-              >
-                ULearn
-              </Link>
-              <Typography style={{ color: "#fff" }} color="textPrimary">
-                {showedCourse.title}
-              </Typography>
-            </Breadcrumbs>
-            {showedCourse.id ? (
-              <div className="ml-4">
-                <Typography
-                  variant="h3"
-                  style={{ color: "#fff", textTransform: "capitalize" }}
-                >
-                  {showedCourse.title}
-                </Typography>
-                <Typography variant="h5" style={{ color: "#fff" }}>
-                  {showedCourse.subtitle}
-                </Typography>
-                <Typography
-                  variant="body1"
-                  style={{ color: "#fff" }}
-                >{`Difficulty: ${showedCourse.course_difficulty} 
-              | Category: ${
-                showedCourse.SubCategory && showedCourse.SubCategory.name
-              }`}</Typography>
-                <Typography
-                  style={{ color: "#fff" }}
-                  variant="body1"
-                >{`Created By: ${
-                  showedCourse.tutor ? showedCourse.tutor.name : "Tutors name"
-                }`}</Typography>
-                <Typography
-                  style={{ color: "#fff" }}
-                  variant="body1"
-                >{`Last Updated: ${showedCourse.updated}`}</Typography>
-                <Typography style={{ color: "#fff" }} variant="body1">
-                  <Icon name="globe" color="white" />
-                  {showedCourse.language || "English"}
-                </Typography>
-              </div>
-            ) : (
-              <>
-                <Skeleton />
-                <Skeleton />
-                <Skeleton />
-                <Skeleton />
-                <Skeleton />
-              </>
-            )}
-
-            <Segment fluid padded className="objective-card">
-              <Typography variant="h6">
-                In this course you will learn
-              </Typography>
-              <Divider />
-              <List>
-                {this.props.showingCourse ? (
-                  <>
-                    <Skeleton />
-                    <Skeleton />
-                    <Skeleton />
-                    <Skeleton />
-                    <Skeleton />
-                    <Skeleton />
-                  </>
-                ) : objArray.length > 0 ? (
-                  objArray.map((objective, index) => (
-                    <List.Item as="a">
-                      <SemanticIcon name="check" />
-                      <List.Content>
-                        <List.Description>
-                          {objective !== "" && objective}
-                        </List.Description>
-                      </List.Content>
-                    </List.Item>
-                  ))
-                ) : (
-                  "Not Set"
-                )}
-              </List>
-            </Segment>
-            {showedCourse.description && (
-              <Segment fluid padded basic>
-                <Typography variant="h4">Description</Typography>
-                <Divider />
-                <Typography variant="body1" className="text-dark mt-3">
-                  {" "}
-                  {parse(
-                    showedCourse.description.length > 1000 &&
-                      !this.state.readMore
-                      ? showedCourse.description.substring(0, 1000)
-                      : showedCourse.description || ""
-                  )}
-                </Typography>
-                <Link
-                  component={Typography}
-                  variant="button"
-                  className="btn-link"
-                  onClick={() =>
-                    this.setState((state) => ({
-                      readMore: !state.readMore,
-                    }))
-                  }
-                >
-                  {" "}
-                  {this.state.readMore ? "Show Less" : "Show More"}{" "}
-                </Link>
-              </Segment>
-            )}
-          </div>
-          <div className="course-card col-sm-12 col-md-5">
-            <SemanticCard fluid>
+        <div className="container-fluid course-container">
+          <Breadcrumbs aria-label="breadcrumb" className="ml-4">
+            <Link
+              color="inherit"
+              style={{ color: "#fff" }}
+              to="/"
+              component={RouterLink}
+            >
+              Home
+            </Link>
+            <Link
+              color="inherit"
+              style={{ color: "#fff" }}
+              to="/learn"
+              component={RouterLink}
+            >
+              ULearn
+            </Link>
+            <Typography style={{ color: "#fff" }} color="textPrimary">
+              {showedCourse.title}
+            </Typography>
+          </Breadcrumbs>
+          <div className="row">
+            <div className="course-text col-xs-12 col-md-7">
               <VideoPlayer
                 videoUrl={showedCourse.videoUrl}
                 banner={showedCourse.banner}
               />
-              <SemanticButton.Group fluid>
-                {/* <SemanticButton
-                  color="blue"
-                  disabled={this.props.courseIsEnrolled}
-                  onClick={() => this.props.addCart(showedCourse.id)}
-                  loading={this.props.addingToCart}
-                >
-                  {this.props.courseIsEnrolled
-                    ? "You are already taking this course"
-                    : this.props.addedToCart
-                    ? "Added to Cart"
-                    : "Add to Cart"}
-                </SemanticButton>
-                <SemanticButton.Or /> */}
-                <SemanticButton
-                  color="green"
-                  loading={this.props.isEnrollingCourse}
-                  onClick={() => {
-                    this.props.courseIsEnrolled
-                      ? this.props.history.push(
-                          "/learn/play/" + showedCourse.slug
-                        )
-                      : this.handleEnrollCourse(showedCourse.id);
-                  }}
-                >
-                  {this.props.courseIsEnrolled
-                    ? "Continue Course"
-                    : "Start Course Now"}
-                </SemanticButton>
-              </SemanticButton.Group>
-              <SemanticCard.Content className="p-4">
+
+              {showedCourse.id ? (
+                <div className="ml-4">
+                  <h4> {showedCourse.title}</h4>
+                  <h5> {showedCourse.subtitle}</h5>
+                  <p>{`Difficulty: ${showedCourse.course_difficulty} 
+              | Category: ${
+                showedCourse.SubCategory && showedCourse.SubCategory.name
+              }`}</p>
+                  <p>{`Created By: ${
+                    showedCourse.tutor ? showedCourse.tutor.name : "Tutors name"
+                  }`}
+                  </p>
+                  <Typography
+                    style={{ color: "#fff" }}
+                    variant="body1"
+                  >{`Last Updated: ${showedCourse.updated}`}</Typography>
+                  <Typography style={{ color: "#fff" }} variant="body1">
+                    <Icon name="globe" color="white" />
+                    {showedCourse.language || "English"}
+                  </Typography>
+                </div>
+              ) : (
+                <>Fetchimg course...</>
+              )}
+
+              <div className="card card-body">
+                <h4>In this course you will learn</h4>
+
+                <Divider />
+                <List>
+                  {this.props.showingCourse ? (
+                    <>
+                      <Skeleton />
+                      <Skeleton />
+                      <Skeleton />
+                      <Skeleton />
+                      <Skeleton />
+                      <Skeleton />
+                    </>
+                  ) : objArray.length > 0 ? (
+                    objArray.map((objective, index) => (
+                      <List.Item as="p">
+                        <SemanticIcon name="check" />
+                        <List.Content>
+                          <List.Description>
+                            {objective !== "" && objective}
+                          </List.Description>
+                        </List.Content>
+                      </List.Item>
+                    ))
+                  ) : (
+                    "Not Set"
+                  )}
+                </List>
+              </div>
+              {showedCourse.description && (
+                <div className="py-5">
+                  <h4>Description</h4>
+                  <Divider />
+                  <p>
+                    {parse(
+                      showedCourse.description.length > 1000 &&
+                        !this.state.readMore
+                        ? showedCourse.description.substring(0, 1000)
+                        : showedCourse.description || ""
+                    )}
+                  </p>
+                  <Link
+                    component={Typography}
+                    variant="button"
+                    className="btn-link"
+                    onClick={() =>
+                      this.setState((state) => ({
+                        readMore: !state.readMore,
+                      }))
+                    }
+                  >
+                    {" "}
+                    {this.state.readMore ? "Show Less" : "Show More"}{" "}
+                  </Link>
+                </div>
+              )}
+            </div>
+            <div className="course-card bg-light card card-body col-sm-12 col-md-5">
+              <div className="p-2">
                 <Message
                   error={this.props.enrollCourseError}
                   hidden={!this.props.enrollCourseError}
@@ -339,10 +282,7 @@ class PlayCourse extends Component {
                   {`This course is for ${showedCourse.courseType} subscribers`}
                 </Alert>
 
-                <Typography variant="h5" className="m-2 pull-right">
-                  {" "}
-                  {showCourse.price || "Free"}
-                </Typography>
+                <h5>{showCourse.price || "Free"}</h5>
                 <div className="clearfix"></div>
                 {/* <Typography variant="h5" className="text-dark mt-2 mb-2">
                     This Course has:
@@ -399,12 +339,13 @@ class PlayCourse extends Component {
                     </List.Content>
                   </List.Item>
                 </List>
-              </SemanticCard.Content>
-              <SemanticCard.Content extra>
-                <Comments course_id={showedCourse.id} />
-                <PostReview course={showedCourse} />
-              </SemanticCard.Content>
-            </SemanticCard>
+
+                <SemanticCard.Content extra>
+                  <Comments course_id={showedCourse.id} />
+                  <PostReview course={showedCourse} />
+                </SemanticCard.Content>
+              </div>
+            </div>
           </div>
         </div>
       </div>

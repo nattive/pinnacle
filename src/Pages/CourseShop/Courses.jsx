@@ -22,8 +22,9 @@ class Courses extends React.Component {
     return (
       <>
         <NavBarHeader />
-        <Banner />
+        <Search />
         <div className="container-fluid">
+          <SearchResults />
           <CategoryList />
           <WhatOthersView />
           <FeaturedCourses />
@@ -31,7 +32,6 @@ class Courses extends React.Component {
           <RandomCourseCategory />
         </div>
         {/* <Search />
-            <SearchResults />
             <CategoryList />
             <RecommendedCourses /> */}
       </>

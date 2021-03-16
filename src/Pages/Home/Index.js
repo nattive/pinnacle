@@ -42,7 +42,7 @@ class Index extends Component {
         <SingleBanner />
         <AuthSection />
         <More />
-        <Services />
+        {/* <Services /> */}
         <FeaturedCourses />
         <Countdown />
         <BecomeTutor />

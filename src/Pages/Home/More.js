@@ -29,7 +29,7 @@ export default function More() {
             <div className="col-xl-4 col-md-6 col-lg-4">
               <div className="single_service text-center">
                 <img src={volunteer} alt="welfare" style={{ width: 70 }} />
-                <h3> Volunteer at Pinnacle Consult </h3>
+                <h3>Work at Pinnacle </h3>
                 <p>
                   Working at Pinnacle launches you into an exciting experience
                   of creating innovative learning and management solutions with
@@ -45,7 +45,7 @@ export default function More() {
             <div className="col-xl-4 col-md-6 col-lg-4">
               <div className="single_service text-center">
                 <img src={idea} style={{ width: 70 }} alt="" />
-                <h3> Research Beyond Borders</h3>
+                <h3> Create with Pinnacle</h3>
                 <p>
                   We provide tailored solutions to agencies and international
                   bodies
@@ -60,7 +60,7 @@ export default function More() {
             <div className="col-xl-4 col-md-6 col-lg-4">
               <div className="single_service text-center">
                 <img src={coach} style={{ width: 70 }} alt="" />
-                <h3>Pinnacle Personalized Coaching and Trainings</h3>
+                <h3>Learn at Pinnacle</h3>
                 <p>
                   Receive one-on-one personal training and coaching from our
                   diverse range of industry professionals and entrepreneurs.

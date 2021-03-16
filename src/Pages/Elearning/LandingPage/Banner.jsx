@@ -1,20 +1,15 @@
 import React from "react";
-import OwlCarousel from "react-owl-carousel";
-import "owl.carousel/dist/assets/owl.carousel.css";
-import "owl.carousel/dist/assets/owl.theme.default.css";
+import Slick from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 import { Link } from "react-router-dom";
 import { Typography, Grid, Button } from "@material-ui/core";
 import bg from "../Assests/images/bg.jpg";
 export default function Slider() {
   return (
     <div className="slider_area" style={{ marginBottom: "-60px" }}>
-      <OwlCarousel
-        items={1}
-        className="slider_active owl-carousel"
-        loop
-        nav
-        autoplay
-      >
+    
+      <Slick  className="slider_active owl-carousel">
         <div
           className="single_slider  d-flex align-items-center"
           style={{ backgroundImage: `url(${bg})` }}
@@ -91,21 +86,23 @@ export default function Slider() {
                         fontSize: "2em",
                       }}
                     >
-                        Top resources to build <br /> your future career
+                      Top resources to build <br /> your future career
                     </Typography>
                     <Typography
                       variant="body1"
                       style={{ color: "#000066", fontSize: "1.4em" }}
                     >
-                      We have hundred of courses by well trained tutor Engineered to steer young and teenage student to a bette career path
+                      We have hundred of courses by well trained tutor
+                      Engineered to steer young and teenage student to a bette
+                      career path
                     </Typography>
                   </div>
                 </Grid>
               </Grid>
+            </div>
           </div>
         </div>
-        </div>
-      </OwlCarousel>
+      </Slick>
     </div>
   );
 }

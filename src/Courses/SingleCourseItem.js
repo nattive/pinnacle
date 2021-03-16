@@ -14,7 +14,7 @@ const SingleCourseItem = (props) => {
   //   responsive
   // />
   return (
-    <div className="single-course-card card">
+    <Link to={`/course/preview/${props.slug}`} className="single-course-card card">
       <div className="card-img">
         <div className="overlay2"></div>
         <img src={image} alt="" className="card-img-top " />
@@ -38,7 +38,7 @@ const SingleCourseItem = (props) => {
           </div>
         </div>
       </div>
-    </div>
+    </Link>
   );
 };
 

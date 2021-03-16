@@ -24,51 +24,59 @@ import SignUp from "./Pages/User/SignUp";
 import Auth from "./Pages/User/Auth";
 import Routes from "./Pages/LearnRoutes/Routes";
 import CourseShop from "./Pages/CourseShop";
+import CoursesByCategory from "./Pages/CoursesByCategory";
 import Coach from "./Pages/Coach";
 import Volunteer from "./Pages/Vulunteer";
 // import { Routes as ElearningRoutes } from "./Pages/LearnRoutes";
 import "semantic-ui-css/semantic.min.css";
 import Footer from "./Layout/Footer";
 import Content from "./Pages/Content";
+import Preview from "./Pages/CoursePreview/Preview";
+import ShowCourse from "./Pages/CoursePreview";
 function App() {
   return (
-    <Provider store={store} className="super_container">
+    <Provider store={store} className="super_container bg-light">
       <Router>
         <Switch>
-          <div style={{marginBottom: '0em'}}>
-            <Route exact path="/">
-              <Index />
-            </Route>
-            <Route path="/about">
-              <About />
-            </Route>
-            <Route path="/blog">
-              <Blog />
-            </Route>
-            <Route path="/content">
-              <Content />
-            </Route>
-            <Route path="/teach">
-              <Tutor />
-            </Route>
-            <Route path="/auth/signin">
-              <Auth />
-            </Route>
-            <Route path="/auth/signup">
-              <SignUp />
-            </Route>
-            <Route path="/learn">
-              <Routes />
-            </Route>
-            <Route path="/courses">
-              <CourseShop />
-            </Route>
-            <Route path="/coach">
-              <Coach />
-            </Route>
-            <Route path="/Volunteer">
-              <Volunteer />
-            </Route>
+          <div style={{ marginBottom: "0em" }}>
+            <Route exact path="/" component={(props) => <Index {...props} />} />
+            <Route
+              exact
+              path="/about"
+              component={(props) => <About {...props} />}
+            />
+            <Route path="/blog" component={(props) => <Blog {...props} />} />
+            <Route
+              path="/content"
+              component={(props) => <Content {...props} />}
+            />
+            <Route path="/teach" component={(props) => <Tutor {...props} />} />
+            <Route
+              path="/auth/signin"
+              component={(props) => <Auth {...props} />}
+            />
+            <Route
+              path="/auth/signup"
+              component={(props) => <SignUp {...props} />}
+            />
+            <Route path="/learn" component={(props) => <Routes {...props} />} />
+            <Route
+              path="/course/category/:category"
+              component={(props) => <CoursesByCategory {...props} />}
+            />
+            <Route
+              path="/courses"
+              component={(props) => <CourseShop {...props} />}
+            />
+            <Route
+              path="/course/preview/:course"
+              component={(props) => <ShowCourse {...props} />}
+            />
+            <Route path="/coach" component={(props) => <Coach {...props} />} />
+            <Route
+              path="/Volunteer"
+              component={(props) => <Volunteer {...props} />}
+            />
             {/* <Route path="*">
               <p> 404 </p>
             </Route> */}

@@ -64,11 +64,11 @@ const ExpansionPanelDetails = withStyles((theme) => ({
 
 function ModulesList(props) {
   console.log(props);
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const [expanded, setExpanded] = React.useState("panel1");
   const history = useHistory();
   const handleModuleChange = (selectedModule) => {
-    dispatch({ type: PLAY_MODULES, payload: selectedModule})
+    dispatch({ type: PLAY_MODULES, payload: selectedModule });
     // history.push(`/learn/course/${props.match.params.course}/${id}`);
   };
   const handleChange = (panel) => (event, newExpanded) => {
@@ -76,11 +76,9 @@ function ModulesList(props) {
   };
 
   return (
-    <Card style={{ width: "100%"}}>
-      <CardHeader title="Course Modules" />
-      <Divider />
-      <CardContent style={{ minHeight: 500, overflowY: 'auto' }}>
-        {props.Modules && props.Modules.length ? (
+    <>
+      <div className="mt-5">
+        {props.Modules?.length ? (
           props.Modules.map((item) => (
             <React.Fragment Key={item.id}>
               <ExpansionPanel
@@ -94,11 +92,13 @@ function ModulesList(props) {
                 >
                   <Typography>{item.title}</Typography> <br />
                 </ExpansionPanelSummary>
-                <ExpansionPanelDetails style={{ maxHeight: 400, overflowY: 'auto' }}>
+                <ExpansionPanelDetails
+                  style={{ maxHeight: 400, overflowY: "auto" }}
+                >
                   <Typography>
-                    <Typography variant="body2">{`${
+                    <p>{`${
                       item.course_materials ? item.course_materials.length : 0
-                    } video material(s)`}</Typography>
+                    } video material(s)`}</p>
                     <Divider />
                     <List>
                       {item.course_materials &&
@@ -129,14 +129,12 @@ function ModulesList(props) {
             </React.Fragment>
           ))
         ) : (
-          <>
-            <Skeleton />
-            <Skeleton />
-            <Skeleton />
-          </>
+          <div className="mt-4 ml-2">
+            <h3>No modules uploaded yet</h3>
+          </div>
         )}
-      </CardContent>
-    </Card>
+      </div>
+    </>
   );
 }
 

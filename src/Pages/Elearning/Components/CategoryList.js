@@ -1,25 +1,18 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "../Assests/css/style.css";
 import "../Assests/css/icomoon.css";
 import BusinessIcon from "@material-ui/icons/Business";
-import DeveloperBoardIcon from "@material-ui/icons/DeveloperBoard";
-import BugReportIcon from "@material-ui/icons/BugReport";
-import MoneyIcon from "@material-ui/icons/Money";
-import StyleIcon from "@material-ui/icons/Style";
-import MoreHorizIcon from "@material-ui/icons/MoreHoriz";
-import Carousel from "react-multi-carousel";
-import "react-multi-carousel/lib/styles.css";
 import { fetchSubCategory } from "../../../Actions/courseAction";
-import { useEffect } from "react";
 import { connect } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useRouteMatch } from "react-router-dom";
 import Divider from "@material-ui/core/Divider";
+import { CircularProgress } from "@material-ui/core";
 
 function CategoryList(props) {
   useEffect(() => {
     props.fetchSubCategory();
   }, []);
-
+  const { url } = useRouteMatch();
   const responsive = {
     superLargeDesktop: {
       // the naming can be any, depends on you.
@@ -48,27 +41,38 @@ function CategoryList(props) {
           <Divider className="m-3" variant="middle" color="primary" />
         </div>
         <div className="row">
-          <div className="col-md-12 services-wrap">
-            <div className="row">
-              {props.subCategories &&
-              props.subCategories.data &&
-              props.subCategories.data.length > 0
-                ? props.subCategories.data.map((sub) => (
-                    <div className=" col-md-3 text-center">
-                      <a href="" className="services">
-                        <span className="icon">
-                          <i>
-                            <BusinessIcon fontSize="large" />
-                          </i>
-                        </span>
-                        <div className="desc">
-                          <h3>{sub.name}</h3>
-                        </div>
-                      </a>
-                    </div>
-                  ))
-                : "...loading"}
-            </div>
+          <div className="row  services-wrap">
+            {props.subCategories && props.subCategories.data ? (
+              props.subCategories.data.length > 0 ? (
+                props.subCategories.data.map((sub) => (
+                  <div className=" col-md-3 text-center">
+                    <Link
+                      to={`/course/category/${sub.id}`}
+                      className="services"
+                    >
+                      <span className="icon">
+                        <i>
+                          <BusinessIcon fontSize="large" />
+                        </i>
+                      </span>
+                      <div className="desc">
+                        <h3>{sub.name}</h3>
+                      </div>
+                    </Link>
+                  </div>
+                ))
+              ) : (
+                <div class="container text-center text-dark">
+                  <p> ...loading</p>
+                  {/* <CircularProgress size="big" color="primary" /> */}
+                </div>
+              )
+            ) : (
+              <div class="container text-center text-dark">
+                <p> ...loading</p>
+                {/* <CircularProgress size="big" color="primary" /> */}
+              </div>
+            )}
           </div>
         </div>
       </div>
