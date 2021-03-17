@@ -15,7 +15,7 @@ import {
     MENTEE
 } from "./types"
 import { verifyToken } from "./verifyTokenAction"
-var jwt = require('jsonwebtoken');
+
 
 export const login = credentials => dispatch => {
     dispatch({

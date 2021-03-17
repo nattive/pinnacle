@@ -10,8 +10,6 @@ import {
     NULL_ERRORS,
     ACCOUNT_TYPE
 } from "./types"
-import { verifyToken } from "./verifyTokenAction"
-var jwt = require('jsonwebtoken');
 
 export const register = credentials => dispatch => {
     dispatch({

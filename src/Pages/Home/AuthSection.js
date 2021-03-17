@@ -7,7 +7,7 @@ export default class AuthSection extends Component {
       <React.Fragment>
         <div
           className="container-fluid"
-          style={{ borderBottom: "1px solid rgba(107, 106, 106, 0.274)" }}
+          style={{ backgroundColor: "rgba(107, 106, 106, 0.274)" }}
         >
           <div className="container">
             <div className="row p-4">

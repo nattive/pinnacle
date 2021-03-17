@@ -19,7 +19,7 @@ import { Alert } from "@material-ui/lab";
 import NavBarHeader from "./NavBarHeader";
 import SingleBanner from "../../General Components/SingleBanner";
 import BecomeTutor from "./BecomeTutor";
-
+import image from "../../Assets/img/banner/teacher1.jpg";
 class Index extends Component {
   async componentDidMount() {
     await this.props.fetchCourses();
@@ -39,8 +39,8 @@ class Index extends Component {
         </Snackbar>
         <Header />
         <NavBarHeader />
-        <SingleBanner />
-        <AuthSection />
+        <SingleBanner image={image} title='Build up your skill' subText='Update your skills for an sdvanced role' />
+        {/* <AuthSection /> */}
         <More />
         {/* <Services /> */}
         <FeaturedCourses />
