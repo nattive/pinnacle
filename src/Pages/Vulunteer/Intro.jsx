@@ -59,27 +59,36 @@ export default function Intro() {
         </div>
 
       </div>
-      <div className="container-fluid" style={{ marginTop: "7em" }}>
+      <div className="container-fluid p-4" style={{ marginTop: "7em" }}>
         <div className="row second-section">
-          <div className="col-za-12 col-md-5">
+          <div className="col-xs-12 col-md-5 d-none d-md-block">
             <img src={volunteer} className="w-100 mx-auto" />
           </div>
-          <div className="col-xs-12 col-md-5  my-auto mx-auto">
+          <div className="col-xs-12 col-md-5  my-auto mx-auto second-section-text">
+            <h4>Call for Volunteers</h4>
             <p>
               Working at Pinnacle launches you into an exciting experience of creating
-                          innovative learning and management solutions with a smart and fun team.
-                          Our team believes in design-thinking for learning, projects, and
-                          advisory services. You will likely find our team busy with content
-                          creation, brainstorm jams, project management, research designs,
-                          infotechnology, eating chocolate cake, completing a fitness session,
-                      doing karaoke, etc.
+              innovative learning and management solutions with a smart and fun team.
 </p>
           </div>
         </div>
+        <div className="row second-section my-5">
+          <div className="col-xs-12 col-md-5  my-auto mx-auto second-section-text">
+            <h4>We believes in design-thinking for learning</h4>
+            <p>You will likely find our team busy with content
+                          creation, brainstorm jams, project management, research designs,
+                          infotechnology, eating chocolate cake, completing a fitness session,
+                      doing karaoke, etc.
+            </p>
+          </div>
+          <div className="col-xs-12 col-md-5 d-none d-md-block">
+            <img src={volunteer} className="w-100 mx-auto" />
+          </div>
+        </div>
       </div>
-      <Testimonial  />
-      <div className="col-md-12 text-center mt-4">
-      <h1>Ready to start the awesime journey with us?</h1>
+      <Testimonial />
+      <div className="col-md-12 text-center mt-4 ready-text">
+        <h1>Ready to start the awesime journey with us?</h1>
 
         <p>
           <Link

@@ -4,13 +4,10 @@ import "animate.css/animate.min.css";
 import { Container, Grid, Typography } from "@material-ui/core";
 import { Link } from "react-router-dom";
 import SvgIcon from "@material-ui/core/SvgIcon";
-import { ReactSVG } from "react-svg";
 import "../../Assets/fonts/flaticon.css";
-import welfare from '../../Assets/fonts/font/svg/030-welfare.svg'
-import coach from "../../Assets/img/tutor/undraw_teacher_35j2.png";
-import volunteer from "../../Assets/fonts/font/svg/029-volunteer.svg";
-import idea from "../../Assets/fonts/font/svgIcon/048-idea.svg";
-import instructor from "../../Assets/fonts/font/svgIcon/023-instructor.svg";
+import coach from "../../Assets/img/svg_icon/svg/002-education.svg";
+import volunteer from "../../Assets/img/svg_icon/svg/004-group.svg";
+import idea from "../../Assets/img/svg_icon/svg/005-teach.svg";
 export default function More() {
   return (
     <Container>
@@ -20,7 +17,7 @@ export default function More() {
             <div className="col-xl-12">
               <div className="section_title text-center mb-50">
                 <h3>
-                  Achieve much more with <span>Pinnacle</span>,
+                  What we offer at <span>Pinnacle</span>,
                 </h3>
               </div>
             </div>

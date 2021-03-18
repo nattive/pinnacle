@@ -1273,8 +1273,7 @@ h3 {
     font-weight: 700;
     line-height: 1.2;
     letter-spacing: -.02rem;
-    font-size: 2rem;
-    max-width: 80rem;
+    font-size: 44px;
     /* padding-bottom: 15px; */
 }
 
@@ -2304,7 +2303,7 @@ h3 {
 .counter_area .single_counter h3 span {
     font-size: 46px;
     font-weight: 300;
-    color: #fff;
+    /* color: #fff;       */
 }
 
 
@@ -2312,7 +2311,7 @@ h3 {
 
 .counter_area .single_counter p {
     font-weight: 15px;
-    color: #E8E8E8;
+    /* color: #E8E8E8;  */
     margin-bottom: 0;
 }
 
@@ -2325,21 +2324,6 @@ h3 {
 
 
 /* line 31, ../../Arafath/CL/CL October/216. Consulting/HTML/scss/_counter.scss */
-
-.case_study_area {
-    /* padding-top: 100px; */
-    background-image: url(../img/banner/bg.png);
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-color: #cacad828;
-}
-
-@media (max-width: 767px) {
-    /* line 31, ../../Arafath/CL/CL October/216. Consulting/HTML/scss/_counter.scss */
-    .case_study_area {
-        padding-top: 50px;
-    }
-}
 
 
 /* line 36, ../../Arafath/CL/CL October/216. Consulting/HTML/scss/_counter.scss */

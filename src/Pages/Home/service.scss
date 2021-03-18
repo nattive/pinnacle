@@ -1,0 +1,72 @@
+
+.case_study_area {
+    /* padding-top: 100px; */
+    // background-image: url(../../Assets/img/banner/bg.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-color: #ebf3ff;
+    height: 450px;
+}
+
+.case_study_area h3{
+    font-weight: 500;
+    font-size: 44px;
+    text-transform: capitalize
+
+}
+
+.case_study_area-text h3, .case_study_area-text p{
+    max-width: 75%;
+    padding: 20px;
+    padding-bottom: 2px;
+
+}
+.case_study_area-text p{
+    font-size: 18px;
+}
+.case_study_area img {
+    width: 60%
+}
+
+.case_study_area-btn{
+    margin-left:  10px;
+    margin-top: 1em;
+    font-size: 18px;
+    padding: 16px 39px;  
+   cursor: pointer;
+   position: relative;
+   overflow: hidden;
+   color: white;
+   background-color: #0d4396;
+    display: inline-block;
+    font-weight: 400;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    border: 1px solid transparent;
+    line-height: 1.5;
+    border-radius: .25rem;
+    transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out
+}
+
+@media (max-width: 567px) {
+    .case_study_area-text h3, .case_study_area-text p{
+        max-width: 90%;
+        padding: 20px;
+        padding-bottom: 2px;
+    
+    }
+}
+
+
+@media (max-width: 767px) {
+    /* line 31, ../../Arafath/CL/CL October/216. Consulting/HTML/scss/_counter.scss */
+    .case_study_area {
+        padding-top: 50px;        
+    }
+}
+

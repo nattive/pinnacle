@@ -8,15 +8,14 @@ import { Link } from "react-router-dom";
 
 export default function FeaturedCourses() {
   return (
-    <ScrollAnimation animateOnce animateIn="animate__fadeInDown">
-      <div className="container-fluid card" style={{ marginTop: "-60px" }}>
-        <div className="row card-heading">
-          <div className="col-xl-12">
-            <div className="section_title text-left m-4">
+      <div className="container-fluid px-3 py-5">
+        <div className="row">
+          <div className="col-xl-12 w-50">
+            <div className="section_title text-center mt-4">
               <h3>
-                Explore over 100,000 <span> Courses </span>
-              </h3>
-              <p className="mt-3" style={{ maxWidth: "50em" }}>
+               Our top Courses
+              </h3>              
+              <p className="mt-3">
                 Choose from various courses prepared by well trained tutors on
                 diverse hard and soft skills for the 21 st century professional
                 or entrepreneur.
@@ -38,6 +37,6 @@ export default function FeaturedCourses() {
           </div>
         </div>
       </div>
-    </ScrollAnimation>
+ 
   );
 }

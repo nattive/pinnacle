@@ -1,20 +1,26 @@
 import React, { Component } from "react";
 import { Grid, Typography } from "@material-ui/core";
+import onlineCourse from "../../Assets/img/svg_icon/svg/007-online-course.svg";
+import education from "../../Assets/img/svg_icon/svg/002-education.svg";
+import money from "../../Assets/img/svg_icon/svg/001-money.svg";
 import { Link } from "react-router-dom";
+import virtualClassSvg from "../../Assets/img/svg_icon/svg/006-virtual-class.svg";
 export default class AuthSection extends Component {
   render() {
+    const iconStyle = {
+      width: '45px'
+    }
     return (
       <React.Fragment>
         <div
-          className="container-fluid"
-          style={{ backgroundColor: "rgba(107, 106, 106, 0.274)" }}
+          className="jumbotron"
         >
           <div className="container">
-            <div className="row p-4">
+            <div className="row">
               <div className="col-md-4 d-none d-md-block">
                 <div className="d-flex align-content-center">
-                  <i className="fa fa-play ml-4" />
-                  <div className="ml-4">
+                  <img src={virtualClassSvg} style={iconStyle} alt=""/>
+                  <div className="ml-4 p-1">
                     <h4> Over 100,000 courses</h4>
                     Explore cources from well trained tutors
                   </div>
@@ -22,6 +28,7 @@ export default class AuthSection extends Component {
               </div>
               <div className="col-md-4 d-none d-md-block">
                 <div className="d-flex align-content-center">
+                <img src={onlineCourse} style={iconStyle} alt=""/>
                   <i className="fa fa-video ml-4" />
                   <div className="ml-4">
                     <h4> Create and Earn </h4>
@@ -32,10 +39,10 @@ export default class AuthSection extends Component {
               </div>
               <div className="col-md-4 d-none d-md-block">
                 <div className="d-flex align-content-center">
-                  <i className="fa fa-play ml-4" />
+                <img src={education} style={iconStyle} alt=""/>
                   <div className="ml-4">
-                    <h4> Over 100,000 courses</h4>
-                    Explore cources from well trained tutors
+                    <h4> Over 100,000 Student</h4>
+                   We are not just a elearning partform, We create a community if learners
                   </div>
                 </div>
               </div>

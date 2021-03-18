@@ -9,15 +9,14 @@ import  Slider from "react-slick"
 interface SliderProps {
   image: ImageData;
   title: Text,
-  subText: Text
+  subText: Text,
+  buttonText?: Boolean,
+  onButtonPress?: () => void
 }
 
 export default function SingleBanner(props: SliderProps) {
   const bg1 = {
-    backgroundImage: `url(${props.image})`,
-    backgroundSize: "cover",
-    height: "550px",
-    // position: 'relative'
+    backgroundImage: `url(${props.image})`
   };
 
   const settings = {
@@ -35,8 +34,11 @@ export default function SingleBanner(props: SliderProps) {
           <div className='caption'>
             <h3>{props.title}</h3>
             <p>{props.subText}</p>
+            <button className="slider-btn">
+            buttonText
+            </button>
           </div>
-          <div style={bg1} />
+          <div className="banner" style={bg1} />
         </div>
       </Slider>
     </div>

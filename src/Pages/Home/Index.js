@@ -20,6 +20,8 @@ import NavBarHeader from "./NavBarHeader";
 import SingleBanner from "../../General Components/SingleBanner";
 import BecomeTutor from "./BecomeTutor";
 import image from "../../Assets/img/banner/teacher1.jpg";
+import store from "../../Patials/store";
+import { NULL_ERR_FETCH_COURSES } from "../../Actions/types";
 class Index extends Component {
   async componentDidMount() {
     await this.props.fetchCourses();
@@ -31,7 +33,7 @@ class Index extends Component {
           open={this.props.fetchCourseError}
           close={!this.props.fetchCourseError}
           autoHideDuration={6000}
-          onClose
+          onClose={() => store.dispatch({type: NULL_ERR_FETCH_COURSES})}
         >
           <Alert onClose severity="error">
             {JSON.stringify(this.props.fetchCourseError)}
@@ -40,9 +42,9 @@ class Index extends Component {
         <Header />
         <NavBarHeader />
         <SingleBanner image={image} title='Build up your skill' subText='Update your skills for an sdvanced role' />
-        {/* <AuthSection /> */}
+        <AuthSection />
         <More />
-        {/* <Services /> */}
+        <Services />
         <FeaturedCourses />
         <Countdown />
         <BecomeTutor />

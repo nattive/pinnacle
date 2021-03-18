@@ -2,9 +2,16 @@ import React from "react";
 
 export default function Countdown() {
   return (
-    <div class="counter_area " style={{ background: "#14142e" }}>
+    <div class="counter_area " style={{ background: "#ebf3ff" }}>
       <div class="container">
         <div class="row">
+        <div className="col-xl-12">
+              <div className="section_title text-center mb-50">
+                <h3>
+                  Or statistic keeps increasing
+                </h3>
+              </div>
+            </div>
           <div class="col-xl-3 col-lg-3 col-md-3">
             <div class="single_counter text-center">
               <div class="counter_icon">

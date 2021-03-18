@@ -10,6 +10,7 @@ export default function Testimonial() {
   const settings = {
     dots: false,
     infinite: false,
+    autoplay:true,
     speed: 500,
     slidesToShow: 5,
     slidesToScroll: 1,
@@ -19,7 +20,25 @@ export default function Testimonial() {
         breakpoint: 1024,
         settings: {
           slidesToShow: 5,
-          slidesToScroll: 3,
+          slidesToScroll: 1,
+          infinite: true,
+          dots: true,
+        },
+      },
+      {
+        breakpoint: 967,
+        settings: {
+          slidesToShow: 4,
+          slidesToScroll: 1,
+          infinite: true,
+          dots: true,
+        },
+      },
+      {
+        breakpoint: 867,
+        settings: {
+          slidesToShow: 3,
+          slidesToScroll: 1,
           infinite: true,
           dots: true,
         },
@@ -27,20 +46,20 @@ export default function Testimonial() {
       {
         breakpoint: 600,
         settings: {
-          slidesToShow: 4,
-          slidesToScroll: 2,
-          initialSlide: 2,
+          slidesToShow: 2,
+          slidesToScroll: 1,
+          initialSlide: 1,
         },
       },
       {
         breakpoint: 480,
         settings: {
-          slidesToShow: 2,
+          slidesToShow: 1,
           slidesToScroll: 1,
         },
       },
     ],
- 
+
   };
   return (
     <div>
@@ -54,13 +73,14 @@ export default function Testimonial() {
         <div className="container-fluid">
           <div className="row">
             <div className="col-md-12 center-heading text-center colorlib-heading ">
-              <Typography variant="h1" className="heading-big">
-                What are the students says
-              </Typography>
-              <Typography variant="h2">
-                see how other instructors are changing lives by sharing their
-                expertise.
-              </Typography>
+
+              <div className="col-xl-12">
+                <div className="section_title text-center mb-50">
+                  <h3 className="text-light">
+                    Our student's Testimony
+                </h3>
+                </div>
+              </div>
             </div>
           </div>
           <div className="container-fluid">
@@ -68,7 +88,7 @@ export default function Testimonial() {
               <Slider {...settings} style={{ marginBottom: "15%" }}
 
               >
-               <div>
+                <div>
                   <div className="card card-body m-3 py-5">
                     <span className="icon">
                       <i className="icon-quotes-left"></i>
