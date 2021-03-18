@@ -4304,6 +4304,7 @@ h3 {
     background-position: center center;
     background-repeat: no-repeat;
     background-size: cover;
+    margin-top: 5em
 }
 
 
@@ -4313,7 +4314,7 @@ h3 {
     padding-top: 100px;
     margin-top: 15px;
     padding-bottom: 129px;
-    background: #2d2d94;
+    background: #e9e8e8;
 }
 
 @media (max-width: 767px) {
@@ -4343,8 +4344,8 @@ h3 {
 
 .footer .footer_top .footer_widget .footer_title {
     font-size: 18px;
-    font-weight: 500;
-    color: #fff;
+    font-weight: 600;
+    color: rgb(61, 60, 60);
     text-transform: capitalize;
     margin-bottom: 40px;
 }
@@ -4374,28 +4375,22 @@ h3 {
     }
 }
 
-
-/* line 41, ../../Arafath/CL/CL October/216. Consulting/HTML/scss/_footer.scss */
-
+.footer .footer_top .footer_widget ul li a,
+.footer .footer_top .footer_widget p a,
 .footer .footer_top .footer_widget p {
-    color: #919191;
-    font-size: 13px;
+    color: #5e5e5e !important;
+    font-size: 15px;
     font-weight: 400;
-    line-height: 28px;
+    line-height: 30px;
 }
 
 
-/* line 47, ../../Arafath/CL/CL October/216. Consulting/HTML/scss/_footer.scss */
-
-.footer .footer_top .footer_widget p a {
-    color: #919191;
-}
 
 
 /* line 49, ../../Arafath/CL/CL October/216. Consulting/HTML/scss/_footer.scss */
 
 .footer .footer_top .footer_widget p a:hover {
-    color: #14142e;
+    color: #d0a601 !important;
 }
 
 
@@ -4421,7 +4416,7 @@ h3 {
 /* line 64, ../../Arafath/CL/CL October/216. Consulting/HTML/scss/_footer.scss */
 
 .footer .footer_top .footer_widget p.footer_text a.domain:hover {
-    color: #14142e;
+    color:  rgb(238, 229, 229);
     border-bottom: 1px solid #14142e;
 }
 
@@ -4430,7 +4425,7 @@ h3 {
 
 .footer .footer_top .footer_widget p.footer_text.doanar a {
     font-weight: 500;
-    color: #B2B2B2;
+    color:  rgb(238, 229, 229);
 }
 
 
@@ -4448,17 +4443,6 @@ h3 {
     margin-bottom: 10px;
 }
 
-
-/* line 86, ../../Arafath/CL/CL October/216. Consulting/HTML/scss/_footer.scss */
-
-.footer .footer_top .footer_widget ul li {
-    color: #919191;
-    font-size: 13px;
-    line-height: 42px;
-}
-
-
-/* line 90, ../../Arafath/CL/CL October/216. Consulting/HTML/scss/_footer.scss */
 
 .footer .footer_top .footer_widget ul li a {
     color: #919191;

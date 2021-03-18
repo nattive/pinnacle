@@ -247,12 +247,12 @@ h5,
     margin-bottom: 10px;
 }
 
-.site-footer .footer-heading {
+/* .site-footer .footer-heading {
     font-size: 16px;
     color: #000;
     text-transform: uppercase;
     font-weight: 900;
-}
+} */
 
 .bg-text-line {
     display: inline;
@@ -1265,7 +1265,7 @@ h5,
 .nonloop-block-14 .owl-dots .owl-dot.active span {
     background-color: #7971ea;
 }
-
+/* 
 .footer-section {
     padding: 7em 0;
     background-color: #fafafa;
@@ -1273,25 +1273,25 @@ h5,
 
 .footer-section p {
     font-size: 1rem;
-}
+} */
 
-.footer-section h3 {
+/* .footer-section h3 {
     font-size: .9rem;
     letter-spacing: .1rem;
     text-transform: uppercase;
     color: #000;
     margin-bottom: 1.5rem;
     font-weight: 900;
-}
+} */
 
-.footer-section .footer-links li {
+/* .footer-section .footer-links li {
     margin-bottom: 10px;
-}
+} */
 
-.footer-subscribe .btn {
+/* .footer-subscribe .btn {
     height: 43px;
     line-height: 1;
-}
+} */
 
 .testimony h3 {
     color: #fff;

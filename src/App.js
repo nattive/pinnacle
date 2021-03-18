@@ -81,9 +81,7 @@ function App() {
             </Route> */}
           </div>
         </Switch>
-        <div className="position-static">
-          <Footer />
-        </div>
+        <Footer />
       </Router>
     </Provider>
   );

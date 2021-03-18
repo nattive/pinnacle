@@ -1,9 +1,10 @@
 import React from "react";
 
-import logo from "../Assets/img/Pinnacle/logoWhite.png";
+import logo from "../Assets/img/Pinnacle/drafts.png";
+import { CgFacebook,CgTwitter, CgInstagram } from "react-icons/cg";
 export default function Footer() {
   return (
-    <footer className="footer" style={{marginTop: '5em'}} >
+    <footer className="footer"  >
       <div className="footer_top">
         <div className="container">
           <div className="row">
@@ -22,24 +23,26 @@ export default function Footer() {
                   <ul>
                     <li>
                       <a href="#">
-                        <i className="ti-facebook"> </i>
+                        <i> 
+                        <CgFacebook />
+                        </i>
                       </a>
                     </li>
                     <li>
                       <a href="#">
-                        <i className="ti-twitter-alt"> </i>
+                        <i><CgTwitter /></i>
                       </a>
                     </li>
                     <li>
                       <a href="#">
-                        <i className="fa fa-instagram"> </i>
+                        <i> <CgInstagram /></i>
                       </a>
                     </li>
                   </ul>
                 </div>
               </div>
             </div>
-            <div className="col-xl-2 col-md-6 col-lg-3">
+            <div className="col-xl-2 col-md-6 col-lg-2">
               <div className="footer_widget">
                 <h3 className="footer_title"> Services </h3>
                 <ul>
