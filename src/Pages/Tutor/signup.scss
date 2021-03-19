@@ -1,0 +1,79 @@
+.teacher-signup-card{
+    background-color: #ebf3ff96!important;
+    width: 100%;
+    height: 450px;
+    top: 10%;
+    padding: 20px
+}
+.teacher-signup-card h4{
+    font-weight: 400;
+    font-size: 20px;
+    text-transform: capitalize    
+}
+.teacher-signup-body{
+    box-shadow: 0 0 4 .2rem rgba(63, 63, 63, 0.25);
+    margin-top: 6em
+}
+.teacher-signup-card label {
+    text-transform: capitalize;
+    font-weight: 600;
+}
+
+
+.teacher-signup-card input {
+   height: 3em;
+   } 
+
+.teacher-signup-card textarea::placeholder,
+.teacher-signup-card input::placeholder {
+    color: rgba(199, 199, 199, 0.37);
+    font-style: italic
+}
+
+.teacher-signup-card  .helper {
+    margin: 10px,
+}
+
+.teacher-signup-card  .helper[title]:hover::after{
+    content: attr(title);
+    position: absolute;
+    margin: 10px;
+    right: 10%;
+    font-size: 14px;
+    padding: 10px;
+    background: #4e4e4e96;
+    color: #fff;
+    transition: all 1s;
+    text-decoration: underline;
+    -webkit-text-decoration: underline dotted;
+    text-decoration: underline dotted;
+    cursor: help;
+    border-bottom: 0
+}
+
+.teacher-title{
+    text-align: center;
+    font-size: 30px;
+    font-weight: 400
+}
+
+.teacher-btn{
+    background-color: rgb(62, 62, 146);
+    color: #fff;
+    cursor: pointer;
+    display: inline-block;
+    font-weight: 400;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    border: 1px solid transparent;
+    padding: 1em 5em;
+    font-size: 1rem;
+    line-height: 1.5;
+    border-radius: .25rem;
+    transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out
+}

@@ -1,272 +1,126 @@
-import React from "react";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
-import { makeStyles, withStyles } from "@material-ui/core/styles";
-import clsx from "clsx";
-import Stepper from "@material-ui/core/Stepper";
-import Step from "@material-ui/core/Step";
-import StepLabel from "@material-ui/core/StepLabel";
-import Check from "@material-ui/icons/Check";
-import SettingsIcon from "@material-ui/icons/Settings";
-import GroupAddIcon from "@material-ui/icons/GroupAdd";
-import VideoLabelIcon from "@material-ui/icons/VideoLabel";
-import StepConnector from "@material-ui/core/StepConnector";
-import Button from "@material-ui/core/Button";
-import AccountCircleIcon from "@material-ui/icons/AccountCircle";
-import UserSignUp from "../User/SignUp";
-import PersonAddIcon from "@material-ui/icons/PersonAdd";
-import { Grid, Container, Typography } from "@material-ui/core";
-const QontoConnector = withStyles({
-  alternativeLabel: {
-    top: 10,
-    left: "calc(-50% + 16px)",
-    right: "calc(50% + 16px)",
-  },
-  active: {
-    "& $line": {
-      borderColor: "#784af4",
-    },
-  },
-  completed: {
-    "& $line": {
-      borderColor: "#784af4",
-    },
-  },
-  line: {
-    borderColor: "#eaeaf0",
-    borderTopWidth: 3,
-    borderRadius: 1,
-  },
-})(StepConnector);
+import { connect } from 'react-redux'
+import './signup.scss'
+import SignUpCard from "./SignUpCard";
+import image from '../../Assets/img/elements/bio.jpg'
+import registration from '../../Assets/img/elements/494640-PHEPSI-490.jpg'
+function SignUp(props) {
+  const [activeIndex, setActiveIndex] = useState(0)
 
-const useQontoStepIconStyles = makeStyles({
-  root: {
-    color: "#eaeaf0",
-    display: "flex",
-    height: 22,
-    alignItems: "center",
-  },
-  active: {
-    color: "#000066",
-  },
-  circle: {
-    width: 8,
-    height: 8,
-    borderRadius: "50%",
-    backgroundColor: "currentColor",
-  },
-  completed: {
-    color: "#000066",
-    zIndex: 1,
-    fontSize: 18,
-  },
-});
 
-function QontoStepIcon(props) {
-  const classes = useQontoStepIconStyles();
-  const { active, completed } = props;
-
-  return (
-    <div
-      className={clsx(classes.root, {
-        [classes.active]: active,
-      })}
-    >
-      {completed ? (
-        <Check className={classes.completed} />
-      ) : (
-        <div className={classes.circle} />
-      )}
+  const ChooseAccount = () => (
+    <div className="row mb-3">
+      <div className="col-xs-12 col-md-8 mx-auto card card-body">
+        <h3 className="teacher-title">Great choice! Now let's get started</h3>
+        <div className="row teacher-signup-body">
+          <div className="col-xs-12  col-md-6 d-none d-md-block">
+            <img src={image} alt="" className="w-100" />
+          </div>
+          <div className="col-xs-12 col-md-6">
+            <div className="p-4 text-center mx-auto">
+              <div className="my-auto mx-4">
+                {
+                  props.user ?.id ? <>
+                    <h4>continue as</h4>
+                    <p className="text-muted">Son Name</p>
+                    <p className="my-4">Or</p>
+                  </> : null
+                }
+                <div className="text-center">
+                  <h6 className="lead">Create a new account</h6>
+                  <button onClick={() => setActiveIndex(1)} className="teacher-btn">Sign Up</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   );
-}
 
-QontoStepIcon.propTypes = {
-  /**
-   * Whether this step is active.
-   */
-  active: PropTypes.bool,
-  /**
-   * Mark the step as completed. Is passed to child components.
-   */
-  completed: PropTypes.bool,
-};
+  const BasicCard = () => (
+    <div className="row mb-3">
+      <div className="col-xs-12 col-md-8 mx-auto  p-3">
+        <h3 className="teacher-title">Great choice! Now let's get started</h3>
+        <div className="row teacher-signup-body">
+          <div className="col-xs-12  col-md-6 d-none d-md-block">
+            <img src={registration} alt="" className="w-100" />
+          </div>
+          <div className="col-xs-12 col-md-6 teacher-signup-card">
+            <div className="p-4">
+              <SignUpCard formFields={feilds} />
+              <div className="float-right mt-4">
+                <button className="teacher-btn">Next</button>
+              </div>
+            </div>
+          </div>
+        </div>
 
-const ColorlibConnector = withStyles({
-  alternativeLabel: {
-    top: 22,
-  },
-  active: {
-    "& $line": {
-      backgroundImage:
-        "linear-gradient( 95deg,rgb(242,113,33) 0%,rgb(233,64,87) 50%,rgb(138,35,135) 100%)",
-    },
-  },
-  completed: {
-    "& $line": {
-      backgroundImage:
-        "linear-gradient( 95deg,rgb(242,113,33) 0%,rgb(233,64,87) 50%,rgb(138,35,135) 100%)",
-    },
-  },
-  line: {
-    height: 3,
-    border: 0,
-    backgroundColor: "#eaeaf0",
-    borderRadius: 1,
-  },
-})(StepConnector);
-
-const useColorlibStepIconStyles = makeStyles({
-  root: {
-    backgroundColor: "#ccc",
-    zIndex: 1,
-    color: "#fff",
-    width: 50,
-    height: 50,
-    display: "flex",
-    borderRadius: "50%",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  active: {
-    backgroundImage:
-      "linear-gradient( 136deg, #000066 0%, #000099 50%, #000066 100%)",
-    boxShadow: "0 4px 10px 0 rgba(0,0,0,.25)",
-  },
-  completed: {
-    backgroundImage:
-      "linear-gradient( 136deg, #000066 0%, #000099 50%, #000066 100%)",
-  },
-});
-
-function ColorlibStepIcon(props) {
-  const classes = useColorlibStepIconStyles();
-  const { active, completed } = props;
-
-  const icons = {
-    1: <PersonAddIcon />,
-    2: <AccountCircleIcon />,
-    3: <VideoLabelIcon />,
-  };
-
-  return (
-    <div
-      className={clsx(classes.root, {
-        [classes.active]: active,
-        [classes.completed]: completed,
-      })}
-    >
-      {icons[String(props.icon)]}
+      </div>
     </div>
   );
-}
 
-ColorlibStepIcon.propTypes = {
-  /**
-   * Whether this step is active.
-   */
-  active: PropTypes.bool,
-  /**
-   * Mark the step as completed. Is passed to child components.
-   */
-  completed: PropTypes.bool,
-  /**
-   * The label displayed in the step icon.
-   */
-  icon: PropTypes.node,
-};
-
-const useStyles = makeStyles((theme) => ({
-  root: {
-    width: "100%",
-  },
-  button: {
-    marginRight: theme.spacing(1),
-  },
-  instructions: {
-    marginTop: theme.spacing(1),
-    marginBottom: theme.spacing(1),
-  },
-  bodyStepper: {
-    marginTop: theme.spacing(10),
-  },
-}));
-
-function getSteps() {
-  return ["Create a user account", "Get Your instructor account ready", "Finish"];
-}
-
-function getStepContent(step) {
-  switch (step) {
-    case 0:
-      return <UserSignUp />;
-    case 1:
-      return <AccountCircleIcon />;
-    case 2:
-      return "This is the bit I really care about!";
-    default:
-      return "Unknown step";
+  const ViewContainer = () => {
+    switch (activeIndex) {
+      case 0:
+        return <ChooseAccount />
+      case 1:
+        return <BasicCard />
+      default:
+        break;
+    }
   }
-}
 
-export default function SignUp() {
-  const classes = useStyles();
-  const [activeStep, setActiveStep] = React.useState(0);
-  const steps = getSteps();
-
-  const handleNext = () => {
-    setActiveStep((prevActiveStep) => prevActiveStep + 1);
-  };
-
-  const handleBack = () => {
-    setActiveStep((prevActiveStep) => prevActiveStep - 1);
-  };
-
-  const handleReset = () => {
-    setActiveStep(0);
-  };
-
+  const feilds = [
+    {
+      name: 'name',
+      placeholder: 'e.g John Doe',
+      label: 'Your full name',
+      helperText: 'Your student have to call you by a name, right?',
+      onChange: () => { },
+      component: 'input'
+    },
+    {
+      label: "email",
+      placeholder: 'e.g example@xyz.vom',
+      helperText: '*Required. Ensure you mail is functional, you will recieve all notifications concerning your account.',
+      component: 'input',
+      type: "email",
+      placeholder: "Email Address",
+    },
+    {
+      type: "password",
+      placeholder: "Password",
+      component: 'input',
+      label: "password",
+    },
+    {
+      type: "password",
+      placeholder: "Confirm Password",
+      component: 'input',
+      label: "Confirm Password",
+    },
+  ]
   return (
-    <div className={classes.root}>
-      <Stepper
-        alternativeLabel
-        activeStep={activeStep}
-        className={classes.bodyStepper}
-        connector={<ColorlibConnector />}
-      >
-        {steps.map((label) => (
-          <Step key={label}>
-            <StepLabel StepIconComponent={ColorlibStepIcon}>{label}</StepLabel>
-          </Step>
-        ))}
-      </Stepper>
-      <Container>
-        <Grid container className="mt-4"> 
-          <Grid item xs={12} md={7} className="my-auto p-4">
-            <Typography
-              variant="h3"
-              style={{
-                textAlign: "left",
-                marginTop: "auto",
-                marginBottom: "auto",
-              }}
-            >
-              Create an User Account
-            </Typography>
-            <Typography
-              variant="body1"
-              style={{
-                textAlign: "left",
-              }}
-            >
-              Give us a basic information about yourself to creat an user
-              account for you
-            </Typography>
-          </Grid>
-          <Grid item xs={12} md={4}>
-            {getStepContent(activeStep)}
-          </Grid>
-        </Grid>
-      </Container>
-    </div>
-  );
+    <>
+      <div className="container-fluid mt-5">
+        <ViewContainer />
+        <div className="float-right">
+          <button className="teacher-btn">Next</button>
+        </div>
+      </div>
+    </>
+  )
+
 }
+
+const mapStateToProps = (state) => ({
+  user: state.auth.user,
+});
+
+const mapDispatchToProps = {
+
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(SignUp)
