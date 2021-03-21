@@ -2,21 +2,23 @@ import React, { InputHTMLAttributes } from 'react'
 // import { connect } from "react-redux"
 import './signup.scss'
 import { BiHelpCircle } from 'react-icons/bi';
+import { Checkbox } from '@material-ui/core';
 enum componetType {
     Input = 'input',
-    textarea = 'textarea'
+    textarea = 'textarea',
+    checkBox ='checkBox'
 }
 
 interface Feild {
-    value: 'string | number | string[] | undefined';
-    label: 'string | undefined'
-    helperText?: 'string | undefined'
-    onChange: () => void;
-    component: componetType;
-    type?: "string";
-    name?: "string";
-    placeholder?: 'String | undefined';
-
+  value: string | number | string[] | undefined;
+  label: "string | undefined";
+  helperText?: "string | undefined";
+  onChange: () => void;
+  component: componetType;
+  type?: "string";
+  name?: "string";
+  checkedValue?: boolean;
+  placeholder?: "String | undefined";
 }
 
 interface SignUpCardProps {
@@ -24,7 +26,7 @@ interface SignUpCardProps {
 }
 
 const TextArea = (props: Feild) =>
-<div className="m-1">
+<div className="col-12">
         <label htmlFor={props.name} className="form-control-label">{props.label}</label>
         <div className="d-flex">
         <textarea name={props.name} onChange={props.onChange}
@@ -37,38 +39,48 @@ const TextArea = (props: Feild) =>
 
 const TextInput = (props: Feild) => {
     return (
-        <div className="m-1">
-            <label htmlFor={props.name} className="form-control-label">{props.label}</label>
-            <div className="d-flex">
-                <input name={props.name} onChange={props.onChange} placeholder={props.placeholder}
-                    value={props.value} className="form-control" />
-                <p className="helper" title={props.helperText}><BiHelpCircle /> </p>
-            </div>
+      <div className="col-12">
+        <label htmlFor={props.name} className="form-control-label">
+          {props.label}
+        </label>
+        <div className="d-flex">
+          <input
+            name={props.name}
+            type={props.type}
+            onChange={props.onChange}
+            placeholder={props.placeholder}
+            value={props.value}
+            className="form-control"
+          />
+          <p className="helper" title={props.helperText}>
+            <BiHelpCircle />{" "}
+          </p>
         </div>
-    )
+      </div>
+    );
 }
 
+const OurCheckBox = (props: Feild) => (
+  <div className="col-6">
+    <Checkbox about={props.label} checked={props.checkedValue} />
+  </div>
+);
 
 
 
 
 const SignUpCard = (props: SignUpCardProps) => {
     return (
-        <div>
-            {
-                props.formFields.map((form, index) =>
-                    <React.Fragment key={index}>
-                        {
-                            form.component === 'textarea' &&
-                            <TextArea {...form} />
-                        }
-                        {form.component === 'input' &&
-                            <TextInput {...form} />}
-                    </React.Fragment>
-                )
-            }
-        </div>
-    )
+      <div>
+        {props.formFields.map((form, index) => (
+          <React.Fragment key={index}>
+            {form.component === "textarea" && <TextArea {...form} />}
+            {form.component === "input" && <TextInput {...form} />}
+            {form.component === "checkBox" && <OurCheckBox {...form} />}
+          </React.Fragment>
+        ))}
+      </div>
+    );
 }
 
 export default SignUpCard
