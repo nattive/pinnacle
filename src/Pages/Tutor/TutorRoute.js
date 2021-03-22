@@ -22,7 +22,6 @@ export const TutorRoute = () => {
           <SignUp />
         </Route>
       </Switch>
-      <Footer />
     </>
   );
 };

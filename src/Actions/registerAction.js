@@ -8,7 +8,8 @@ import {
     ASYNC_ERRORS,
     ASYNC_ERROR,
     NULL_ERRORS,
-    ACCOUNT_TYPE
+    ACCOUNT_TYPE,
+    TUTOR_MOVE_TO_NEXT
 } from "./types"
 
 export const register = credentials => dispatch => {
@@ -43,7 +44,6 @@ export const register = credentials => dispatch => {
                     })
                     break;
                 case 'isCareer':
-
                     dispatch({
                         type: GET_USER_FROM_RESPONSE,
                         payload: data.data.user
@@ -53,10 +53,29 @@ export const register = credentials => dispatch => {
                         payload: 'isCareer'
                     })
                     break;
-
+                    case 'tutor':
+                        dispatch({
+                            type: GET_USER_FROM_RESPONSE,
+                            payload: data.data.user
+                        })
+                        dispatch({
+                            type: ACCOUNT_TYPE,
+                            payload: 'tutor'
+                        })
+                        break;
                 default:
+                    case 'other':
+                    dispatch({
+                        type: GET_USER_FROM_RESPONSE,
+                        payload: data.data.user
+                    })
+                    dispatch({
+                        type: ACCOUNT_TYPE,
+                        payload: 'other'
+                    })
                     break;
             }
+            credentials.dispatchTo2 && dispatch({type: TUTOR_MOVE_TO_NEXT})
         })
         .catch(err => {
             // console.log(JSON.stringify(err));

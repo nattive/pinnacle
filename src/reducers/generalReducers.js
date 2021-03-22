@@ -17,6 +17,7 @@ import {
     GET_TESTIMONIALS,
     TESTIMONIALS,
     TESTIMONIALS_ERRORS,
+    TUTOR_MOVE_TO_NEXT,
 } from "../Actions/types";
 
 const initialState = {
@@ -45,10 +46,12 @@ const initialState = {
     /*** Testimonial **/
     gettingTestimonies: false,
     testimonies: [],
-    testimonialError: null
+    testimonialError: null,
+    /*** Tutor signup Page  ***/
+    moveToNext: false
 }
 
-export default function(state = initialState, action) {
+export default function (state = initialState, action) {
     switch (action.type) {
 
         /************************* TESTIMONIALS ***************** */
@@ -72,7 +75,7 @@ export default function(state = initialState, action) {
                 testimonialError: action.payload,
             }
 
-            /************************* VOLUNTEER REDUCER ***************** */
+        /************************* VOLUNTEER REDUCER ***************** */
 
         case SENDING_VOLUNTEER_FORM:
             return {
@@ -96,7 +99,7 @@ export default function(state = initialState, action) {
                 hasSentVF: true
             }
 
-            /************************* COACHEE REDUCER ***************** */
+        /************************* COACHEE REDUCER ***************** */
 
         case SENDING_COACHEE_FORM:
             return {
@@ -119,7 +122,7 @@ export default function(state = initialState, action) {
                 errorSendingCF: null,
                 hasSentCF: true
             }
-            /************************* COACHEE REDUCER ***************** */
+        /************************* COACHEE REDUCER ***************** */
         case GET_NOTIFICATION:
             return {
                 ...state,
@@ -173,6 +176,12 @@ export default function(state = initialState, action) {
                 errorGettingCart: action.payload,
             }
 
+        /***** MOVE TO NEXT *******/
+        case TUTOR_MOVE_TO_NEXT:
+            return {
+                ...state,
+                moveToNext: true
+            }
         default:
             return state
     }
